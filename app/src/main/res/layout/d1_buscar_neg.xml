@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#08FFFFFF"
+    tools:context=".D1_BuscarNeg">
+
+    <ImageView
+        android:id="@+id/imageV"
+        android:layout_width="681dp"
+        android:layout_height="419dp"
+        android:scaleType="centerCrop"
+
+        android:src="@drawable/curva_wave"
+        app:layout_constraintBottom_toBottomOf="@+id/swEncontrarNgc"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:fontFamily="@font/adlam_display"
+        android:text="Buscar Negocios"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView14"
+        android:layout_width="349dp"
+        android:layout_height="195dp"
+        android:layout_marginTop="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        app:srcCompat="@drawable/codigo" />
+
+    <SearchView
+        android:id="@+id/swEncontrarNgc"
+        android:layout_width="234dp"
+        android:layout_height="54dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/border_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView14" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/listaEncontrarNgc"
+        android:layout_width="186dp"
+        android:layout_height="242dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.644"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/swEncontrarNgc" />
+
+    <ImageView
+        android:id="@+id/imgPublic"
+        android:layout_width="386dp"
+        android:layout_height="66dp"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="#FF5722"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/listaEncontrarNgc"
+        app:srcCompat="?attr/panelBackground" />
+
+    <ImageView
+        android:id="@+id/imageVie1"
+        android:layout_width="140dp"
+        android:layout_height="115dp"
+        android:layout_marginStart="268dp"
+        android:layout_marginBottom="24dp"
+        android:rotation="182"
+        android:rotationY="178"
+        android:src="@drawable/estrella"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

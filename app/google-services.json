@@ -1,0 +1,67 @@
+{
+  "project_info": {
+    "project_number": "1049389055605",
+    "project_id": "q-app-3ecf1",
+    "storage_bucket": "q-app-3ecf1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1049389055605:android:d6c8a414538fa0cee6423c",
+        "android_client_info": {
+          "package_name": "com.q_app.oficial"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAez_6t30kdxY43haOkHgNZKtnKIevhzys"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1049389055605:android:c3912716e79a0509e6423c",
+        "android_client_info": {
+          "package_name": "com.qapp.oficial"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAez_6t30kdxY43haOkHgNZKtnKIevhzys"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1049389055605:android:f452c42ddfccac42e6423c",
+        "android_client_info": {
+          "package_name": "com.softjk.waitapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAez_6t30kdxY43haOkHgNZKtnKIevhzys"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

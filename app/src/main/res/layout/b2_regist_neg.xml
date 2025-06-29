@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".B2_RegistNeg"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="95dp"
+        android:layout_height="50dp"
+        android:src="@drawable/kk" />
+
+    <LinearLayout
+        android:layout_width="393dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:backgroundTint="#16717DBF"
+        android:translationY="-40dp"
+        android:orientation="vertical"
+        android:paddingTop="20dp">
+
+        <TextView
+            android:id="@+id/lblTituloActualizarNegocio"
+            android:layout_width="342dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="10dp"
+            android:text="Ahora Registremos su Negocio!!"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingHorizontal="20dp">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="130dp"
+                android:layout_height="130dp"
+                android:layout_margin="8dp"
+                app:cardCornerRadius="40dp">
+
+                <ImageView
+                    android:id="@+id/LogoNegcReg"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/contrato" />
+            </androidx.cardview.widget.CardView>
+
+
+            <LinearLayout
+                android:layout_width="196dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/lblCodigo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="20dp"
+                    android:text="Codigo: "
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textView21"
+                        android:layout_width="81dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Salas:"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:visibility="visible" />
+
+                    <Spinner
+                        android:id="@+id/spCantidadSalas"
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/border_text"
+                        android:visibility="visible" />
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingVertical="10dp">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/txtInputNameLocal"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="300dp"
+                android:layout_height="60dp"
+                android:hint="Nombre de su Negocio"
+                android:layout_marginBottom="8dp"
+                android:textColorHint="#2196F3"
+                app:startIconDrawable="@drawable/edificio"
+                app:startIconTint="#3F51B5">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/txtNombreLocal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="textPersonName|textCapWords"
+                    android:textSize="15sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/txtInputTipoLocal"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="300dp"
+                android:layout_height="60dp"
+                android:layout_marginBottom="8dp"
+                android:hint="Tipo: Barberia / Stetica / etc"
+                android:textColorHint="#2196F3"
+                app:startIconDrawable="@drawable/tipo"
+                app:startIconTint="#3F51B5">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/txtTipo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="textCapWords"
+                    android:textSize="15sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/txtInputLocalizaLocal"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="300dp"
+                android:layout_height="60dp"
+                android:layout_marginBottom="8dp"
+                android:hint="Colonia / Comunidad"
+                android:textColorHint="#2196F3"
+                app:startIconDrawable="@drawable/ubicacio"
+                app:startIconTint="#3F51B5">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/txtLocalizacion"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="textCapWords"
+                    android:textSize="15sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/txtInputHorarioLocal"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="300dp"
+                android:layout_height="60dp"
+                android:gravity="end"
+                android:hint="Municipio / Alcaldia"
+                android:textColorHint="#2196F3"
+                app:startIconDrawable="@drawable/localidad"
+                app:startIconTint="#3F51B5">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/txtHorario"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="textCapWords"
+                    android:textSize="15sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/btnCrearLocalV"
+                android:layout_width="296dp"
+                android:layout_height="61dp"
+                android:layout_margin="20dp"
+                android:backgroundTint="#3F51B5"
+                android:text="Registrar Negocio"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:cornerRadius="10dp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/publicidadRegis"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:translationY="-80dp"
+        android:padding="10dp"
+        android:visibility="visible" />
+
+    <ImageView
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:translationY="-800dp"
+        android:translationX="300dp"
+        android:src="@drawable/estrella" />
+
+    <ImageView
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:scaleType="fitEnd"
+        android:src="@drawable/curva_lateral2"
+        android:translationX="330dp"
+        android:translationY="-210dp"
+        android:translationZ="0dp" />
+
+</LinearLayout>

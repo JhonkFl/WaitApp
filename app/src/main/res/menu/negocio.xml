@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/InicioNg"
+        android:title="Inicio"
+        android:icon="@drawable/casa"/>
+
+    <item
+        android:id="@+id/ServicNgc"
+        android:title="Servicios"
+        android:icon="@drawable/sevi"/>
+
+    <item
+        android:id="@+id/solo2"
+        android:title="" />
+
+    <item
+        android:id="@+id/ConfiNgc"
+        android:title="Configuracion"
+        android:icon="@drawable/administrador"/>
+
+    <item
+        android:id="@+id/ayudaNgc"
+        android:title="Ayuda"
+        android:icon="@drawable/ayuda"/>
+
+</menu>

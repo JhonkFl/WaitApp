@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="color_element">#03296B</color> <!-- color para modo oscuro -->
+    <color name="color_element_claro">#484A4E</color>
+
+    <color name="grad_start">#0B1E46</color> <!-- Azul más oscuro -->
+    <color name="grad_end">#1E3A8A</color>   <!-- Azul medio -->
+    <color name="grad_middle">#032C7C</color>
+
+    <color name="color_text">#CBCCCE</color>
+</resources>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <color name="color_element">#3B70CE</color>
+    <color name="color_element_claro">#C2C5CC</color>
+
+    <color name="grad_start">#3B71D0</color> <!-- Azul oscuro -->
+    <color name="grad_end">#3B71D0</color>   <!-- Azul claro -->
+    <color name="grad_middle">#3B71D0</color>
+
+    <color name="color_text">#0C1B6D</color>
+</resources>

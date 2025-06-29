@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:background="#08FFFFFF"
+    tools:context=".B1_Login"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_marginHorizontal="15dp"
+        android:translationY="100dp"
+        android:translationZ="2dp">
+
+        <TextView
+            android:id="@+id/textView13"
+            android:layout_width="362dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/adlam_display"
+            android:gravity="center"
+            android:padding="20dp"
+            android:text="OK!! Iniciemos Sesión"
+            android:textColorHint="#112CC5"
+            android:textSize="28sp"
+            android:textStyle="bold" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/imgLogin"
+            android:layout_width="350dp"
+            android:layout_height="250dp"
+            android:layout_gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.493"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.423"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="bienvenida.json"
+            app:lottie_imageAssetsFolder="assets"
+            app:lottie_loop="true"></com.airbnb.lottie.LottieAnimationView>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/txtInputCorreo"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="61dp"
+            android:layout_marginHorizontal="20dp"
+            android:gravity="end"
+            android:hint="Correo Electronico"
+            android:textColorHint="#2196F3"
+            app:startIconDrawable="@drawable/email"
+            app:startIconTint="#18287C">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/txtCorreo"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:inputType="textEmailAddress"
+                android:textColorHint="#2196F3"
+                android:textSize="15sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/txtInputPass"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="61dp"
+            android:layout_marginHorizontal="20dp"
+            android:gravity="end"
+            android:hint="Contraseña"
+            android:persistentDrawingCache="animation"
+            android:textColorHint="#2196F3"
+            app:startIconTint="#18287C"
+            app:startIconDrawable="@drawable/candado"
+            app:passwordToggleEnabled="true"
+            app:passwordToggleTint="#009688">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/txtCont"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:inputType="textPassword"
+                android:textColorHighlight="#3F51B5"
+                android:textColorHint="#FF9800"
+                android:textSize="15sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/lblRestablece"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_margin="8dp"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:text="Olvidaste tu Contraseña?!" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnIniciarS"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#009688"
+                android:text="Iniciar Sesion"
+                android:textColor="@color/white"
+                app:cornerRadius="10dp" />
+
+            <Space
+                android:layout_width="20dp"
+                android:layout_height="30dp" />
+
+            <Button
+                android:id="@+id/btnRegistr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#4CAF50"
+                android:text="Registrate"
+                android:textColor="@color/white"
+                app:cornerRadius="10dp" />
+        </LinearLayout>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    <ImageView
+        android:id="@+id/imageView10"
+        android:layout_width="400dp"
+        android:layout_height="300dp"
+        android:scaleX="2"
+        android:translationY="80dp"
+        app:srcCompat="@drawable/ss" />
+
+    <ImageView
+        android:id="@+id/imageView9"
+        android:layout_width="68dp"
+        android:layout_height="64dp"
+        app:srcCompat="@drawable/estrella"
+        android:translationY="-740dp"
+        android:translationX="160dp"/>
+</LinearLayout>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".B3_Logo"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="400dp"
+        android:layout_height="717dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:background="#0DFFFFFF"
+        android:translationY="-8dp">
+
+        <ImageView
+            android:id="@+id/imageView7"
+            android:layout_width="97dp"
+            android:layout_height="99dp"
+            android:translationX="148dp"
+            android:translationY="-17dp"
+            app:srcCompat="@drawable/kk" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/agbalumo"
+            android:text="Agrega tu Logo!!!"
+            android:textColor="#4356EF"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <Space
+            android:layout_width="40dp"
+            android:layout_height="40dp" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            app:cardCornerRadius="50dp">
+
+            <ImageView
+                android:id="@+id/AddIMG"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                app:srcCompat="@drawable/addimagen" />
+        </androidx.cardview.widget.CardView>
+
+        <Button
+            android:id="@+id/btnSiguiente"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="50dp"
+            android:text="Siguiente paso..."
+            app:cornerRadius="10dp"
+            app:icon="@drawable/next"
+            app:iconGravity="start" />
+
+        <ImageView
+            android:id="@+id/imgPublicidad"
+            android:layout_width="386dp"
+            android:layout_height="277dp"
+            android:src="@drawable/layout_bg_dialog" />
+    </LinearLayout>
+
+</LinearLayout>
+

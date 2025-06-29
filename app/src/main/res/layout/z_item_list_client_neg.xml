@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginBottom="5dp"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="2dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/AdminlinerListaHorizont"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingVertical="5dp"
+            android:paddingHorizontal="7dp">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/AdmincardIMG"
+                android:layout_width="98dp"
+                android:layout_height="98dp"
+                app:cardCornerRadius="25dp"
+                android:layout_gravity="center"
+                app:cardElevation="0dp">
+
+                <ImageView
+                    android:id="@+id/AdminphotoUser"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/ic_person" />
+            </androidx.cardview.widget.CardView>
+
+            <Space
+                android:layout_width="15dp"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/AdmiNameUser"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/agbalumo"
+                    android:text="Nombre"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+                    <LinearLayout
+                        android:layout_width="130dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/AdmiServUser"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Servicio"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/AdmiPagoUser"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Tipo de Pago"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/AdmiPrecio"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Total a Pagar"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:translationX="-25dp">
+                        <TextView
+                            android:id="@+id/AdminEstadoItem"
+                            android:layout_width="match_parent "
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:text="Esperando"
+                            android:layout_gravity="end"
+                            android:textColor="#2196F3"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:id="@+id/AdminTemporizadorItem"
+                            android:layout_width="120dp"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:text="00:00:00"
+                            android:layout_gravity="bottom"
+                            android:textColor="#E0B83E"
+                            android:textSize="21sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+            <Space
+                android:layout_width="6dp"
+                android:layout_height="wrap_content" />
+
+            <ImageView
+                android:id="@+id/Admin_eliminarList"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                app:srcCompat="@android:drawable/ic_delete" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

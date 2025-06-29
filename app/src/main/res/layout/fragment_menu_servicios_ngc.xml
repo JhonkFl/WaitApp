@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".FragMenu.Negc.Menu_Servicios_Ngc">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:layout_marginHorizontal="10dp"
+        android:translationY="-5dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="63dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="42dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="16dp"
+                android:translationY="15dp"
+                android:gravity="center"
+                android:text="Mis Servicios"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/lblServNomLocal"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="16dp"
+                android:layout_weight="2"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:layout_width="97dp"
+                android:layout_height="54dp"
+                android:layout_gravity="center_vertical"
+                app:srcCompat="@drawable/kk" />
+
+        </LinearLayout>
+
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="259dp"
+            android:layout_height="3dp"
+            android:translationY="8dp"
+            android:background="#0A1A76"/>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="655dp"
+        android:background="#05FFFAFA"
+        android:orientation="vertical"
+        android:padding="20dp"
+        android:translationY="58dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <SearchView
+                android:id="@+id/svBuscarServicios"
+                android:layout_width="220dp"
+                android:layout_height="56dp"
+                android:layout_gravity="center"
+                android:background="@drawable/border_text" />
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="10dp"
+                android:layout_gravity="center"
+                android:layout_weight="2" />
+
+            <ImageView
+                android:id="@+id/btnAddNewServi"
+                android:layout_width="120dp"
+                android:layout_height="100dp"
+                android:src="@drawable/addproduct" />
+
+        </LinearLayout>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/listaServicios"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="2dp" />
+
+    </LinearLayout>
+</FrameLayout>

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="4dp"
+    android:layout_marginTop="4dp"
+    android:layout_marginEnd="4dp"
+    android:layout_marginBottom="4dp"
+    app:cardCornerRadius="10dp">
+
+    <LinearLayout
+        android:id="@+id/ItemLinerNItem"
+        android:layout_width="136dp"
+        android:layout_height="wrap_content"
+        android:background="#00CDC6C6"
+        android:gravity="center"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:id="@+id/ItemLinerNeg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="20dp">
+                <ImageView
+                    android:id="@+id/ItemLogoNg"
+                    android:layout_width="match_parent"
+                    android:layout_height="124dp"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/negoc"
+                    android:scaleType="centerCrop"/>
+            </androidx.cardview.widget.CardView>
+
+
+            <TextView
+                android:id="@+id/ItemNombNg"
+                android:layout_width="wrap_content"
+                android:layout_height="22dp"
+                android:paddingStart="10dp"
+                android:text="Cargando..."
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="22dp"
+                    android:paddingStart="10dp"
+                    android:text="Tipo:"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/ItemTipoNeg"
+                    android:layout_width="match_parent"
+                    android:layout_height="22dp"
+                    android:layout_gravity="start"
+                    android:gravity="center|start"
+                    android:paddingStart="10dp"
+                    android:text=""
+                    android:textColor="#687AE2"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
+
+
+        <Space
+            android:layout_width="10dp"
+            android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:id="@+id/ItemLinerUbic"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/location"/>
+        <TextView
+            android:id="@+id/ItemUbicaNeg"
+            android:layout_width="wrap_content"
+            android:layout_height="22dp"
+            android:text="Localizacion"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+        <TextView
+            android:id="@+id/ItemHorarioNeg"
+            android:layout_width="match_parent"
+            android:layout_height="22dp"
+            android:paddingStart="10dp"
+            android:text="Disponibilidad..."
+            android:gravity="center_horizontal"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+        <Button
+            android:id="@+id/ItemAddNeg"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:visibility="gone"
+            android:textSize="12sp"
+            android:backgroundTint="#4CAF50"
+            android:text="Seleccionar"/>
+
+
+        <ImageView
+            android:id="@+id/ItemDeletNeg"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:background="@drawable/border_text"
+            android:backgroundTint="#A9EF2500"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/equis"
+            android:translationY="-195dp"
+            android:visibility="gone"
+            android:translationX="53dp"/>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
+

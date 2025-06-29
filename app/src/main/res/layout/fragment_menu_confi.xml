@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".FragMenu.Client.MenuConfi">
+
+   <androidx.constraintlayout.widget.ConstraintLayout
+       android:layout_width="match_parent"
+       android:layout_height="match_parent">
+
+       <ImageView
+           android:id="@+id/imageV"
+           android:layout_width="97dp"
+           android:layout_height="54dp"
+           android:layout_marginEnd="4dp"
+           android:layout_marginBottom="540dp"
+           android:src="@drawable/kk"
+           app:layout_constraintBottom_toBottomOf="parent"
+           app:layout_constraintEnd_toEndOf="parent"
+           app:layout_constraintTop_toTopOf="parent"
+           app:layout_constraintVertical_bias="0.0" />
+
+       <TextView
+           android:id="@+id/textView2"
+           android:layout_width="198dp"
+           android:layout_height="32dp"
+           android:layout_marginTop="20dp"
+           android:text="Configuración"
+           android:textSize="24sp"
+           android:textStyle="bold"
+           app:layout_constraintEnd_toEndOf="@+id/divider"
+           app:layout_constraintHorizontal_bias="0.0"
+           app:layout_constraintStart_toStartOf="@+id/divider"
+           app:layout_constraintTop_toTopOf="@+id/imageV" />
+
+       <View
+           android:id="@+id/divider"
+           android:layout_width="259dp"
+           android:layout_height="4dp"
+           android:layout_marginTop="8dp"
+           android:background="#0A1A76"
+           app:layout_constraintEnd_toEndOf="parent"
+           app:layout_constraintHorizontal_bias="0.217"
+           app:layout_constraintStart_toStartOf="parent"
+           app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+       <ScrollView
+           android:layout_width="361dp"
+           android:layout_height="597dp"
+           app:layout_constraintBottom_toBottomOf="parent"
+           app:layout_constraintEnd_toEndOf="parent"
+           app:layout_constraintStart_toStartOf="parent"
+           app:layout_constraintTop_toBottomOf="@+id/textView2">
+
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:orientation="vertical">
+
+               <LinearLayout
+                   android:id="@+id/linearLayout2"
+                   android:layout_width="match_parent"
+                   android:layout_height="match_parent"
+                   android:orientation="horizontal">
+
+                   <LinearLayout
+                       android:layout_width="match_parent"
+                       android:layout_height="match_parent"
+                       android:layout_weight="1"
+                       android:gravity="center"
+                       android:orientation="vertical">
+
+                       <TextView
+                           android:id="@+id/textView6"
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:layout_weight="1"
+                           android:text="Acerca de:"
+                           android:textAlignment="center"
+                           android:textSize="22sp"
+                           android:textStyle="bold" />
+
+                       <TextView
+                           android:id="@+id/textView8"
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:layout_weight="1"
+                           android:text="Q-APP para Android"
+                           android:textSize="18sp" />
+
+                       <TextView
+                           android:id="@+id/lblVersion"
+                           android:layout_width="match_parent"
+                           android:layout_height="wrap_content"
+                           android:layout_weight="1"
+                           android:gravity="center"
+                           android:text="Version: 1.0"
+                           android:textSize="18sp" />
+
+                       <View
+                           android:id="@+id/divider3"
+                           android:layout_width="240sp"
+                           android:layout_height="1dp"
+                           android:layout_marginTop="12dp"
+                           android:background="#3F51B5"
+                           app:layout_constraintEnd_toEndOf="parent"
+                           app:layout_constraintHorizontal_bias="0.726"
+                           app:layout_constraintStart_toStartOf="parent"
+                           app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+                       <TextView
+                           android:id="@+id/lblTerminosCondiciones"
+                           android:layout_width="match_parent"
+                           android:layout_height="wrap_content"
+                           android:layout_weight="1"
+                           android:gravity="center"
+                           android:text="Terminos y Condiciones"
+                           android:textSize="16sp"
+                           android:textStyle="bold" />
+                   </LinearLayout>
+
+                   <ImageView
+                       android:id="@+id/imgConfiguracion"
+                       android:layout_width="151dp"
+                       android:layout_height="128dp"
+                       app:srcCompat="@drawable/images" />
+               </LinearLayout>
+
+               <TextView
+                   android:id="@+id/lblConfiguracionSistema"
+                   android:layout_width="match_parent"
+                   android:layout_height="47dp"
+                   android:gravity="center"
+                   android:paddingTop="12dp"
+                   android:text="Configuración del Sistema"
+                   android:textAlignment="center"
+                   android:textSize="20sp"
+                   android:textStyle="bold" />
+
+               <LinearLayout
+                   android:id="@+id/linerSistema"
+                   android:layout_width="match_parent"
+                   android:layout_height="match_parent"
+                   android:orientation="vertical">
+
+                   <LinearLayout
+                       android:layout_width="match_parent"
+                       android:layout_height="match_parent"
+                       android:gravity="center"
+                       android:orientation="horizontal">
+
+                       <Switch
+                           android:id="@+id/swMOscoro"
+                           android:layout_width="188dp"
+                           android:layout_height="wrap_content"
+                           android:gravity="center"
+                           android:text="Modo Oscuro" />
+
+                   </LinearLayout>
+
+               </LinearLayout>
+
+               <TextView
+                   android:id="@+id/Perfil"
+                   android:layout_width="match_parent"
+                   android:layout_height="51dp"
+                   android:gravity="center"
+                   android:paddingTop="12dp"
+                   android:text="Configuración del Perfil"
+                   android:textAlignment="center"
+                   android:textSize="20sp"
+                   android:textStyle="bold" />
+
+               <LinearLayout
+                   android:id="@+id/linerPerfil"
+                   android:layout_width="match_parent"
+                   android:layout_height="match_parent"
+                   android:gravity="center"
+                   android:orientation="vertical">
+
+                   <Button
+                       android:id="@+id/button3"
+                       android:layout_width="315dp"
+                       android:layout_height="wrap_content"
+                       android:gravity="center"
+                       android:text="Eliminar Cuenta"
+                       app:icon="@drawable/ic_delete" />
+
+                   <Button
+                       android:id="@+id/btnEditarPerfil"
+                       android:layout_width="319dp"
+                       android:layout_height="wrap_content"
+                       android:text="Editar Perfil"
+                       app:icon="@drawable/ic_person" />
+               </LinearLayout>
+
+               <LinearLayout
+                   android:id="@+id/linerEditarPerfil"
+                   android:layout_width="match_parent"
+                   android:layout_height="match_parent"
+                   android:orientation="horizontal">
+
+                   <TextView
+                       android:id="@+id/textView32"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:paddingStart="40dp"
+                       android:text="Usuario:"
+                       android:textSize="16sp"
+                       android:textStyle="bold" />
+
+                   <EditText
+                       android:id="@+id/txtNuevoUser"
+                       android:layout_width="136dp"
+                       android:layout_height="wrap_content"
+                       android:ems="10"
+                       android:inputType="textPersonName" />
+
+                   <Button
+                       android:id="@+id/btnGuardarPerfil"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:text="Guardar" />
+
+                   <Space
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:layout_weight="1" />
+
+               </LinearLayout>
+
+               <LinearLayout
+                   android:layout_width="match_parent"
+                   android:layout_height="190dp"
+                   android:orientation="vertical">
+
+                   <Space
+                       android:layout_width="match_parent"
+                       android:layout_height="50dp"
+                       android:layout_weight="1" />
+
+                   <TextView
+                       android:id="@+id/textView9"
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       android:layout_weight="1"
+                       android:gravity="center"
+                       android:text="Calificar App "
+                       android:textSize="20sp"
+                       android:textStyle="bold" />
+
+                   <RatingBar
+                       android:id="@+id/ratingBar2"
+                       android:layout_width="186dp"
+                       android:layout_height="38dp"
+                       android:layout_gravity="center" />
+
+                   <Button
+                       android:id="@+id/button6"
+                       android:layout_width="285dp"
+                       android:layout_height="wrap_content"
+                       android:layout_gravity="center"
+                       android:layout_weight="1"
+                       android:gravity="center"
+                       android:text="Enviar"
+                       android:visibility="invisible"
+                       app:icon="@android:drawable/ic_menu_send"
+                       app:iconGravity="textEnd" />
+               </LinearLayout>
+
+           </LinearLayout>
+       </ScrollView>
+
+
+   </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>

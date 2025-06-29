@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/inicio"
+        android:title="Inicio"
+        android:icon="@drawable/casa"/>
+
+    <item
+        android:id="@+id/novedades"
+        android:title="Novedades"
+        android:icon="@drawable/notif" />
+
+    <item
+        android:id="@+id/vacio"
+        android:title="" />
+
+    <item
+        android:id="@+id/confi"
+        android:title="Configura.."
+        android:icon="@drawable/administrador"/>
+
+    <item
+        android:id="@+id/ayuda"
+        android:title="Ayuda"
+        android:icon="@drawable/ayuda"/>
+
+
+
+</menu>

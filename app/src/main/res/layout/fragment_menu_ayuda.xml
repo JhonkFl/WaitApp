@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".FragMenu.Client.MenuAyuda">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:layout_marginHorizontal="10dp"
+        android:translationY="-5dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="63dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="42dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="16dp"
+                android:translationY="15dp"
+                android:gravity="center"
+                android:text="Manual y Ayuda"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/lblServNomLocal"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="16dp"
+                android:layout_weight="2"
+                android:textColor="#E2A693"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:layout_width="97dp"
+                android:layout_height="54dp"
+                android:layout_gravity="center_vertical"
+                app:srcCompat="@drawable/kk" />
+
+        </LinearLayout>
+
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="259dp"
+            android:layout_height="3dp"
+            android:translationY="8dp"
+            android:background="#0A1A76"/>
+    </LinearLayout>
+
+
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="82dp"
+
+        android:padding="25dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/linerCliente"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView11"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Cliente"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/btnManualRegiUser"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/background_blue"
+                    android:backgroundTint="#20A19E95"
+                    android:gravity="center"
+                    android:paddingBottom="5dp"
+                    android:text="Como Registrarme? o Crear una Cuenta?"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+
+                <WebView
+                    android:id="@+id/vdNuevaCuenta"
+                    android:layout_width="match_parent"
+                    android:layout_height="372dp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/btnAgregarNogocio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/background_blue"
+                    android:backgroundTint="#20A19E95"
+                    android:gravity="center"
+                    android:text="Como Buscar y Agregar un Negocio?"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+
+                <WebView
+                    android:id="@+id/vdAgregarNeg"
+                    android:layout_width="match_parent"
+                    android:layout_height="376dp"
+                    android:visibility="gone">
+
+                </WebView>
+
+                <TextView
+                    android:id="@+id/btnHacerfila"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/background_blue"
+                    android:backgroundTint="#20A19E95"
+                    android:gravity="center"
+                    android:text="Como Hacer fila a la sala?"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+
+                <WebView
+                    android:id="@+id/vdHacerfila"
+                    android:layout_width="match_parent"
+                    android:layout_height="382dp"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/linerNegocio"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView31"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center"
+                    android:text="Negocio"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/btnManualRegNeg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/background_blue"
+                    android:backgroundTint="#20A19E95"
+                    android:gravity="center"
+                    android:paddingBottom="5dp"
+                    android:text="Como Registrar Mi Negocio?"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+
+                <WebView
+                    android:id="@+id/vdRegNegocio"
+                    android:layout_width="match_parent"
+                    android:layout_height="418dp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/btnManualSelecHorar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/background_blue"
+                    android:backgroundTint="#20A19E95"
+                    android:gravity="center"
+                    android:paddingBottom="5dp"
+                    android:text="Como Seleccionar El Horario del Negocio?"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+
+                <WebView
+                    android:id="@+id/vdHorario"
+                    android:layout_width="match_parent"
+                    android:layout_height="399dp"
+                    android:visibility="gone">
+
+                </WebView>
+
+                <LinearLayout
+                    android:id="@+id/linerSecc2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/btnManualCompartirCdg"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/background_blue"
+                        android:backgroundTint="#20A19E95"
+                        android:gravity="center"
+                        android:paddingBottom="5dp"
+                        android:text="Como Tener Clientes?"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:visibility="visible" />
+
+
+                    <WebView
+                        android:id="@+id/vdCodig"
+                        android:layout_width="match_parent"
+                        android:layout_height="398dp"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/btnManualMasClienteFiLA"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/background_blue"
+                        android:backgroundTint="#20A19E95"
+                        android:gravity="center"
+                        android:text="Como Agregar un cliente a la fila?"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:visibility="visible" />
+
+                    <WebView
+                        android:id="@+id/vdMasCliFila"
+                        android:layout_width="match_parent"
+                        android:layout_height="433dp"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/btnManualEditHorario"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/background_blue"
+                        android:backgroundTint="#20A19E95"
+                        android:gravity="center"
+                        android:paddingBottom="5dp"
+                        android:text="Como cambiar el dia y la Hora de Servicio?"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:visibility="visible" />
+
+                    <WebView
+                        android:id="@+id/vdEditHora"
+                        android:layout_width="match_parent"
+                        android:layout_height="412dp"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/btnManualAgrServ"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/background_blue"
+                        android:backgroundTint="#20A19E95"
+                        android:gravity="center"
+                        android:paddingBottom="5dp"
+                        android:text="Como Agregar un Servicio?"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:visibility="visible" />
+
+                    <WebView
+                        android:id="@+id/vdAgregarServ"
+                        android:layout_width="match_parent"
+                        android:layout_height="419dp"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/btnManualFotServ"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/background_blue"
+                        android:backgroundTint="#20A19E95"
+                        android:gravity="center"
+                        android:paddingBottom="5dp"
+                        android:text="Como Agregar una Imagen al Servicio?"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:visibility="visible" />
+
+                    <WebView
+                        android:id="@+id/vdFotoServ"
+                        android:layout_width="match_parent"
+                        android:layout_height="314dp"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/btnManualEditServ"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/background_blue"
+                        android:backgroundTint="#20A19E95"
+                        android:gravity="center"
+                        android:paddingBottom="5dp"
+                        android:text="Como Editar un Servicio?"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:visibility="visible" />
+
+                    <WebView
+                        android:id="@+id/vdEditServ"
+                        android:layout_width="match_parent"
+                        android:layout_height="384dp"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/btnManualEditLocal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/background_blue"
+                        android:backgroundTint="#20A19E95"
+                        android:gravity="center"
+                        android:paddingBottom="5dp"
+                        android:text="Como Editar Mi Local Virtual?"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:visibility="visible" />
+
+                    <WebView
+                        android:id="@+id/vdEditLocal"
+                        android:layout_width="match_parent"
+                        android:layout_height="335dp"
+                        android:visibility="gone" />
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</FrameLayout>

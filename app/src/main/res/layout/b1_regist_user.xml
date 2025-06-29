@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#16FFFFFF"
+    tools:context=".B1_RegistUser">
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:translationY="-60dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.507"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/curva_superior" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="20dp"
+        android:layout_marginHorizontal="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="90dp"/>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="240dp"
+            android:layout_height="140dp"
+            android:layout_marginVertical="20dp"
+            app:cardCornerRadius="40dp">
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:srcCompat="@drawable/images" />
+        </androidx.cardview.widget.CardView>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/txtInputUser"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="61dp"
+            android:layout_marginBottom="8dp"
+            android:hint="Nombre Completo"
+            android:inputType="textEmailAddress"
+            android:textColorHint="#03A9F4"
+            app:endIconTint="#FF5722"
+            app:startIconDrawable="@drawable/ic_person">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/txtUser"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="textCapWords"
+                android:textSize="15sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/txtInputCorreo"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="61dp"
+            android:layout_marginBottom="8dp"
+            android:hint="Correo Electronico"
+            android:inputType="textEmailAddress"
+            android:textColorHint="#03A9F4"
+            app:endIconTint="#FF5722"
+            app:startIconDrawable="@drawable/email">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/txtMail"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="textEmailAddress|textEmailSubject"
+                android:textSize="15sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/txtInputPass"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="61dp"
+            android:layout_marginBottom="8dp"
+            android:hint="Contraseña"
+            android:persistentDrawingCache="animation"
+            android:textColorHint="#03A9F4"
+            app:startIconDrawable="@drawable/candado">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/txtContraseña"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="textPassword"
+                android:textColorHighlight="#3F51B5"
+                android:textSize="15sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/txtInputPassConf"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="61dp"
+            android:layout_marginBottom="8dp"
+            android:hint="Confirmar Contraseña"
+            android:inputType="textPassword"
+            android:persistentDrawingCache="animation"
+            android:textColorHint="#03A9F4"
+            app:startIconDrawable="@drawable/candado">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/txtContraseñaR"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="textPassword"
+                android:textColorHighlight="#3F51B5"
+                android:textSize="15sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <Button
+            android:id="@+id/btnGuardar"
+            android:layout_width="match_parent"
+            android:layout_height="63dp"
+            android:backgroundTint="#08665D"
+            android:layout_marginTop="15dp"
+            android:text="Guardar"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:cornerRadius="10dp" />
+    </LinearLayout>
+
+
+
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="140dp"
+        android:layout_height="114dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/estrella" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="54dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/adlam_display"
+        android:text="OK!! Creemos una Cuenta"
+        android:textColor="@color/white"
+        android:textSize="26sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Te estamos"
+        android:textSize="24sp"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.196"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <TextView
+        android:id="@+id/textView19"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Esperando!!"
+        android:textColor="#FF9800"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.155"
+        app:layout_constraintStart_toEndOf="@+id/textView12"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:padding="10dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:background="@drawable/layout_bg_dialog"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/nan"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/waitapp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/adlam_display"
+            android:gravity="center"
+            android:text="Su servicio ha Finalizado"
+            android:textColor="#000"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <RatingBar
+            android:id="@+id/ratingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:rating="4.5" />
+
+        <TextView
+            android:layout_width="348dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:gravity="left"
+            android:text="Hola! Esperemos que haya le haya gustado este servicio,
+            lo esperamos la proxima vez! que tenga un exelente Día."
+            android:textColor="#757575"
+            android:textSize="14sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:gravity="center_horizontal">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnokGracias"
+                android:layout_width="292dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="35dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="15dp"
+                android:background="@drawable/border_text"
+                android:text="Ok!!"
+                android:textAllCaps="false"
+                android:textColor="#898D91" />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

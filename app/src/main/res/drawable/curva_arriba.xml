@@ -1,0 +1,23 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="360dp"
+    android:height="300dp"
+    android:viewportWidth="360"
+    android:viewportHeight="300">
+
+    <path
+        android:name="curva"
+        android:pathData="M0,0 L0,200
+                         C90,300 270,300 360,200
+                         L360,0 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:type="linear"
+                android:startY="0"
+                android:endY="300"
+                android:startColor="@color/grad_start"
+                android:centerColor="@color/grad_middle"
+                android:endColor="@color/grad_end" />
+        </aapt:attr>
+    </path>
+</vector>
