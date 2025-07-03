@@ -18,43 +18,43 @@
         android:theme="@style/Theme.WaitApp"
         tools:targetApi="31">
         <activity
-            android:name=".E1_Sala_Neg"
+            android:name=".Negocio.E1_Sala_Neg"
             android:exported="false" />
         <activity
-            android:name=".RegistrarServicios"
+            android:name=".Negocio.RegistrarServicios"
             android:exported="false" />
         <activity
-            android:name=".E1_Servici_Client"
+            android:name=".Principal.E1_Servici_Client"
             android:exported="false" />
         <activity
-            android:name=".D1_BuscarNeg"
+            android:name=".Cliente.D1_BuscarNeg"
             android:exported="false" />
         <activity
-            android:name=".E1_Sala_Client"
+            android:name=".Cliente.E1_Sala_Client"
             android:exported="false" />
         <activity
-            android:name=".C1_Menu_Neg"
+            android:name=".Negocio.C1_Menu_Neg"
             android:exported="false" />
         <activity
-            android:name=".C1_Menu_Client"
+            android:name=".Cliente.C1_Menu_Client"
             android:exported="false" />
         <activity
-            android:name=".B3_Horario"
+            android:name=".Negocio.B3_Horario"
             android:exported="false" />
         <activity
-            android:name=".B3_Logo"
+            android:name=".Negocio.B3_Logo"
             android:exported="false" />
         <activity
-            android:name=".B2_RegistNeg"
+            android:name=".Negocio.B2_RegistNeg"
             android:exported="false" />
         <activity
-            android:name=".B1_Login"
+            android:name=".Principal.B1_Login"
             android:exported="false" />
         <activity
-            android:name=".B1_RegistUser"
+            android:name=".Principal.B1_RegistUser"
             android:exported="false" />
         <activity
-            android:name=".A_Bienvenida"
+            android:name=".Principal.A_Bienvenida"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -67,9 +67,9 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-        <service android:name=".Servicios.TimeClient" />
+        <service android:name=".Sistema.Servicios.TimeClient" />
 
-        <receiver android:name=".Metodos.BrockasAlarma" android:exported="false"/>
+        <receiver android:name=".Sistema.Metodos.BrockasAlarma" android:exported="false"/>
     </application>
 
 </manifest>

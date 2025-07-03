@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".E1_Servici_Client"
+    tools:context=".Principal.E1_Servici_Client"
     android:orientation="vertical">
 
     <androidx.cardview.widget.CardView

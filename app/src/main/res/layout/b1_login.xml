@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:background="#08FFFFFF"
-    tools:context=".B1_Login"
+    tools:context=".Principal.B1_Login"
     android:orientation="vertical">
 
     <androidx.appcompat.widget.LinearLayoutCompat

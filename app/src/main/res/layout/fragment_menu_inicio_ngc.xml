@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FragMenu.Negc.Menu_Inicio_Ngc">
+    tools:context=".Negocio.FragmentMenu.Menu_Inicio_Ngc">
 
     <ImageView
         android:id="@+id/imageView9"

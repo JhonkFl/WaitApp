@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#08FFFFFF"
-    tools:context=".D1_BuscarNeg">
+    tools:context=".Cliente.D1_BuscarNeg">
 
     <ImageView
         android:id="@+id/imageV"

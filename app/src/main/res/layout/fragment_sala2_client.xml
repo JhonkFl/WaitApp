@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FragSala.Client.SalaC2">
+    tools:context=".Cliente.FragmentSalaC.SalaC2">
 
     <LinearLayout
         android:id="@+id/tab2"
@@ -28,6 +28,7 @@
                 android:gravity="center"
                 android:text="Pagar"
                 android:textSize="20sp"
+                android:visibility="gone"
                 android:textColor="@color/white"/>
 
         </LinearLayout>

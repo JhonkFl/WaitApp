@@ -18,8 +18,8 @@
 
         <ImageView
             android:id="@+id/imgIMG"
-            android:layout_width="169dp"
-            android:layout_height="115dp"
+            android:layout_width="154dp"
+            android:layout_height="83dp"
             android:scaleType="centerCrop"
             android:src="@drawable/waitapp" />
 
@@ -28,7 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="10dp"
             android:fontFamily="@font/adlam_display"
             android:gravity="center"
             android:text="Ha sido atendido?"
@@ -43,9 +43,7 @@
             android:layout_margin="16dp"
             android:gravity="left"
             android:text="Si el cliente fue atendido presione SI, y si el cliente no fue atendido por que no se presentó, presione NO.
-
-
-                        Si aún se está ATENDIENDO al Cliente, al terminar presione SI."
+                 Si aún se está ATENDIENDO al Cliente, al terminar presione SI."
             android:textColor="#757575"
             android:textSize="14sp" />
 
@@ -60,7 +58,6 @@
                 android:id="@+id/btnNoFin"
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
-                android:layout_marginTop="15dp"
                 android:layout_marginBottom="15dp"
                 android:background="@drawable/border_text"
                 android:text="NO"
@@ -70,7 +67,6 @@
                 android:id="@+id/btnSifin"
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
-                android:layout_marginTop="15dp"
                 android:layout_marginBottom="15dp"
                 android:layout_marginStart="15dp"
                 android:background="@drawable/border_text"

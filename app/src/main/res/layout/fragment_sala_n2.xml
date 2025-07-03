@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".FragSala.Negc.SalaN2">
+    tools:context=".Negocio.FragmentSala.SalaN2">
 
     <LinearLayout
         android:id="@+id/tab2Neg"
@@ -15,11 +15,12 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <Button
                 android:id="@+id/btnPagoNeg2"
-                android:layout_width="wrap_content"
+                android:layout_width="250dp"
                 android:layout_height="50dp"
                 android:backgroundTint="#B4A60424"
                 android:layout_marginStart="10dp"
@@ -59,14 +60,15 @@
                 android:layout_marginStart="10dp"
                 android:text="Queda: "
                 android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:visibility="gone"/>
 
             <TextView
                 android:id="@+id/lblTiempoNeg2"
                 android:layout_width="wrap_content"
                 android:layout_height="33dp"
                 android:paddingStart="10dp"
-                android:text="5 minutos"
+                android:text="Agregue 5 o 10 minutos más si lo necesita"
                 android:textColor="#3F51B5"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -78,7 +80,8 @@
                 android:layout_marginStart="10dp"
                 android:text="  para User en Servicio"
                 android:textSize="18sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:visibility="gone"/>
         </LinearLayout>
 
         <androidx.appcompat.widget.LinearLayoutCompat
