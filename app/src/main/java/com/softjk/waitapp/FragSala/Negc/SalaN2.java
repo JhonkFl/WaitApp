@@ -45,7 +45,7 @@ public class SalaN2 extends Fragment {
     Button HacerFila, Mas5, Mas10;
     RecyclerView listaSala;
     public static TextView lblTiempo2, lblmsgTiemp2;
-    ViewGroup viewGroup;
+    public static ViewGroup viewGroupN2;
 
     AdpSala2Neg mAdapter;
     static String idUser;
@@ -68,7 +68,7 @@ public class SalaN2 extends Fragment {
         idUser = mAuth.getCurrentUser().getUid();
         Mas5 = view.findViewById(R.id.btn5Mas2);
         Mas10 = view.findViewById(R.id.btn10Mas2);
-        viewGroup = view.findViewById(android.R.id.content);
+        viewGroupN2 = view.findViewById(android.R.id.content);
         setUpRecyclerView1(view);
 
         Mas5.setOnClickListener(new View.OnClickListener() {
@@ -145,8 +145,20 @@ public class SalaN2 extends Fragment {
                         DatosFirestoreBD.ActualizarDatos(getActivity(), "Negocios/" + idUser + "/TiempoGlobal", "Sala2", map, "Se agrego " + valor + " Minutos más", new DatosFirestoreBD.GuardarCallback() {
                             @Override
                             public void onResultado(String resultado) {
-                                if ("Guardado".equals(resultado)) {
-                                    // Éxito
+                                if ("Actualizado".equals(resultado)) {
+                                    String idUser0 = preferencesManager.getString("Client0-2","");
+                                    int AdminTime = preferencesManager.getInt("TimeAdmin2",0);
+                                    int NewTimeUser = AdminTime + ConvertSegds;
+                                    System.out.println("Actualizar user0: TiempoActual:"+AdminTime+" -IDClient:"+idUser0);
+                                    Map<String, Object> map2 = new HashMap<>();
+                                    map2.put("AdmTiempoTotal", NewTimeUser);
+
+                                    DatosFirestoreBD.ActualizarDatos(getActivity(), "Negocios/" + idUser + "/Sala2", idUser0, map2, "Se agrego " + valor + " Minutos más", new DatosFirestoreBD.GuardarCallback() {
+                                        @Override
+                                        public void onResultado(String resultado) {
+                                            System.out.println("Negocios/" + idUser + "/Sala2"+" -Documt: "+idUser0+" Campo: "+"AdmTiempoTotal:"+NewTimeUser);
+                                        }
+                                    });
                                 } else {
                                     // Error
                                 }

@@ -184,7 +184,7 @@ public class SalaC3 extends Fragment {
                         TiempoAlarma.getTiempoGlobalPersonal(Colleccion,idUser,lblTiempo,getActivity(),"3",lblmsgTiemp,preferencesManager,viewGroup,"No");
                     }else {
                         System.out.println("Mostrar tiempo Global ***********");
-                        TiempoTotal.getTiempoGlobal(idNegocio, "3", lblTiempo,lblmsgTiemp,getActivity());
+                        TiempoTotal.getTiempoGlobal(idNegocio, "3", lblTiempo,lblmsgTiemp,"No");
                     }
                 }
 
@@ -218,7 +218,7 @@ public class SalaC3 extends Fragment {
         }else {
             System.out.println("User no esta en la fila Mostrar Tiempo Global Total");
             String ColleccionDelet = "Negocios/"+idNegocio+"/Sala3";
-            TiempoTotal.getTiempoGlobal( idNegocio, "3", lblTiempo,lblmsgTiemp,getActivity());
+            TiempoTotal.getTiempoGlobal( idNegocio, "3", lblTiempo,lblmsgTiemp,"No");
         }
     }
 }

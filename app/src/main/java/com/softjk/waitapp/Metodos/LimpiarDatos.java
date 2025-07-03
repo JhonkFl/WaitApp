@@ -17,6 +17,7 @@ public class LimpiarDatos {
         preferencesManager.saveString("FilaSala",null);
         preferencesManager.saveString("UserServicio"+N,null);
         preferencesManager.saveString("ListaSala"+N,null);
+        preferencesManager.saveString("Alarma"+N,null);
 
         System.out.println("Datos Borrado exitosamente");
     }
@@ -34,6 +35,7 @@ public class LimpiarDatos {
         preferencesManager.saveString("AccionesFila"+N,null);
         preferencesManager.saveString("FilaSala",null);
         preferencesManager.saveString("UserServicio"+N,null);
+        preferencesManager.saveString("Alarma"+N,null);
 
         System.out.println("Datos Borrado exitosamente");
     }

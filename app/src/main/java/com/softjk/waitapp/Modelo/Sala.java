@@ -3,11 +3,11 @@ package com.softjk.waitapp.Modelo;
 public class Sala {
     String Servicio, User, idUser, Estado, Pago, Accion,Foto;
     Double Precio;
-    int Tiempo;
+    int Tiempo, AdmTiempoTotal, TiempoServicio;
 
     public Sala(){}
 
-    public Sala(int tiempo, String servicio, String user, Double precio, String iduser, String estado,String pago, String accion, String foto){
+    public Sala(int tiempo, String servicio, String user, Double precio, String iduser, String estado,String pago, String accion, String foto, int admTiempoTotal, int tiempoServicio){
         this.Tiempo=tiempo;
         this.Servicio=servicio;
         this.User=user;
@@ -17,6 +17,8 @@ public class Sala {
         this.Pago=pago;
         this.Accion=accion;
         this.Foto=foto;
+        this.AdmTiempoTotal=admTiempoTotal;
+        this.TiempoServicio = tiempoServicio;
     }
 
     public int getTiempo() {
@@ -89,5 +91,21 @@ public class Sala {
 
     public void setFoto(String foto) {
         Foto = foto;
+    }
+
+    public int getAdmTiempoTotal() {
+        return AdmTiempoTotal;
+    }
+
+    public void setAdmTiempoTotal(int admTiempoTotal) {
+        AdmTiempoTotal = admTiempoTotal;
+    }
+
+    public int getTiempoServicio() {
+        return TiempoServicio;
+    }
+
+    public void setTiempoServicio(int tiempoServicio) {
+        TiempoServicio = tiempoServicio;
     }
 }

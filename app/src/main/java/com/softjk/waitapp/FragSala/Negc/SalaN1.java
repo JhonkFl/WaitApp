@@ -1,6 +1,7 @@
 package com.softjk.waitapp.FragSala.Negc;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -30,6 +31,7 @@ import com.softjk.waitapp.Metodos.DatosFirestoreBD;
 import com.softjk.waitapp.Metodos.LimpiarDatos;
 import com.softjk.waitapp.Metodos.PreferencesManager;
 import com.softjk.waitapp.Metodos.ReciclerVacio;
+import com.softjk.waitapp.Metodos.TiempoGlobalPers;
 import com.softjk.waitapp.Modelo.Sala;
 import com.softjk.waitapp.R;
 
@@ -42,10 +44,11 @@ public class SalaN1 extends Fragment {
     FirebaseAuth mAuth;
     Query query;
 
-    TextView btnPago,MensajeTime;
+    TextView btnReparar,MensajeTime;
     Button HacerFila, Mas5, Mas10;
     RecyclerView listaSala;
     public static TextView lblTiempo, lblmsgTiemp;
+    public static ViewGroup viewGroup;
 
     AdpSalaNeg mAdapter;
     static String idUser;
@@ -58,30 +61,14 @@ public class SalaN1 extends Fragment {
 
         preferencesManager = new PreferencesManager(getActivity());
         BD = FirebaseFirestore.getInstance();
-        btnPago = view.findViewById(R.id.btnPagoNeg);
+        btnReparar = view.findViewById(R.id.btnPagoNeg);
         lblTiempo = view.findViewById(R.id.lblTiempoNeg);
         lblmsgTiemp = view.findViewById(R.id.lblMensajeTiempoNeg);
         HacerFila = view.findViewById(R.id.btnReservarTurnoNeg);
         mAuth = FirebaseAuth.getInstance();
         idUser = mAuth.getCurrentUser().getUid();
-        Mas5 = view.findViewById(R.id.btn5Mas);
-        Mas10 = view.findViewById(R.id.btn10Mas);
+        viewGroup = view.findViewById(android.R.id.content);
         setUpRecyclerView1(view);
-
-
-        Mas5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ActualizarTimeGlobal(5);
-            }
-        });
-
-        Mas10.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ActualizarTimeGlobal(10);
-            }
-        });
 
         HacerFila.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,11 +82,16 @@ public class SalaN1 extends Fragment {
             }
         });
 
-        btnPago.setOnClickListener(new View.OnClickListener() {
+        btnReparar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("Limpiando datos");
-                LimpiarDatos.LimpiarSala(getActivity(), "1");
+               // LimpiarDatos.LimpiarSala(getActivity(), "1");
+
+                Intent intent = getActivity().getIntent();
+                getActivity().overridePendingTransition(0, 0);
+                getActivity().finish();
+                getActivity().overridePendingTransition(0, 0);
+                startActivity(intent);
             }
         });
 
@@ -116,7 +108,14 @@ public class SalaN1 extends Fragment {
 
         FirestoreRecyclerOptions<Sala> firestoreRecyclerOptions =
                 new FirestoreRecyclerOptions.Builder<Sala>().setQuery(query, Sala.class).build();
-        mAdapter = new AdpSalaNeg(firestoreRecyclerOptions, getActivity());
+
+        mAdapter = new AdpSalaNeg(firestoreRecyclerOptions, getActivity(), new AdpSalaNeg.TiempoListener() {
+            @Override
+            public void onSolicitarTemporizador(String path, String idDoc, TextView contadorTextView, String Foto,String Nombre) {
+                TiempoGlobalPers.getTiempoItemPers(path, idDoc, contadorTextView,Foto,Nombre,viewGroup,getActivity());
+            }
+        });
+
         mAdapter.notifyDataSetChanged();
         listaSala.setAdapter(mAdapter);
         mAdapter.startListening();
@@ -125,73 +124,21 @@ public class SalaN1 extends Fragment {
         ReciclerVacio salaChecker = new ReciclerVacio(BD, preferencesManager);
         salaChecker.verificarRecycler("Negocios/"+idUser+"/Sala1", mAdapter, idUser, "1",getActivity(),resultado -> {
             System.out.println(resultado);
-        });
-
-    }
-
-
-    private void ActualizarTimeGlobal(int valor) {
-        BD.collection("Negocios/"+idUser+"/TiempoGlobal").document("Sala1").get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-
-                String list = preferencesManager.getString("ListaSala1","");
-                int Tiempo = Math.toIntExact(documentSnapshot.getLong("Tiempo"));
-                String Tim = String.valueOf(Tiempo);
-                System.out.println("Ver valor Tiempo "+Tim+" + "+valor);
-
-                if (documentSnapshot.exists()){
-                    if (Tim.equals("") || Tim.isEmpty() || Tim == null || list.equals("") || list == null){
-                        System.out.println("No Existe el Dato Tiempo");
-                        GuadarInicioServ();
-                    }else {
-                        int ConvertSegds = valor * 60;
-                        int NuevoTime = Tiempo + ConvertSegds;
-
-                        Map<String, Object> map = new HashMap<>();
-                        map.put("Tiempo", NuevoTime);
-
-                        DatosFirestoreBD.ActualizarDatos(getActivity(), "Negocios/" + idUser + "/TiempoGlobal", "Sala1", map, "Se agrego " + valor + " Minutos más", new DatosFirestoreBD.GuardarCallback() {
-                            @Override
-                            public void onResultado(String resultado) {
-                                if ("Guardado".equals(resultado)) {
-                                    // Éxito
-                                } else {
-                                    // Error
-                                }
-                            }
-                        });
-
-
-                        System.out.println("Ver new valor Tiempo "+NuevoTime);
-                    }
-                }else {
-                    System.out.println("No Existe el Documento");
-                }
-
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getActivity(), "Error al obtener los datos", Toast.LENGTH_SHORT).show();
+            if (resultado.equals("Vacio")){
+                SharedPreferences prefs = getActivity().getSharedPreferences("alertas_mostradas", getActivity().MODE_PRIVATE);
+                prefs.edit().clear().apply(); // Elimina todas las claves
             }
         });
-    }
-
-
-    private void GuadarInicioServ() {
-        Timestamp fechaHoraActual = Timestamp.now();
-
-        Map<String, Object> data = new HashMap<>();
-        data.put("Inicio", fechaHoraActual);
-
-        BD.collection("Negocios/"+idUser+"/TiempoGlobal").document("Sala1").set(data).addOnSuccessListener(aVoid -> {
-            System.out.println("Fecha Hora Guardado en Tiempo Global");
-        }).addOnFailureListener(e -> {
-            System.out.println("Fecha Hora --- NO --- Guardado en Tiempo Global");
-        });
 
     }
+
+
+
+
+
+
+
+
 
 
     private void EscucharCambio(AdpSalaNeg mAdapter) {

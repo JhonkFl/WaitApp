@@ -48,8 +48,12 @@ public class TiempoAlarma {
         System.out.println("Ruta BD Tiempo: "+ Collecction + " ---> Ducument: "+Document);
 
         handler = new Handler();
+
         final boolean[] alarmaCancelada = {false};
         final boolean[] isCountdownRunning = {true};
+        if (firestoreListener != null) {
+            firestoreListener.remove(); // Detén el listener anterior
+        }
         firestoreListener = id.addSnapshotListener((snapshot, e) -> {
             if (snapshot != null && snapshot.exists()) {
                 long startTime = snapshot.getTimestamp("Inicio").toDate().getTime();
@@ -68,12 +72,16 @@ public class TiempoAlarma {
                     String fechaLegible2 = formato2.format(fechaAlarma);
                     System.out.println("La alarma está programada para: " + fechaLegible2);           //*
 
-                    programarAlarma(context, tiempoAlarma, Integer.parseInt(N)); //Importante
+                    String alarma = preferencesManager.getString("Alarma"+N, "Activar");
+                    if (alarma.equals("Activar")){
+                        programarAlarma(context, tiempoAlarma, Integer.parseInt(N)); //Importante
+                    }
                 }
 
                 // ComenzarContador Tiempo Global
                 if (countdownRunnable != null) {  // Cancelar cualquier temporizador existente
                     handler.removeCallbacks(countdownRunnable);
+                    handler.removeCallbacksAndMessages(null);
                 }
                 countdownRunnable = new Runnable() {
                     @Override
@@ -95,6 +103,7 @@ public class TiempoAlarma {
                             handler.postDelayed(this, 1000);
 
                             if (!alarmaCancelada[0] && remainingTimeMillis <= 180000){
+                                preferencesManager.saveString("Alarma"+N,"Cancelado");
                                 cancelarAlarma(context, Integer.parseInt(N));
                                 alarmaCancelada[0] = true;
                             }
@@ -104,7 +113,9 @@ public class TiempoAlarma {
                             if (isCountdownRunning[0]) {
                                 isCountdownRunning[0] = false; // Desactivar Contador por completo para evitar ciclos
 
-                                cancelarAlarma(context, Integer.parseInt(N));
+                              /*  cancelarAlarma(context, Integer.parseInt(N));
+                                alarmaCancelada[0] = true;*/
+
                                 Activity activity = (Activity) context;
                                 if (PrimerUser.equals("No") || PrimerUser.isEmpty()){
                                     TimeEnServi(N, preferencesManager,lblTiempo, lblmsgTiemp, viewGroup, activity );
@@ -145,10 +156,17 @@ public class TiempoAlarma {
     public static void cancelarAlarma(Context context, int requestCode) {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context, BrockasAlarma.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, requestCode, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
+        );
 
-        System.out.println("Alarma Cancelado "+requestCode);
-        alarmManager.cancel(pendingIntent);
+        if (pendingIntent != null) {
+            alarmManager.cancel(pendingIntent);
+            pendingIntent.cancel(); // 🔥 Esto ayuda a liberar recursos
+            System.out.println("Alarma cancelada: " + requestCode);
+        } else {
+            System.out.println("No se encontró PendingIntent para cancelar.");
+        }
     }
 
 

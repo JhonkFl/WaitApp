@@ -2,8 +2,10 @@ package com.softjk.waitapp.Adapter.Negc;
 
 import static com.softjk.waitapp.FragSala.Negc.SalaN1.lblTiempo;
 import static com.softjk.waitapp.FragSala.Negc.SalaN1.lblmsgTiemp;
+import static com.softjk.waitapp.FragSala.Negc.SalaN1.viewGroup;
 import static com.softjk.waitapp.FragSala.Negc.SalaN2.lblTiempo2;
 import static com.softjk.waitapp.FragSala.Negc.SalaN2.lblmsgTiemp2;
+import static com.softjk.waitapp.FragSala.Negc.SalaN2.viewGroupN2;
 
 import android.app.Activity;
 import android.content.res.ColorStateList;
@@ -99,15 +101,17 @@ public class AdpSala2Neg extends FirestoreRecyclerAdapter<Sala, AdpSala2Neg.View
             holder.Estado.setText(model.getEstado());
             holder.Pago.setTextColor(Color.parseColor("#cdd7e8"));
             holder.Precio.setTextColor(Color.parseColor("#cdd7e8"));
-            holder.EliminarList.setVisibility(View.GONE);
-            TiempoGlobalPers.getTiempoItemPers("Negocios/"+idUser+"/Sala2",id,holder.ContadorItem,activity);
+
+            TiempoGlobalPers.getTiempoItemPers("Negocios/"+idUser+"/Sala2",id,holder.ContadorItem, model.getFoto(),model.getUser(),viewGroupN2 ,activity);
+          //  TiempoGlobalPers.getTiempoItemPers("Negocios/"+idUser+"/Sala2",id,holder.ContadorItem,activity);
+            preferencesManager.saveString("Client0-2",id);
+            preferencesManager.saveInt("TimeAdmin2",model.getAdmTiempoTotal());
             // TiempoGlobalPers.getTiempoItemPers("Negocios/"+idUser+"/Sala1",id,lblTiempo,activity);
             // lblmsgTiemp.setText("");
 
 
         }else if (position > 0){
             //holder.lis.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#fafaf9")));
-            holder.EliminarList.setVisibility(View.GONE);
             holder.ContadorItem.setVisibility(View.GONE);
         }
     }
@@ -142,7 +146,7 @@ public class AdpSala2Neg extends FirestoreRecyclerAdapter<Sala, AdpSala2Neg.View
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView Usuario, Servicio, Precio, ContadorItem;
         TextView Estado;
-        ImageView EliminarList, photo_User;
+        ImageView  photo_User;
         LinearLayout lis;
         TextView Pago;
 
@@ -151,7 +155,6 @@ public class AdpSala2Neg extends FirestoreRecyclerAdapter<Sala, AdpSala2Neg.View
             Usuario = itemView.findViewById(R.id.AdmiNameUser);
             Servicio = itemView.findViewById(R.id.AdmiServUser);
             photo_User = itemView.findViewById(R.id.AdminphotoUser);
-            EliminarList = itemView.findViewById(R.id.Admin_eliminarList);
             Precio = itemView.findViewById(R.id.AdmiPrecio);
             ContadorItem = itemView.findViewById(R.id.AdminTemporizadorItem);
             lis = itemView.findViewById(R.id.AdminlinerListaHorizont);

@@ -46,6 +46,7 @@ public class SalaN3 extends Fragment {
     Button HacerFila, Mas5, Mas10;
     RecyclerView listaSala;
     public static TextView lblTiempo, lblmsgTiemp;
+    public static ViewGroup viewGroupN3;
 
     AdpSala3Neg mAdapter;
     static String idUser;
@@ -66,6 +67,7 @@ public class SalaN3 extends Fragment {
         idUser = mAuth.getCurrentUser().getUid();
         Mas5 = view.findViewById(R.id.btn5Mas3);
         Mas10 = view.findViewById(R.id.btn10Mas3);
+        viewGroupN3 = view.findViewById(android.R.id.content);
         setUpRecyclerView1(view);
 
 
@@ -155,7 +157,19 @@ public class SalaN3 extends Fragment {
                             @Override
                             public void onResultado(String resultado) {
                                 if ("Guardado".equals(resultado)) {
-                                    // Éxito
+                                    String idUser0 = preferencesManager.getString("Client0-3","");
+                                    int AdminTime = preferencesManager.getInt("TimeAdmin3",0);
+                                    int NewTimeUser = AdminTime + ConvertSegds;
+                                    System.out.println("Actualizar user0: TiempoActual:"+AdminTime+" -IDClient:"+idUser0);
+                                    Map<String, Object> map2 = new HashMap<>();
+                                    map2.put("AdmTiempoTotal", NewTimeUser);
+
+                                    DatosFirestoreBD.ActualizarDatos(getActivity(), "Negocios/" + idUser + "/Sala3", idUser0, map2, "Se agrego " + valor + " Minutos más", new DatosFirestoreBD.GuardarCallback() {
+                                        @Override
+                                        public void onResultado(String resultado) {
+                                            System.out.println("Negocios/" + idUser + "/Sala3"+" -Documt: "+idUser0+" Campo: "+"AdmTiempoTotal:"+NewTimeUser);
+                                        }
+                                    });
                                 } else {
                                     // Error
                                 }

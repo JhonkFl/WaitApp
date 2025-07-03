@@ -23,6 +23,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.softjk.waitapp.Metodos.AddMasTime;
+import com.softjk.waitapp.Metodos.AlertDialogMetds;
 import com.softjk.waitapp.Metodos.MultiMetds;
 import com.softjk.waitapp.Metodos.PreferencesManager;
 import com.softjk.waitapp.Metodos.TiempoGlobalPers;
@@ -35,13 +37,15 @@ public class AdpSalaNeg extends FirestoreRecyclerAdapter<Sala, AdpSalaNeg.ViewHo
     FirebaseAuth mAuth;
     static String idUser;
     PreferencesManager preferencesManager;
+    private final TiempoListener tiempoListener;
 
-    public AdpSalaNeg(@NonNull FirestoreRecyclerOptions<Sala> options, Activity activity) {
+    public AdpSalaNeg(@NonNull FirestoreRecyclerOptions<Sala> options, Activity activity, TiempoListener listener) {
         super(options);
         this.activity = activity;
         mAuth = FirebaseAuth.getInstance();
         idUser = mAuth.getUid();
         preferencesManager = new PreferencesManager(activity);
+        this.tiempoListener = listener;
     }
 
     @Override
@@ -82,8 +86,7 @@ public class AdpSalaNeg extends FirestoreRecyclerAdapter<Sala, AdpSalaNeg.ViewHo
             MultiMetds.IMG(activity,RutaId,holder.photo_User,"No");
         }
 
-
-        if (position == 0){
+        if (position == 0 && tiempoListener != null){
             int color = ContextCompat.getColor(activity, R.color.color_element); //Color definido y personalizado en la carpt colors
             holder.lis.setBackgroundColor(color);
             holder.lis.invalidate();
@@ -91,38 +94,63 @@ public class AdpSalaNeg extends FirestoreRecyclerAdapter<Sala, AdpSalaNeg.ViewHo
             holder.Servicio.setTextColor(Color.parseColor("#cdd7e8"));
             holder.Pago.setTextColor(Color.parseColor("#cdd7e8"));
             holder.Precio.setTextColor(Color.parseColor("#cdd7e8"));
-            holder.EliminarList.setVisibility(View.GONE);
-            TiempoGlobalPers.getTiempoItemPers("Negocios/"+idUser+"/Sala1",id,holder.ContadorItem,activity);
+            //TiempoGlobalPers.getTiempoItemPers("Negocios/"+idUser+"/Sala1",id,holder.ContadorItem,activity);
+
            // TiempoGlobalPers.getTiempoItemPers("Negocios/"+idUser+"/Sala1",id,lblTiempo,activity);
            // lblmsgTiemp.setText("");
+
+            holder.Mas5.setVisibility(View.VISIBLE);
+            holder.Mas10.setVisibility(View.VISIBLE);
+
+            tiempoListener.onSolicitarTemporizador("Negocios/" + idUser + "/Sala1", id, holder.ContadorItem,model.getFoto(),model.getUser());
 
 
         }else if (position > 0){
             //holder.lis.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#fafaf9")));
-            holder.EliminarList.setVisibility(View.GONE);
             holder.ContadorItem.setVisibility(View.GONE);
         }
-    }
 
 
-
-
-    private void deletePet(String id) {
-        //  System.out.println("revisando Sala "+NSala);
-        BD.collection("Negocios/"+idUser+"/Sala1").document(id).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+        holder.Mas5.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onSuccess(Void unused) {
-                if(id.equals(idUser)) {
-                    Toast.makeText(activity, "Eliminado correctamente", Toast.LENGTH_SHORT).show();
+            public void onClick(View v) {
+                if (position == 0) { //Primera accion
+                    int TiempoAdmin = model.getAdmTiempoTotal();
+                    int TiempoServ = model.getTiempoServicio();
+                    String Accion = model.getAccion();
+                    String list = preferencesManager.getString("ListaSala1", "");
+                    AddMasTime.ActualizarTimeUser0(activity, 2, idUser, "1", id, TiempoAdmin, Accion, TiempoServ, list);
                 }
+                //Segunda acion para todos los elementos
+                System.out.println( " NDoc:"+getSnapshots().size());
+                for (int i = 0; i < getSnapshots().size(); i++) {
+                    DocumentSnapshot snap = getSnapshots().getSnapshot(i);
+                    Sala item = snap.toObject(Sala.class);
+
+                    if (item != null) {
+                        if (i == 0) continue; //omite el element 0
+                        int tiempo = item.getTiempo();
+                        int tiempoAdmin = item.getAdmTiempoTotal();
+                        String idItem = snap.getId();
+                        String acion = item.getAccion();
+                        System.out.println("idUser:"+idItem);
+                        System.out.println("timeServ:"+tiempo);
+                        AddMasTime.ActualizarTimeGeneral(idUser, idItem, tiempo, 120,"1",activity,acion,tiempoAdmin);
+                    }else {System.out.println("No entro a la acion2");}
+                }
+
             }
-        }).addOnFailureListener(new OnFailureListener() {
+        });
+
+        holder.lis.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(activity, "Error al eliminar", Toast.LENGTH_SHORT).show();
+            public boolean onLongClick(View v) {
+                AlertDialogMetds.MsgEliminar(activity,model.getUser(),"",id,idUser);
+                return true;
             }
         });
     }
+
 
     @NonNull
     @Override
@@ -133,8 +161,8 @@ public class AdpSalaNeg extends FirestoreRecyclerAdapter<Sala, AdpSalaNeg.ViewHo
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView Usuario, Servicio, Precio, ContadorItem;
-        TextView Pago, Estado;
-        ImageView EliminarList, photo_User;
+        TextView Pago, Estado, Mas5, Mas10;
+        ImageView photo_User;
         LinearLayout lis;
 
 
@@ -143,12 +171,18 @@ public class AdpSalaNeg extends FirestoreRecyclerAdapter<Sala, AdpSalaNeg.ViewHo
             Usuario = itemView.findViewById(R.id.AdmiNameUser);
             Servicio = itemView.findViewById(R.id.AdmiServUser);
             photo_User = itemView.findViewById(R.id.AdminphotoUser);
-            EliminarList = itemView.findViewById(R.id.Admin_eliminarList);
             Precio = itemView.findViewById(R.id.AdmiPrecio);
             ContadorItem = itemView.findViewById(R.id.AdminTemporizadorItem);
             lis = itemView.findViewById(R.id.AdminlinerListaHorizont);
             Pago = itemView.findViewById(R.id.AdmiPagoUser);
             Estado = itemView.findViewById(R.id.AdminEstadoItem);
+            Mas5 = itemView.findViewById(R.id.btn5Mas);
+            Mas10 = itemView.findViewById(R.id.btn10Mas);
         }
     }
+
+    public interface TiempoListener {
+        void onSolicitarTemporizador(String pathFirestore, String idDocumento, TextView contadorTextView, String Foto, String Nombre);
+    }
+
 }

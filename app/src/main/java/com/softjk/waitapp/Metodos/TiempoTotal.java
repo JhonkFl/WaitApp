@@ -26,7 +26,7 @@ public class TiempoTotal {
     static FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
 
-    public static void getTiempoGlobal(String idNegocio, String N, TextView lblTiempo, TextView lblmsgTiemp, Context context){
+    public static void getTiempoGlobal(String idNegocio, String N, TextView lblTiempo, TextView lblmsgTiemp, String adminServ){
         //Tiempo Global Firebase Firestore
         DocumentReference id = BD.collection("Negocios/" + idNegocio + "/TiempoGlobal").document("Sala"+N);
 
@@ -76,9 +76,12 @@ public class TiempoTotal {
                             if (isCountdownRunning[0]) {
                                 isCountdownRunning[0] = false; // Desactivar Contador por completo para evitar ciclos
 
-                                lblTiempo.setText("Disponible");
-                                lblmsgTiemp.setText("No hay Nadie en la Fila");
-
+                                if (adminServ.equals("Si")){
+                                    lblTiempo.setText("Mis Servicios");
+                                }else {
+                                    lblTiempo.setText("Disponible");
+                                    lblmsgTiemp.setText("No hay Nadie en la Fila");
+                                }
                             }
 
                         }

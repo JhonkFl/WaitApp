@@ -22,6 +22,7 @@ import com.softjk.waitapp.Adapter.Client.AdpServiciosC;
 import com.softjk.waitapp.Adapter.Negc.AdpSolicitServiSala;
 import com.softjk.waitapp.Metodos.MultiMetds;
 import com.softjk.waitapp.Metodos.PreferencesManager;
+import com.softjk.waitapp.Metodos.TiempoTotal;
 import com.softjk.waitapp.Modelo.ServicNg;
 
 public class E1_Servici_Client extends AppCompatActivity {
@@ -71,8 +72,9 @@ public class E1_Servici_Client extends AppCompatActivity {
             setUpRecyclerViewNGC(idNeg);
         }else {
             setUpRecyclerViewNGCAdmin(idUser);
-            NombreLocal.setText("Mis Servicios");
+            String N = preferencesManager.getString("NSala","");
             MultiMetds.IMG(E1_Servici_Client.this, "https://media.tenor.com/images/2bd1bf1843e1ddf7957a67589ca72612/tenor.gif", Iconolocal, "Si");
+            TiempoTotal.getTiempoGlobal(idUser,N,NombreLocal,NombreLocal,"Si");
         }
 
         search_view();

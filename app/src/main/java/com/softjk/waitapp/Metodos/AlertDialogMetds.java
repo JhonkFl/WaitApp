@@ -4,6 +4,7 @@ import static com.softjk.waitapp.FragSala.Client.SalaC1.viewGroup;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
@@ -12,9 +13,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.softjk.waitapp.E1_Sala_Client;
 import com.softjk.waitapp.R;
 
@@ -266,6 +273,87 @@ public class AlertDialogMetds {
         if (!activity.isFinishing()) {// Acción que solo se debe realizar si la actividad no está terminando
             alertDialog.show();
         }
+    }
+
+
+
+    public static void alertOptionMSG(Context context, ViewGroup viewGroup, String collectioUser, String idUser, String Foto, String NombreUser) {
+        Activity activity = (Activity) context;
+        Button Si, No;
+        TextView Titulo;
+        ImageView img;
+
+        SharedPreferences prefs = context.getSharedPreferences("alertas_mostradas", Context.MODE_PRIVATE);
+        if (prefs.getBoolean("id-" + idUser, false)) {
+            return; // Ya se mostró
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        View view1 = LayoutInflater.from(activity).inflate(R.layout.z_custom_dialog_finserv, viewGroup, false);
+        builder.setCancelable(false);
+        builder.setView(view1);
+
+        img = view1.findViewById(R.id.imgIMG);
+        Titulo = view1.findViewById(R.id.MsgTitulo);
+        Si = view1.findViewById(R.id.btnSifin);
+        No = view1.findViewById(R.id.btnNoFin);
+
+        final AlertDialog alertDialog = builder.create();
+        MultiMetds.IMG(activity,Foto,img,"Si");
+        Titulo.setText(NombreUser+" ha sido atendido?");
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+
+        Si.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+                DatosFirestoreBD.EliminarDocument(context, collectioUser, idUser, "", new DatosFirestoreBD.GuardarCallback() {
+                    @Override
+                    public void onResultado(String resultado) {
+                        System.out.println("Documento eliminado correctamente.");
+                    }
+                });
+            }
+        });
+
+        No.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+            }
+        });
+
+        if (!activity.isFinishing()) {
+            alertDialog.show();
+            prefs.edit().putBoolean("id-" + idUser, true).apply(); // Marcar como mostrado
+        }
+
+    }
+
+
+
+    public static void MsgEliminar(Context context, String Nombre, String Mensaje,String id,String idNegocio) {
+        FirebaseFirestore BD = FirebaseFirestore.getInstance();
+        new SweetAlertDialog(context, SweetAlertDialog.NORMAL_TYPE).setTitleText("Desea eliminar a "+Nombre)
+                .setContentText(Mensaje)
+                .setCancelText("No").setConfirmText("Si")
+                .showCancelButton(true).setCancelClickListener(sDialog -> {
+                    sDialog.dismissWithAnimation();
+
+                }).setConfirmClickListener(sweetAlertDialog -> {
+                    sweetAlertDialog.dismissWithAnimation();
+                    BD.collection("Negocios/"+idNegocio+"/Sala1").document(id).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                        }
+                    });
+
+                }).show();
     }
 
 

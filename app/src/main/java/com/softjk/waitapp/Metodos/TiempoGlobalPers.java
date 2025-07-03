@@ -186,6 +186,7 @@ public class TiempoGlobalPers {
                                     if (esperando1.equals("NoEsperando") && UserFila.equals("Si")) {
                                         System.out.println("Limpiando preferences si user No esta esperando pero SI esta en la Fila");
                                         LimpiarDatos.LimpiarSala(context,N);
+                                        preferencesManager.saveString("UserFila"+N, null);
                                       //  FirestoreMetds.EliminarDocument(context, collectioUser, idUser);
                                         AlertDialogMetds.alertOptionGracias(context,viewGroup);
                                     }
@@ -202,70 +203,89 @@ public class TiempoGlobalPers {
 
 
 
-    public static void getTiempoItemPers(String collectioUser, String idUser, TextView lblTiempo, Context context){
+    public static void getTiempoItemPers(String collectioUser, String idUser, TextView lblTiempo,String Foto,String NombreUser, ViewGroup viewGroup, Context context){
         //Tiempo Global Firebase Firestore
         DocumentReference id = BD.collection(collectioUser).document(idUser);
         System.out.println("ver Ruta Tiempo Item Lista Persona: "+ collectioUser + "  Ducument: "+idUser);
 
         handler = new Handler();
-        final boolean[] isCountdownRunningServ = {true};
 
+// Variables para guardar el último tiempo
+        final long[] lastStartTime = {0};
+        final long[] lastDurationMillis = {0};
 
         firestoreListener = id.addSnapshotListener((snapshot, e) -> {
             if (snapshot != null && snapshot.exists()) {
-                long startTime = snapshot.getTimestamp("Inicio").toDate().getTime();
-                long durationSeconds = snapshot.getLong("AdmTiempoTotal") * 1000;
+                long newStartTime = snapshot.getTimestamp("Inicio").toDate().getTime();
+                long newDurationMillis = snapshot.getLong("AdmTiempoTotal") * 1000;
 
-                System.out.println("Ver valor Tiempo Global Admin: "+durationSeconds);
-                // ComenzarContador Tiempo Global
-                if (countdownRunnable != null) {  // Cancelar cualquier temporizador existente
-                    handler.removeCallbacks(countdownRunnable);
-                }
-                countdownRunnable = new Runnable() {
-                    @Override
-                    public void run() {
-                        long currentTime = new Date().getTime();
-                        long remainingTimeMillis = Math.max(startTime + durationSeconds - currentTime, 0);
+                // Solo continuar si hubo algún cambio real
+                if (newStartTime != lastStartTime[0] || newDurationMillis != lastDurationMillis[0]) {
 
-                        if (remainingTimeMillis > 0) {
-                            long seconds = remainingTimeMillis / 1000;
-                            long minutes = seconds / 60;
-                            long hours = minutes / 60;
+                    System.out.println("Cambio detectado en Firestore. Reiniciando temporizador...");
 
-                            seconds %= 60;
-                            minutes %= 60;
+                    // Guardamos los nuevos valores
+                    lastStartTime[0] = newStartTime;
+                    lastDurationMillis[0] = newDurationMillis;
 
-                            StringBuilder tiempo = new StringBuilder();
-                            String tiempoFormateado;
-                            if (hours > 0) {
-                                tiempo.append(String.format("%02d:%02d:%02d hrs", hours, minutes, seconds));
-                            } else if (minutes > 0) {
-                                tiempo.append(String.format("%02d:%02d min", minutes, seconds));
-                            } else {
-                                tiempo.append(String.format("%02d seg", seconds));
-                            }
-                            lblTiempo.setText(tiempo.toString());
+                    // Detener cualquier temporizador previo
+                    if (countdownRunnable != null) {
+                        handler.removeCallbacks(countdownRunnable);
+                        handler.removeCallbacksAndMessages(null);
+                    }
 
+                    // Crear nuevo temporizador con los valores actualizados
+                    countdownRunnable = new Runnable() {
+                        boolean isRunning = true;
 
-                            handler.postDelayed(this, 1000);
+                        @Override
+                        public void run() {
+                            long currentTime = new Date().getTime();
+                            long remaining = Math.max(newStartTime + newDurationMillis - currentTime, 0);
 
-                        } else if (remainingTimeMillis == 0){ //Finaliza Contador
+                            if (remaining > 0) {
+                                long seconds = remaining / 1000;
+                                long minutes = seconds / 60;
+                                long hours = minutes / 60;
+                                seconds %= 60;
+                                minutes %= 60;
 
-                            if (isCountdownRunningServ[0]) {
-                                isCountdownRunningServ[0] = false; // Desactivar Contador por completo para evitar ciclos
+                                String tiempo;
+                                if (hours > 0) {
+                                    tiempo = String.format("%02d:%02d:%02d hrs", hours, minutes, seconds);
+                                } else if (minutes > 0) {
+                                    tiempo = String.format("%02d:%02d min", minutes, seconds);
+                                } else {
+                                    tiempo = String.format("%02d seg", seconds);
+                                }
 
-                                DatosFirestoreBD.EliminarDocument(context, collectioUser, idUser,"", new DatosFirestoreBD.GuardarCallback() {
+                                lblTiempo.setText(tiempo);
+                                handler.postDelayed(this, 1000);
+
+                            } else if (isRunning) {
+                                isRunning = false;
+                                System.out.println("Temporizador finalizado. Eliminando documento...");
+
+                               AlertDialogMetds.alertOptionMSG(context,viewGroup,collectioUser,idUser,Foto,NombreUser);
+
+                               /* DatosFirestoreBD.EliminarDocument(context, collectioUser, idUser, "", new DatosFirestoreBD.GuardarCallback() {
                                     @Override
                                     public void onResultado(String resultado) {
+                                        System.out.println("Documento eliminado correctamente.");
                                     }
-                                });
+                                });*/
                             }
                         }
-                    }
-                };
-                handler.post(countdownRunnable); // Iniciar el temporizador
+                    };
+
+                    // Iniciar nuevo temporizador
+                    handler.post(countdownRunnable);
+                }
             }
         });
+
+
+
     }
 
 }
