@@ -5,6 +5,7 @@
 
     <color name="color_element">#3B70CE</color>
     <color name="color_element_claro">#C2C5CC</color>
+    <color name="color_morado">#8D07A4</color>
 
     <color name="grad_start">#3B71D0</color> <!-- Azul oscuro -->
     <color name="grad_end">#3B71D0</color>   <!-- Azul claro -->

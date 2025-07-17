@@ -20,7 +20,7 @@ public class BrockasAlarma extends BroadcastReceiver {
 
         // Mostrar notificación
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "canal_alarma")
-                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setSmallIcon(R.drawable.waitapp)
                 .setContentTitle("¡Alarma!")
                 .setContentText("Es hora de ir al Negocio!!!.")
                 .setPriority(NotificationCompat.PRIORITY_HIGH)

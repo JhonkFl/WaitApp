@@ -1,5 +1,8 @@
 package com.softjk.waitapp.Principal;
 
+
+import static com.softjk.waitapp.Cliente.E1_Sala_Client.Codigo;
+
 import android.os.Bundle;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -38,7 +41,7 @@ public class E1_Servici_Client extends AppCompatActivity {
     SearchView Buscar;
     static String idNeg;
     static String salaC;
-    PreferencesManager preferencesManager;
+    PreferencesManager preferenceSala, preferencesCliente;
     public static ViewGroup viewGroupSevClient;
 
     @Override
@@ -59,20 +62,21 @@ public class E1_Servici_Client extends AppCompatActivity {
         mFirestore = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
         idUser = mAuth.getCurrentUser().getUid();
-        preferencesManager = new PreferencesManager(this);
+        preferenceSala = new PreferencesManager(this,Codigo);
+        preferencesCliente = new PreferencesManager(this,"Cliente");
         viewGroupSevClient = findViewById(android.R.id.content);
         String ventanaOrigen = getIntent().getStringExtra("Origen");
 
         if (ventanaOrigen == null) {
-            idNeg = preferencesManager.getString("idNegocioCliente", "");
-            String NombreNeg = preferencesManager.getString("NombreNegocio", "");
-            String Logo = preferencesManager.getString("LogoNegocio", "");
+            idNeg = preferencesCliente.getString("idNegocioCliente", "");
+            String NombreNeg = preferencesCliente.getString("NombreNegocio", "");
+            String Logo = preferencesCliente.getString("LogoNegocio", "");
             NombreLocal.setText(NombreNeg);
             MultiMetds.IMG(E1_Servici_Client.this, Logo, Iconolocal, "Si");
             setUpRecyclerViewNGC(idNeg);
         }else {
             setUpRecyclerViewNGCAdmin(idUser);
-            String N = preferencesManager.getString("NSala","");
+            String N = preferenceSala.getString("NSala","");
             MultiMetds.IMG(E1_Servici_Client.this, "https://media.tenor.com/images/2bd1bf1843e1ddf7957a67589ca72612/tenor.gif", Iconolocal, "Si");
             TiempoTotal.getTiempoGlobal(idUser,N,NombreLocal,NombreLocal,"Si");
         }

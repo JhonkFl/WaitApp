@@ -15,6 +15,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.softjk.waitapp.Cliente.C1_Menu_Client;
 import com.softjk.waitapp.Negocio.C1_Menu_Neg;
 import com.softjk.waitapp.Sistema.Metodos.AlertDialogMetds;
@@ -40,7 +41,7 @@ public class A_Bienvenida extends AppCompatActivity {
             return insets;
         });
 
-        preferencesManager = new PreferencesManager(A_Bienvenida.this);
+        preferencesManager = new PreferencesManager(A_Bienvenida.this,"User");
         Negocio = findViewById(R.id.btnNegocio);
         Cliente = findViewById(R.id.btnCliente);
         Bienvenida = findViewById(R.id.lblMsgBienvenida);
@@ -70,8 +71,6 @@ public class A_Bienvenida extends AppCompatActivity {
 
         //Detectar Campo de Rotacion de Pantalla
         MultiMetds.OrientaConfi(A_Bienvenida.this,Font1);
-
-
     }
 
     @Override
@@ -82,9 +81,11 @@ public class A_Bienvenida extends AppCompatActivity {
         if (user != null){
             if (Tipo.equals("Cliente")){
                 System.out.println(Tipo);
+                FirebaseMessaging.getInstance().subscribeToTopic("Cliente");
                 startActivity(new Intent(A_Bienvenida.this, C1_Menu_Client.class));
             } else if (Tipo.equals("Negocio")) {
                 System.out.println(Tipo);
+                FirebaseMessaging.getInstance().subscribeToTopic("Negocio");
                 startActivity(new Intent(A_Bienvenida.this, C1_Menu_Neg.class));
             }else {
                 System.out.println("Iniciar Sesion");

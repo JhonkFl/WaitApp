@@ -1,9 +1,11 @@
 package com.softjk.waitapp.Cliente.AdapterC;
 
+import static com.softjk.waitapp.Cliente.E1_Sala_Client.Codigo;
 import static com.softjk.waitapp.Cliente.FragmentSalaC.SalaC1.viewGroup;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +27,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.softjk.waitapp.Cliente.E1_Sala_Client;
 import com.softjk.waitapp.Sistema.Metodos.AlertDialogMetds;
+import com.softjk.waitapp.Sistema.Metodos.DatosFirestoreBD;
+import com.softjk.waitapp.Sistema.Metodos.LimpiarDatos;
 import com.softjk.waitapp.Sistema.Metodos.MultiMetds;
 import com.softjk.waitapp.Sistema.Metodos.PreferencesManager;
 import com.softjk.waitapp.Sistema.Modelo.ServicNg;
@@ -39,26 +44,29 @@ import java.util.Map;
 public class AdpServiciosC extends FirestoreRecyclerAdapter<ServicNg, AdpServiciosC.ViewHolder> {
     FirebaseFirestore db;
     Activity activity;
-    FragmentManager fm;
-    String idNeg,idUser, sala, NSala,listaV;
+    String idNeg,idUser, N,Vacio;
+    //String CodigoNeg;
     private FirebaseAuth mAuth;
     ProgressDialog progressDialog;
-    PreferencesManager preferencesManager;
+    PreferencesManager preferenceSala, PreferenceCliente;
 
     public AdpServiciosC(@NonNull FirestoreRecyclerOptions<ServicNg> options, Activity activity1) {
         super(options);
         this.activity = activity1;
-        this.fm = fm;
-        preferencesManager = new PreferencesManager(activity);
-        idNeg = preferencesManager.getString("idNegocioCliente","");
+
+        PreferenceCliente = new PreferencesManager(activity,"Cliente");
+        idNeg = PreferenceCliente.getString("idNegocioCliente","");
         mAuth = FirebaseAuth.getInstance();
         progressDialog = new ProgressDialog(activity);
         db = FirebaseFirestore.getInstance();
         idUser = mAuth.getCurrentUser().getUid();
 
-        sala = preferencesManager.getString("FilaSala",""); //Sala1, Sala2, Sala3
-        NSala = preferencesManager.getString("NSala",""); // 1, 2, 3
-        listaV = preferencesManager.getString("ListaSala"+NSala,"Vacio");
+       // CodigoNeg = PreferenceCliente.getString("Codigo","");
+        preferenceSala = new PreferencesManager(activity,Codigo);
+        N = preferenceSala.getString("NSala",""); // 1, 2, 3
+        Vacio = preferenceSala.getString("SalaVacio"+N,"Si");
+
+
     }
 
     @Override
@@ -72,56 +80,62 @@ public class AdpServiciosC extends FirestoreRecyclerAdapter<ServicNg, AdpServici
         String FotoServi = model.getLogo();
         MultiMetds.IMG(activity,FotoServi,holder.FotoServicio,"No");
 
-
         holder.btnTomar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Obtener Datos del Usuario
                 db.collection("User").document(idUser).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         progressDialog.setMessage("Preparando Fila...");
                         progressDialog.show();
                         progressDialog.setCancelable(false);
-                        preferencesManager.saveString("UserFila"+NSala,"Si");
+                        preferenceSala.saveString("UserFila"+N,"Si");
 
                         String Usuario = documentSnapshot.getString("User");//Obtener Datos del Usuario
                         String Perfil = documentSnapshot.getString("Perfil");
-                        System.out.println(Usuario+" Solicitando Servicio. "+"Sala"+NSala);
+                        System.out.println(Usuario+" Solicitando Servicio. "+"Sala"+N);
 
                         int TiempoServ = model.getTiempo();
                         String Servic = model.getNombre();
                         double Precio= model.getPrecio();
 
                         //Si Lista esta Vacio Agregar Campo Inicio al Tiempo Global
-                        if (listaV.equals("Vacio")){
-                            preferencesManager.saveString("NFila"+NSala, "PrimerUser");
-                            preferencesManager.saveInt("ServPrimerClient"+NSala,TiempoServ);
-                            preferencesManager.saveString("EsperandoUser"+NSala,"PrimeraVez");
-                            System.out.println("Lista vacio asi que ....");
-                            System.out.println("Guardando PrimerUser: Si  "+" TiempoSer: "+TiempoServ+" y actualizando Inicio Global Sala"+NSala);
+                        if (Vacio.equals("Si")){
+                            preferenceSala.saveString("NFila"+N, "PrimerUser");
+                            preferenceSala.saveInt("ServPrimerClient"+N,TiempoServ);
+                            preferenceSala.saveString("EsperandoUser"+N,"PrimeraVez");
+                            System.out.println("Lista vacio: Guardar Inicio a Tiempo Global y primerUser en preference y ver TiempServ="+TiempoServ+" Sala"+N);
 
                             Timestamp fechaHoraActual = Timestamp.now();
                             Map<String, Object> data = new HashMap<>();
                             data.put("Inicio", fechaHoraActual);
 
-                            db.collection("Negocios/"+idNeg+"/TiempoGlobal").document(sala).update(data).addOnSuccessListener(aVoid -> {
-                                System.out.println("Fecha Hora Guardado en Tiempo Global");
+                            //Actualizar Inicio del Tiempo Global
+                            db.collection("Negocios/"+idNeg+"/TiempoGlobal").document("Sala"+N).update(data).addOnSuccessListener(aVoid -> {
+                                System.out.println("Inicio Guardado en Tiempo Global");
                                 ObtenerTiempo(TiempoServ, Servic, Precio, Usuario,"Si",Perfil);
                             }).addOnFailureListener(e -> {
-                                System.out.println("Fecha Hora --- NO --- Guardado en Tiempo Global");
+                                System.out.println("Inicio --- NO --- Guardado en Tiempo Global");
                                 Toast.makeText(activity, "Error No se pudo completar el Proceso...", Toast.LENGTH_SHORT).show();
+                                preferenceSala.saveInt("ServPrimerClient"+N,0);
+                                LimpiarDatos.LimpiarEntrar(activity,N,Codigo);
+                                progressDialog.dismiss();
                             });
                         }else {
+                            preferenceSala.getString("EsperandoUser"+N,"NoEsperando");
+                            preferenceSala.saveInt("ServClient"+N,TiempoServ);
                             ObtenerTiempo(TiempoServ, Servic, Precio, Usuario,"No", Perfil);
-                            preferencesManager.getString("EsperandoUser"+NSala,"NoEsperando");
-                            preferencesManager.saveInt("ServClient"+NSala,TiempoServ);
-                            System.out.println("Ver datos del servicio seleccionado " + Servic + " " + TiempoServ + " $" + Precio);
+                            System.out.println("Ver datos del servicio seleccionado " + Servic + " time:" + TiempoServ + " $" + Precio);
                         }
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(activity, "Error al obtener los datos", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(activity, "Error al obtener los datos del user: Etapa1", Toast.LENGTH_SHORT).show();
+                        preferenceSala.saveInt("ServPrimerClient"+N,0);
+                        LimpiarDatos.LimpiarEntrar(activity,N,Codigo);
+                        progressDialog.dismiss();
                     }
                 });
             }
@@ -131,37 +145,39 @@ public class AdpServiciosC extends FirestoreRecyclerAdapter<ServicNg, AdpServici
 
     private void ObtenerTiempo(int TiempoServicio, String NombreServ, double Precio, String Usuario,String PrimerVez,String Perfil) {
 
-        db.collection("Negocios/"+idNeg+"/TiempoGlobal").document(sala).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+        db.collection("Negocios/"+idNeg+"/TiempoGlobal").document("Sala"+N).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-
                 if (documentSnapshot.contains("Inicio")) {
-                    com.google.firebase.Timestamp fechaHora = documentSnapshot.getTimestamp("Inicio");
+                    Timestamp fechaHora = documentSnapshot.getTimestamp("Inicio");
                     System.out.println("Fecha y hora obtenidas: " + fechaHora.toDate());
 
                     Long TiempoEspera = documentSnapshot.getLong("Tiempo");
                     GuardarDatos(Usuario, NombreServ, Precio, TiempoServicio , fechaHora.toDate() , Math.toIntExact(TiempoEspera),PrimerVez, Perfil);
                 } else {
-                    System.out.println("El documento no contiene el campo 'Inicio'.");
+                    System.out.println("El documento no contiene el campo 'Inicio'. Etapa2"); //Ver solocion si llega a pasar eso
+                    LimpiarDatos.LimpiarEntrar(activity,N,Codigo);
+                    AlertDialogMetds.MsgOpenActiv(activity,"Upps! al parecer hubo un error!!","Vuelva a Intentarlo de Nuevo", E1_Sala_Client.class, E1_Sala_Client.class,"Reiniciar","true");
+                    progressDialog.dismiss();
                 }
-                progressDialog.dismiss();
+
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Toast.makeText(activity, "Error al Encontrar el Tiempo Global", Toast.LENGTH_SHORT).show();
+                LimpiarDatos.LimpiarEntrar(activity,N,Codigo);
+                progressDialog.dismiss();
             }
         });
 
     }
 
     private void GuardarDatos(String usuario, String NombreServ, double precio, int TiempoServicio, Date InicioServicio, int TiempoEspera,String PrimeraVez, String Perfil) {
-        System.out.println("Ver dato Inicio Servicio = "+InicioServicio);
-        progressDialog.setMessage("Generando Lista...");
-        progressDialog.show();
-        preferencesManager.saveString("UserFila"+NSala,"Si");
-
-        DocumentReference id = db.collection("Negocios/"+idNeg+"/"+sala).document(idUser);
+        System.out.println("Ver datos---> User:" + usuario + " Serv:"+NombreServ+ " precio:"+precio+ " TimSer:"+TiempoServicio+ " Inicio:"+InicioServicio+ " TimEspera:"+TiempoEspera + " PrimeraVez:"+PrimeraVez + " Perfil:"+Perfil );
+        System.out.println("Guardar Datos a: "+"Negocios/"+idNeg+"/Sala"+N+" Doc:"+idUser);
+        //progressDialog.setMessage("Generando Lista...");
+        //progressDialog.show();
         int SumaTimTotal = (TiempoServicio * 60) + TiempoEspera;
         Timestamp fechaHoraCreacionDoc = Timestamp.now();
         Map<String, Object> map = new HashMap<>();
@@ -174,69 +190,59 @@ public class AdpServiciosC extends FirestoreRecyclerAdapter<ServicNg, AdpServici
         map.put("Creacion",fechaHoraCreacionDoc);
         map.put("AdmTiempoTotal",SumaTimTotal);
         map.put("Foto",Perfil);
+        System.out.println("Revisar datos a guardar:-> TimeEspera:"+TiempoEspera+" TimeTotal:"+SumaTimTotal+" idUser:"+idUser);
 
-        System.out.println("Datos listos a Guardar BD");
-        db.collection("Negocios/"+idNeg+"/"+sala).document(id.getId()).set(map).addOnSuccessListener(new OnSuccessListener<Void>() {
+        DatosFirestoreBD.GuardarDatos(activity,"Negocios/"+idNeg+"/Sala"+N,idUser,map,"Agregando a la Fila", new DatosFirestoreBD.GuardarCallback() {
             @Override
-            public void onSuccess(Void unused) {
-
-                Toast.makeText(activity, "Agregado a la Fila", Toast.LENGTH_SHORT).show();
-                System.out.println("Registro completado");
-                progressDialog.dismiss();
-                ActualizarTiempoGlobal(TiempoServicio,TiempoEspera,precio,PrimeraVez);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(activity, "Error al agregar a la sala BD", Toast.LENGTH_SHORT).show();
+            public void onResultado(String resultado) {
+                if ("Guardado".equals(resultado)) {
+                    System.out.println("Registro User completado-- PrimeraVez:"+PrimeraVez);
+                    ActualizarTiempoGlobal(TiempoServicio,TiempoEspera,precio,PrimeraVez);
+                } else {
+                    Toast.makeText(activity, "Error al registrar los Datos", Toast.LENGTH_SHORT).show();
+                    System.out.println("No se podo completar el registro");
+                    LimpiarDatos.LimpiarEntrar(activity,N,Codigo);
+                }
             }
         });
     }
 
     private void ActualizarTiempoGlobal(int TiempoServ,int TiempoEspera, double precio,String Primeravez) {
-
         //Suma de Tiempos
         int TiempoServiSegunds = TiempoServ * 60;
         int NewTiempoSegundos = TiempoEspera +TiempoServiSegunds;
         System.out.println("Tiempo anterior: "+TiempoEspera+" Nuevo Tiempo: "+NewTiempoSegundos);
 
-        DocumentReference id = db.collection("Negocios/"+idNeg+"/TiempoGlobal").document(sala);
         Map<String, Object> map = new HashMap<>();
         map.put("Tiempo", NewTiempoSegundos);
-        db.collection("Negocios/"+idNeg+"/TiempoGlobal").document(id.getId()).update(map).addOnSuccessListener(new OnSuccessListener<Void>() {
+        db.collection("Negocios/"+idNeg+"/TiempoGlobal").document("Sala"+N).update(map).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
-                System.out.println("Tiempo Global Actualizado - "+sala);
-
-                String SalasN = preferencesManager.getString("CantidadSalas","");
+                System.out.println("Tiempo Global Actualizado - Sala"+N);
+                String SalasN = preferenceSala.getString("CantidadSalas","");
 
                 if (Primeravez.equals("Si")){
-                    AlertDialogMetds.alertOptionNegCerca(activity,viewGroup,idNeg,idUser,NSala);
+                    AlertDialogMetds.alertOptionNegCerca(activity,viewGroup,idNeg,idUser,N,progressDialog);
+                    preferenceSala.saveString("UserFila"+N,"Si");
+                    // progressDialog.dismiss();
                 }else {
-                    AlertDialogMetds.alertOptionPago(activity,viewGroup,"Negocios/"+idNeg+"/Sala"+NSala,idUser);
-                    /* Cierra la actividad de la Sala
-                    if (E1_Sala_Client.currentInstance != null) {
-                        E1_Sala_Client.currentInstance.finish();
-                    }
-                    //Abrir de Nuevo la Actyvidad Sala
-                    Intent i = new Intent(activity, E1_Sala_Client.class);
-                    i.putExtra("PrecioA", precio);
-                    i.putExtra("NSalas", SalasN);
-                    i.putExtra("idNeg", idNeg);
-                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-
-                    activity.startActivity(i);
-                    if (activity instanceof Activity) {
-                        ((Activity) activity).finish();
-                    }
-                    activity.finish(); */
+                    AlertDialogMetds.alertOptionPago(activity,viewGroup,"Negocios/"+idNeg+"/Sala"+N,idUser,progressDialog);
+                    preferenceSala.saveString("UserFila"+N,"Si");
+                    //progressDialog.dismiss();
                 }
-                System.out.println("Ver Cantidad Salas para enviar a Sala "+SalasN +" ----->AdpServiClient");
+                System.out.println("Ver Cantidad Salas del Neg para enviar a Sala "+SalasN +" ----->AdpServiClient");
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Toast.makeText(activity, "Error en Actualizar el Tiempo Global", Toast.LENGTH_SHORT).show();
+                System.out.println("Error al Actualizar el Tiempo Global -- Vulver a Intentar");
+                //LimpiarDatos.LimpiarEntrar(activity,N,CodigoNeg);
+                //progressDialog.dismiss();
+                int TiempoServiSegunds = TiempoServ * 60;
+                int NewTiempoSegundos = TiempoEspera +TiempoServiSegunds;
+                System.out.println("Tiempo anterior: "+TiempoEspera+" Nuevo Tiempo: "+NewTiempoSegundos);
+                ActualizarTiempoGlobal(TiempoServ,TiempoEspera,0,Primeravez);
             }
         });
     }

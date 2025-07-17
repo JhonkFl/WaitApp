@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace 'com.softjk.waitapp'
-    compileSdk 34
+    compileSdk 35
 
     defaultConfig {
         applicationId "com.softjk.waitapp"
         minSdk 30
-        targetSdk 34
+        targetSdk 35
         versionCode 1
         versionName "1.0"
 
@@ -40,6 +40,7 @@ dependencies {
     implementation libs.constraintlayout
 
     implementation 'androidx.core:core:1.9.0'
+
     implementation 'com.github.sparrow007:carouselrecyclerview:1.2.6'
     implementation 'com.codesgood:justifiedtextview:1.1.0'
     implementation 'com.airbnb.android:lottie:6.6.6'

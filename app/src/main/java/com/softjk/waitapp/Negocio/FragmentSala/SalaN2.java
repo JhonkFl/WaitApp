@@ -56,7 +56,7 @@ public class SalaN2 extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_sala_n2, container, false);
 
-        preferencesManager = new PreferencesManager(getActivity());
+        preferencesManager = new PreferencesManager(getActivity(),"Negocio");
 
 
         BD = FirebaseFirestore.getInstance();
@@ -126,13 +126,13 @@ public class SalaN2 extends Fragment {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
 
-                String list = preferencesManager.getString("ListaSala2","");
+                String Vacio = preferencesManager.getString("SalaVacio2","");
                 int Tiempo = Math.toIntExact(documentSnapshot.getLong("Tiempo"));
                 String Tim = String.valueOf(Tiempo);
                 System.out.println("Ver valor Tiempo "+Tim+" + "+valor);
 
                 if (documentSnapshot.exists()){
-                    if (Tim.equals("") || Tim.isEmpty() || Tim == null || list.equals("") || list == null){
+                    if (Tim.equals("") || Tim.isEmpty() || Tim == null || Vacio.equals("") || Vacio == null){
                         System.out.println("No Existe el Dato Tiempo");
                         GuadarInicioServ();
                     }else {

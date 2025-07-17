@@ -23,6 +23,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.softjk.waitapp.Cliente.C1_Menu_Client;
 import com.softjk.waitapp.Cliente.FragmentMenuC.MenuAyuda;
 import com.softjk.waitapp.Cliente.FragmentMenuC.MenuConfi;
+import com.softjk.waitapp.Cliente.FragmentMenuC.MenuNovedades;
 import com.softjk.waitapp.Negocio.FragmentMenu.Menu_Inicio_Ngc;
 import com.softjk.waitapp.Negocio.FragmentMenu.Menu_Servicios_Ngc;
 import com.softjk.waitapp.Principal.B1_Login;
@@ -66,6 +67,15 @@ public class C1_Menu_Neg extends AppCompatActivity {
             }
             return true;
         });
+
+        //para abrir Novedades cuando llegue una Notificacion --->
+        String destino = getIntent().getStringExtra("notificacion");
+        if (destino != null && destino.equals("Novedades")){
+            Fragment fragment = new MenuNovedades();
+            replaceFragment(fragment);
+            binding.bottomNavigationView2.setSelectedItemId(R.id.vacio);
+        } // <---- para abrir Novedades cuando llegue una Notificacion
+
 
         binding.fab2.setOnClickListener(new View.OnClickListener() {
             @Override

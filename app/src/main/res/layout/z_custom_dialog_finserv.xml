@@ -18,7 +18,7 @@
 
         <ImageView
             android:id="@+id/imgIMG"
-            android:layout_width="154dp"
+            android:layout_width="117dp"
             android:layout_height="83dp"
             android:scaleType="centerCrop"
             android:src="@drawable/waitapp" />
@@ -37,13 +37,25 @@
             android:textStyle="bold" />
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:layout_margin="16dp"
-            android:gravity="left"
-            android:text="Si el cliente fue atendido presione SI, y si el cliente no fue atendido por que no se presentó, presione NO.
-                 Si aún se está ATENDIENDO al Cliente, al terminar presione SI."
+            android:layout_margin="8dp"
+            android:text="Presione SI:    si el cliente fue atendido."
+            android:textColor="#757575"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Presione No:   si el cliente no se presentó."
+            android:textColor="#757575"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="Si aún se está ATENDIENDO, al terminar presione SI."
             android:textColor="#757575"
             android:textSize="14sp" />
 

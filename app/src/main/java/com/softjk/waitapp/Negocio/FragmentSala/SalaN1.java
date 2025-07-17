@@ -48,7 +48,7 @@ public class SalaN1 extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_sala1_neg, container, false);
 
-        preferencesManager = new PreferencesManager(getActivity());
+        preferencesManager = new PreferencesManager(getActivity(),"Negocio");
         BD = FirebaseFirestore.getInstance();
         btnReparar = view.findViewById(R.id.btnPagoNeg);
         lblTiempo = view.findViewById(R.id.lblTiempoNeg);
@@ -102,6 +102,7 @@ public class SalaN1 extends Fragment {
             @Override
             public void onSolicitarTemporizador(String path, String idDoc, TextView contadorTextView, String Foto,String Nombre) {
                 TiempoGlobalPers.getTiempoItemPers(path, idDoc, contadorTextView,Foto,Nombre,viewGroup,getActivity());
+
             }
         });
 

@@ -1,6 +1,9 @@
 package com.softjk.waitapp.Sistema.Metodos;
 
+import static com.softjk.waitapp.Cliente.E1_Sala_Client.Codigo;
+
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,6 +23,7 @@ import androidx.appcompat.app.AlertDialog;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.softjk.waitapp.Cliente.C1_Menu_Client;
 import com.softjk.waitapp.Cliente.E1_Sala_Client;
 import com.softjk.waitapp.R;
 
@@ -55,7 +59,7 @@ public class AlertDialogMetds {
     }
 
     public static void MsgSaveSiNo(Context context, String Titulo, String Mensaje,String Dato) {
-        PreferencesManager preferencesManager = new PreferencesManager(context);
+        PreferencesManager preferencesManager = new PreferencesManager(context,"");
         new SweetAlertDialog(context, SweetAlertDialog.NORMAL_TYPE).setTitleText(Titulo)
                 .setContentText(Mensaje)
                 .setCancelText("No").setConfirmText("Si")
@@ -70,7 +74,7 @@ public class AlertDialogMetds {
 
 
 
-    public static void alertOptionGracias(Context context, ViewGroup viewGroup) {
+    public static void alertOptionGracias(Context context, ViewGroup viewGroup,String N) {
         Activity activity = (Activity) context;
         Button btnok;
         ImageView nan;
@@ -93,7 +97,7 @@ public class AlertDialogMetds {
             public void onClick(View v) {
                 alertDialog.dismiss();
                 activity.finish();
-                Intent i = new Intent(activity, E1_Sala_Client.class);
+                Intent i = new Intent(activity, C1_Menu_Client.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 activity.startActivity(i);
             }
@@ -105,8 +109,8 @@ public class AlertDialogMetds {
     }
 
 
-    public static void alertOptionPago(Context context, ViewGroup viewGroup,String Collection, String Document) {
-        PreferencesManager preferencesManager = new PreferencesManager(context);
+    public static void alertOptionPago(Context context, ViewGroup viewGroup,String Collection, String Document, ProgressDialog progressDialog) {
+        PreferencesManager preferenceSala = new PreferencesManager(context,Codigo);
         Activity activity = (Activity) context;
         Button Efectivo, Tarjeta;
 
@@ -126,7 +130,7 @@ public class AlertDialogMetds {
         Efectivo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                preferencesManager.saveString("Pago","Efectivo");
+                preferenceSala.saveString("Pago","Efectivo");
                 Map<String, Object> map = new HashMap<>();
                 map.put("Pago", "Efectivo");
                 System.out.println("Collection para Pago Efectivo: "+Collection+" Doc: "+Document);
@@ -134,11 +138,16 @@ public class AlertDialogMetds {
                 DatosFirestoreBD.ActualizarDatos(context,Collection,Document,map,"No", new DatosFirestoreBD.GuardarCallback() {
                     @Override
                     public void onResultado(String resultado) {
+                        if (resultado.equals("Actualizado")){
+                            progressDialog.dismiss();
+                        }
                     }
                 });
 
                 alertDialogs.setOnDismissListener(dialog -> {
                     Intent i = new Intent(activity, E1_Sala_Client.class);
+                    i.putExtra("EntrarSala","EntrarFila");
+                    i.putExtra("Codigo",Codigo);
                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                     activity.startActivity(i);
                     activity.finish();
@@ -151,7 +160,7 @@ public class AlertDialogMetds {
         Tarjeta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                preferencesManager.saveString("Pago","Tarjeta");
+                preferenceSala.saveString("Pago","Tarjeta");
                 Map<String, Object> map = new HashMap<>();
                 map.put("Pago", "Tarjeta");
                 System.out.println("Collection para Pago Tarjeta: "+Collection+" Doc: "+Document);
@@ -159,11 +168,15 @@ public class AlertDialogMetds {
                 DatosFirestoreBD.ActualizarDatos(context,Collection,Document,map,"No", new DatosFirestoreBD.GuardarCallback() {
                     @Override
                     public void onResultado(String resultado) {
+                        if (resultado.equals("Actualizado")){
+                            progressDialog.dismiss();
+                        }
                     }
                 });
 
                 alertDialogs.setOnDismissListener(dialog -> {
                     Intent i = new Intent(activity, E1_Sala_Client.class);
+                    i.putExtra("EntrarSala","EntrarFila");
                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                     activity.startActivity(i);
                     activity.finish();
@@ -179,8 +192,8 @@ public class AlertDialogMetds {
 
 
 
-    public static void alertOptionNegCerca(Context context, ViewGroup viewGroup,String idNegocio, String idUser,String NSala) {
-        PreferencesManager preferencesManager = new PreferencesManager(context);
+    public static void alertOptionNegCerca(Context context, ViewGroup viewGroup, String idNegocio, String idUser, String NSala, ProgressDialog progressDialog) {
+        PreferencesManager preferenceSala = new PreferencesManager(context,Codigo);
         Activity activity = (Activity) context;
         Button Si, No;
 
@@ -199,11 +212,11 @@ public class AlertDialogMetds {
         Si.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int servPrimerCli = preferencesManager.getInt("ServPrimerClient"+NSala,0);
+                int servPrimerCli = preferenceSala.getInt("ServPrimerClient"+NSala,0);
                 Log.d("AletDialogMetds", "El Usuario esta en el Negocio");
-                preferencesManager.saveString("EsperandoUser"+NSala,"NoEsperando");
-                preferencesManager.saveString("AccionesFila"+NSala,"Si");
-                preferencesManager.saveString("UserServicio"+NSala, "Si");
+                preferenceSala.saveString("EsperandoUser"+NSala,"NoEsperando");
+                preferenceSala.saveString("AccionesFila"+NSala,"Si");
+                preferenceSala.saveString("UserServicio"+NSala, "Si");
 
                 int ServTim = (servPrimerCli * 60);
                 Map<String, Object> map3 = new HashMap<>();
@@ -216,7 +229,7 @@ public class AlertDialogMetds {
                     }
                 });
 
-                AlertDialogMetds.alertOptionPago(activity,viewGroup,"Negocios/"+idNegocio+"/Sala"+NSala,idUser);
+                AlertDialogMetds.alertOptionPago(activity,viewGroup,"Negocios/"+idNegocio+"/Sala"+NSala,idUser,progressDialog);
                 alertDialog.dismiss();
 
              /*   Log.d("AdapterSalaCliente", "Actualizando actividad");
@@ -230,7 +243,7 @@ public class AlertDialogMetds {
         No.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int servPrimerCli = preferencesManager.getInt("ServPrimerClient"+NSala,0);
+                int servPrimerCli = preferenceSala.getInt("ServPrimerClient"+NSala,0);
                 Log.d("AdapterSalaCliente", "Esperar 10 min user TimeGlobal + TimeServ:"+servPrimerCli+" min");
 
                 int TiempoTraslado = 600;  // 600 = 10 min
@@ -256,10 +269,10 @@ public class AlertDialogMetds {
                     public void onResultado(String resultado) {
                     }
                 });
-                preferencesManager.saveString("EsperandoUser"+NSala,"Esperando");
-                preferencesManager.saveString("AccionesFila"+NSala,"Si");
+                preferenceSala.saveString("EsperandoUser"+NSala,"Esperando");
+                preferenceSala.saveString("AccionesFila"+NSala,"Si");
 
-                AlertDialogMetds.alertOptionPago(activity,viewGroup,"Negocios/"+idNegocio+"/Sala"+NSala,idUser);
+                AlertDialogMetds.alertOptionPago(activity,viewGroup,"Negocios/"+idNegocio+"/Sala"+NSala,idUser,progressDialog);
                 alertDialog.dismiss();
 
                /* Log.d("AdapterSalaCliente", "Actualizando actividad");
@@ -311,6 +324,10 @@ public class AlertDialogMetds {
                     @Override
                     public void onResultado(String resultado) {
                         System.out.println("Documento eliminado correctamente.");
+                        Intent intent = new Intent(context,activity.getClass());
+                        activity.finish();
+                        activity.overridePendingTransition(0,0);
+                        activity.startActivity(intent);
                     }
                 });
             }
@@ -319,20 +336,23 @@ public class AlertDialogMetds {
         No.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                prefs.edit().putBoolean("id-" + idUser, false).apply(); // Marcar como No mostrado
                 alertDialog.dismiss();
             }
         });
 
         if (!activity.isFinishing()) {
             alertDialog.show();
-            prefs.edit().putBoolean("id-" + idUser, true).apply(); // Marcar como mostrado
+            if (alertDialog.isShowing()){
+                prefs.edit().putBoolean("id-" + idUser, true).apply(); // Marcar como mostrado
+            }
         }
 
     }
 
 
 
-    public static void MsgEliminar(Context context, String Titulo, String Mensaje,String id,String Colecction, String TipoUser, String N) {
+    public static void MsgEliminar(Context context, String Titulo, String Mensaje,String id,String Colecction, String TipoUser, String N,String Codigo) {
         FirebaseFirestore BD = FirebaseFirestore.getInstance();
         new SweetAlertDialog(context, SweetAlertDialog.NORMAL_TYPE).setTitleText(Titulo)
                 .setContentText(Mensaje)
@@ -346,7 +366,7 @@ public class AlertDialogMetds {
                         @Override
                         public void onSuccess(Void unused) {
                             if (TipoUser.equals("Cliente")){
-                                LimpiarDatos.LimpiarSala(context,N);
+                                LimpiarDatos.LimpiarSala(context,N,Codigo);
                             }
                         }
                     }).addOnFailureListener(new OnFailureListener() {

@@ -40,7 +40,7 @@ public class AdpSalaNeg extends FirestoreRecyclerAdapter<Sala, AdpSalaNeg.ViewHo
         this.activity = activity;
         mAuth = FirebaseAuth.getInstance();
         idUser = mAuth.getUid();
-        preferencesManager = new PreferencesManager(activity);
+        preferencesManager = new PreferencesManager(activity,"Negocio");
         this.tiempoListener = listener;
     }
 
@@ -51,10 +51,18 @@ public class AdpSalaNeg extends FirestoreRecyclerAdapter<Sala, AdpSalaNeg.ViewHo
             DocumentSnapshot primerDocumento = getSnapshots().getSnapshot(0);
             String idPrimerElemento = primerDocumento.getId();
             String ac= primerDocumento.getString("Accion");
-
+            String Estado= primerDocumento.getString("Estado");
+            String user= primerDocumento.getString("User");
             notifyItemChanged(0); // Solo actualiza el primer elemento
 
-            Log.d("RecyclerView", "ID del primer elemento: "+ac+ " " + idPrimerElemento);
+            Log.d("AdapterSala-N", "ID del primer elemento: "+ac+ " " + idPrimerElemento);
+            Log.d("AdapterSala-N", "Estado: "+Estado);
+            //Actualizar su estado
+            if (Estado == null && ac == null){
+                System.out.println("Actualizar Estado "+Estado+" - "+user);
+            }else {
+                System.out.println("No Actualizar - "+Estado+" - "+user);
+            }
         }
     }
 
@@ -114,7 +122,7 @@ public class AdpSalaNeg extends FirestoreRecyclerAdapter<Sala, AdpSalaNeg.ViewHo
                     int TiempoAdmin = model.getAdmTiempoTotal();
                     int TiempoServ = model.getTiempoServicio();
                     String Accion = model.getAccion();
-                    String list = preferencesManager.getString("ListaSala1", "");
+                    String list = preferencesManager.getString("SalaVacio1", "");
                     AddMasTime.ActualizarTimeUser0(activity, 5, idUser, "1", id, TiempoAdmin, Accion, TiempoServ, list);
                 }
                 //Segunda acion para todos los elementos
@@ -145,7 +153,7 @@ public class AdpSalaNeg extends FirestoreRecyclerAdapter<Sala, AdpSalaNeg.ViewHo
                     int TiempoAdmin = model.getAdmTiempoTotal();
                     int TiempoServ = model.getTiempoServicio();
                     String Accion = model.getAccion();
-                    String list = preferencesManager.getString("ListaSala1", "");
+                    String list = preferencesManager.getString("SalaVacio1", "");
                     AddMasTime.ActualizarTimeUser0(activity, 10, idUser, "1", id, TiempoAdmin, Accion, TiempoServ, list);
                 }
                 //Segunda acion para todos los elementos
@@ -172,7 +180,7 @@ public class AdpSalaNeg extends FirestoreRecyclerAdapter<Sala, AdpSalaNeg.ViewHo
         holder.lis.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                AlertDialogMetds.MsgEliminar(activity,"Desea Eliminar a "+model.getUser(),"",id,"Negocios/"+idUser+"/Sala1","Negocio","1");
+                AlertDialogMetds.MsgEliminar(activity,"Desea Eliminar a "+model.getUser(),"",id,"Negocios/"+idUser+"/Sala1","Negocio","1","");
                 return true;
             }
         });

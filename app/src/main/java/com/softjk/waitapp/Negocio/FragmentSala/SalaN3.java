@@ -56,7 +56,7 @@ public class SalaN3 extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_sala_n3, container, false);
 
-        preferencesManager = new PreferencesManager(getActivity());
+        preferencesManager = new PreferencesManager(getActivity(),"Negocio");
         BD = FirebaseFirestore.getInstance();
         btnPago = view.findViewById(R.id.btnPagoNeg3);
         lblTiempo = view.findViewById(R.id.lblTiempoNeg3);
@@ -100,7 +100,7 @@ public class SalaN3 extends Fragment {
             @Override
             public void onClick(View v) {
                 System.out.println("Limpiando datos");
-                LimpiarDatos.LimpiarSala(getActivity(), "3");
+                LimpiarDatos.LimpiarSala(getActivity(), "3","Negocio");
             }
         });
 
@@ -136,7 +136,7 @@ public class SalaN3 extends Fragment {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
 
-                String list = preferencesManager.getString("ListaSala3","");
+                String list = preferencesManager.getString("SalaVacio3","");
                 int Tiempo = Math.toIntExact(documentSnapshot.getLong("Tiempo"));
                 String Tim = String.valueOf(Tiempo);
                 System.out.println("Ver valor Tiempo "+Tim+" + "+valor);

@@ -39,7 +39,6 @@ public class Menu_Inicio_Ngc extends Fragment {
     String idUser;
     LinearLayout Sala, Horario;
     static String idHorario;
-    PreferencesManager preferencesManager;
 
     NotificationCompat.Builder notificacion;
     private static final int idUnica = 51623;
@@ -64,7 +63,7 @@ public class Menu_Inicio_Ngc extends Fragment {
         idUser = mAuth.getCurrentUser().getUid();
         //idNegocio=mfirestore.collection("Negocios").document(idUser).getId();
        // idHorario=mfirestore.collection("Negocios/"+idUser+"/Horario").document().getId();
-        preferencesManager = new PreferencesManager(getActivity());
+
         ObtenerDatos();
 
         Editar.setOnClickListener(new View.OnClickListener() {
@@ -84,8 +83,8 @@ public class Menu_Inicio_Ngc extends Fragment {
                 Intent intent = new Intent(getActivity(), E1_Sala_Neg.class);
                 //intent.putExtra("Horario", idHorario);
                 startActivity(intent);
-                preferencesManager.saveString("idNegocioCliente",idUser);
-                preferencesManager.saveString("Admin","Si");
+               // preferencesManager.saveString("idNegocioCliente",idUser);
+               // preferencesManager.saveString("Admin","Si");
             }
         });
 
@@ -99,22 +98,6 @@ public class Menu_Inicio_Ngc extends Fragment {
                 startActivity(intent);
             }
         });
-
-      /*  Limpiar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                System.out.println("Limpiando datos");
-                preferencesManager.saveString("NFila1",null);
-                preferencesManager.saveString("EsperandoUser1",null);
-                preferencesManager.saveString("UserFila1",null);
-                preferencesManager.saveString("ActualizarDatos1", null);
-                preferencesManager.saveString("Pago1", null);
-                preferencesManager.saveString("AccionesFila1",null);
-                preferencesManager.saveString("NSala",null);
-                preferencesManager.saveString("FilaSala",null);
-            }
-        }); */
-
         return view;
     }
 

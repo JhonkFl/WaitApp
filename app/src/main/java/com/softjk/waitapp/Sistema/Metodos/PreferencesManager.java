@@ -2,14 +2,18 @@ package com.softjk.waitapp.Sistema.Metodos;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 public class PreferencesManager {
-    private static final String PREF_NAME = "AppPreferences"; // Nombre del archivo SharedPreferences
+    private String PREF_NAME = ""; // Nombre del archivo SharedPreferences
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
 
     // Constructor
-    public PreferencesManager(Context context) {
+    public PreferencesManager(Context context, String StoragePreferens) {
+        this.PREF_NAME = StoragePreferens; // Nombre del archivo SharedPreferences
+        System.out.println("---Metodo----> Ver Ubicacion preference: "+StoragePreferens);
+       // Log.d("Preferencias", "Ubicacion: " + StoragePreferens);
         this.sharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         this.editor = sharedPreferences.edit();
     }

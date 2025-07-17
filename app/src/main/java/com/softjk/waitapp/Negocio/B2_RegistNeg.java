@@ -74,7 +74,7 @@ public class B2_RegistNeg extends AppCompatActivity {
         mfirestore = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
         storageReference = FirebaseStorage.getInstance().getReference();
-        preferencesManager = new PreferencesManager(B2_RegistNeg.this);
+        preferencesManager = new PreferencesManager(B2_RegistNeg.this,"User");
 
         Registrar = findViewById(R.id.btnCrearLocalV);
         IconoLocal = findViewById(R.id.LogoNegcReg);

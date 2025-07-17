@@ -44,7 +44,7 @@ public class AdpSala2Neg extends FirestoreRecyclerAdapter<Sala, AdpSala2Neg.View
         this.activity = activity;
         mAuth = FirebaseAuth.getInstance();
         idUser = mAuth.getUid();
-        preferencesManager = new PreferencesManager(activity);
+        preferencesManager = new PreferencesManager(activity,"Negocio");
         Time = lblTiempo2;
     }
 
@@ -117,7 +117,7 @@ public class AdpSala2Neg extends FirestoreRecyclerAdapter<Sala, AdpSala2Neg.View
                     int TiempoAdmin = model.getAdmTiempoTotal();
                     int TiempoServ = model.getTiempoServicio();
                     String Accion = model.getAccion();
-                    String list = preferencesManager.getString("ListaSala2", "");
+                    String list = preferencesManager.getString("SalaVacio2", "");
                     AddMasTime.ActualizarTimeUser0(activity, 5, idUser, "2", id, TiempoAdmin, Accion, TiempoServ, list);
                 }
                 //Segunda acion para todos los elementos
@@ -149,7 +149,7 @@ public class AdpSala2Neg extends FirestoreRecyclerAdapter<Sala, AdpSala2Neg.View
                     int TiempoAdmin = model.getAdmTiempoTotal();
                     int TiempoServ = model.getTiempoServicio();
                     String Accion = model.getAccion();
-                    String list = preferencesManager.getString("ListaSala2", "");
+                    String list = preferencesManager.getString("SalaVacio2", "");
                     AddMasTime.ActualizarTimeUser0(activity, 10, idUser, "2", id, TiempoAdmin, Accion, TiempoServ, list);
                 }
                 //Segunda acion para todos los elementos
@@ -176,7 +176,7 @@ public class AdpSala2Neg extends FirestoreRecyclerAdapter<Sala, AdpSala2Neg.View
         holder.lis.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                AlertDialogMetds.MsgEliminar(activity,"Desea Eliminar a "+model.getUser(),"",id,"Negocios/"+idUser+"/Sala2","Negocio","2");
+                AlertDialogMetds.MsgEliminar(activity,"Desea Eliminar a "+model.getUser(),"",id,"Negocios/"+idUser+"/Sala2","Negocio","2","");
                 return true;
             }
         });

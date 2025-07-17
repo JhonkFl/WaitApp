@@ -47,7 +47,7 @@ public class C1_Menu_Client extends AppCompatActivity {
         replaceFragment(new MenuInicio());
 
         mAuth = FirebaseAuth.getInstance();
-        preferencesManager = new PreferencesManager(C1_Menu_Client.this);
+        preferencesManager = new PreferencesManager(C1_Menu_Client.this,"User");
         binding.bottomNavigationView.setBackground(null);
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
             Fragment fragment = null;
@@ -69,6 +69,15 @@ public class C1_Menu_Client extends AppCompatActivity {
             }
             return true;
         });
+
+
+        //para abrir Novedades cuando llegue una Notificacion --->
+        String destino = getIntent().getStringExtra("notificacion");
+        if (destino != null && destino.equals("Novedades")){
+            Fragment fragment = new MenuNovedades();
+            replaceFragment(fragment);
+            binding.bottomNavigationView.setSelectedItemId(R.id.novedades);
+        } // <---- para abrir Novedades cuando llegue una Notificacion
 
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override

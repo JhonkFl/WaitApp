@@ -5,6 +5,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.util.DisplayMetrics;
@@ -28,6 +29,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.Query;
 import com.softjk.waitapp.R;
+import com.softjk.waitapp.Sistema.Servicios.Notificaciones;
 
 public class MultiMetds {
 
@@ -154,6 +156,9 @@ public class MultiMetds {
     }
 
 
-
+    public static void IniciarServicioNoti(Context context){
+        Intent MiNoti= new Intent(context, Notificaciones.class);
+       context.startActivity(MiNoti);
+    }
 
 }

@@ -1,5 +1,7 @@
 package com.softjk.waitapp.Cliente.AdapterC;
 
+import static com.softjk.waitapp.Cliente.E1_Sala_Client.Codigo;
+
 import android.app.Activity;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -35,15 +37,16 @@ public class AdpSalaC extends FirestoreRecyclerAdapter<Sala, AdpSalaC.ViewHolder
     static String idUser;
     static String Admin;
     int Tiempo;
-    PreferencesManager preferencesManager;
+    PreferencesManager preferenceSala, preferenceCliente;
 
     public AdpSalaC(@NonNull FirestoreRecyclerOptions<Sala> options, Activity activity) {
         super(options);
         this.activity = activity;
         mAuth = FirebaseAuth.getInstance();
         idUser = mAuth.getUid();
-        preferencesManager = new PreferencesManager(activity);
-        NSala = preferencesManager.getString("NSala","1"); // 1, 2, 3
+        preferenceSala = new PreferencesManager(activity,Codigo);
+        preferenceCliente = new PreferencesManager(activity,"Cliente");
+        NSala = preferenceSala.getString("NSala","1"); // 1, 2, 3
 
     }
 
@@ -51,12 +54,11 @@ public class AdpSalaC extends FirestoreRecyclerAdapter<Sala, AdpSalaC.ViewHolder
     protected void onBindViewHolder(@NonNull AdpSalaC.ViewHolder holder, int position, @NonNull Sala model) {
         DocumentSnapshot documentSnapshot = getSnapshots().getSnapshot(holder.getAdapterPosition());
         final String id = documentSnapshot.getId();
-        idNeg = preferencesManager.getString("idNegocioCliente","");
-        Admin = preferencesManager.getString("Admin","");
+        idNeg = preferenceCliente.getString("idNegocioCliente","");
+        //Admin = preferenceCliente.getString("Admin","");
         String posici= String.valueOf(holder.getAdapterPosition()); //obtener posicion
         Log.d("AdapterSalaCliente", "ver valor idNego Adp: "+idNeg);
         Log.d("AdapterSalaCliente", "ver valor position Adp: "+position);
-        Log.d("AdapterSalaCliente", "ver valor position document: "+posici);
 
         SiSoyYo(holder,id,model, position);
         holder.Servicio.setVisibility(View.GONE);
@@ -68,7 +70,7 @@ public class AdpSalaC extends FirestoreRecyclerAdapter<Sala, AdpSalaC.ViewHolder
         }
 
         //Si Soy el Primero en la Lista y el primero en formarse, (para sala1, sal2, sal3)
-        String user = preferencesManager.getString("NFila"+NSala, "");
+        String user = preferenceSala.getString("NFila"+NSala, "");
 
        /* if(position==0  && id.equals(idUser)){
             Log.d("AdapterSalaCliente", "ver valor preference Primer User: "+user);
@@ -118,20 +120,20 @@ public class AdpSalaC extends FirestoreRecyclerAdapter<Sala, AdpSalaC.ViewHolder
             holder.EliminarList.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    AlertDialogMetds.MsgEliminar(activity,"Desea Cancelar su Fila?","",id,"Negocios/"+idNeg+"/Sala"+NSala,"Cliente",NSala);
+                    AlertDialogMetds.MsgEliminar(activity,"Desea Cancelar su Fila?","",id,"Negocios/"+idNeg+"/Sala"+NSala,"Cliente",NSala,Codigo);
                 }
             });
 
         }else { //No soy Yo
             holder.EliminarList.setVisibility(View.INVISIBLE);
             if (position == 0){
-                holder.Usuario.setText("Usuario en Servicio");
+                holder.Usuario.setText("Persona en Servicio");
                 holder.lis.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#fafaf9")));
                 Glide.with(activity.getApplicationContext())
                         .load("https://i.pinimg.com/originals/48/11/1a/48111a56907a33cce89cbaab4735ab0f.gif")
                         .into(holder.photo_User);
             }else {
-                holder.Usuario.setText("Usuario en Espera");
+                holder.Usuario.setText("Persona "+position);
                 holder.lis.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#fafaf9")));
                 Glide.with(activity.getApplicationContext())
                         .load("https://i.pinimg.com/originals/b4/9f/71/b49f71320c7c94dbdf3539f1ea095e76.gif")

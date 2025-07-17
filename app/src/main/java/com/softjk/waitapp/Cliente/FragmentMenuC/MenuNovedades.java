@@ -17,7 +17,9 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.softjk.waitapp.Principal.A_Bienvenida;
 import com.softjk.waitapp.R;
+import com.softjk.waitapp.Sistema.Metodos.MultiMetds;
 
 public class MenuNovedades extends Fragment {
     TextView Titulo, Descripcion, DescripcionDer;
@@ -41,6 +43,7 @@ public class MenuNovedades extends Fragment {
         mFirestore = FirebaseFirestore.getInstance();
 
         OntenerDatois();
+       // MultiMetds.IniciarServicioNoti(getActivity());
         return view;
     }
 

@@ -96,10 +96,10 @@ public class TiempoTotal {
     }
 
 
-    public static void getTiempoGUser(String Collecction, String Document, TextView lblTiempo, TextView lblmsgTiemp, String PrimerUser, Context context, ViewGroup viewGroup){
+    public static void getTiempoGUser(String Collecction, String Document, TextView lblTiempo, TextView lblmsgTiemp, String PrimerUser, Context context, ViewGroup viewGroup,String Codigo){
         //Tiempo Global Firebase Firestore
         DocumentReference id = BD.collection(Collecction).document(Document);
-        PreferencesManager preferencesManager = new PreferencesManager(context);
+        PreferencesManager preferencesManager = new PreferencesManager(context,"Cliente");
         System.out.println("ver Ruta Tiempo Global: "+ Collecction + " ---> Ducument: "+Document);
 
         handler = new Handler();
@@ -157,9 +157,9 @@ public class TiempoTotal {
                                     lblmsgTiemp.setText("Gracias por su preferencia... ");
 
                                     String N = preferencesManager.getString("NSala","1"); // 1, 2, 3
-                                    LimpiarDatos.LimpiarSala(context,N);
+                                    LimpiarDatos.LimpiarSala(context,N,Codigo);
                                     //  FirestoreMetds.EliminarDocument(context, collectioUser, idUser);
-                                    AlertDialogMetds.alertOptionGracias(context,viewGroup);
+                                    AlertDialogMetds.alertOptionGracias(context,viewGroup,N);
                                 }else {
                                     lblTiempo.setText("Disponible");
                                    // lblmsgTiemp.setText("No hay Nadie en la Fila");

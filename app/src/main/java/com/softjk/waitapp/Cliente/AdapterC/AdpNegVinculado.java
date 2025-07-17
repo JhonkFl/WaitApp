@@ -48,7 +48,7 @@ public class AdpNegVinculado extends FirestoreRecyclerAdapter<Negocio, AdpNegVin
         auth = FirebaseAuth.getInstance();
         dialog = new ProgressDialog(activity1);
         db = FirebaseFirestore.getInstance();
-        preferencesManager = new PreferencesManager(activity);
+        preferencesManager = new PreferencesManager(activity,"Cliente");
     }
 
     @Override
@@ -62,8 +62,8 @@ public class AdpNegVinculado extends FirestoreRecyclerAdapter<Negocio, AdpNegVin
         DocumentSnapshot documentSnapshot = getSnapshots().getSnapshot(holder.getAdapterPosition());
         final String id = documentSnapshot.getId();
 
-        ObtenerDatos(id,holder);
-        HorarioN(holder,identi,id,"1","","");
+        ObtenerDatos(id,holder,model.getCodigo()); //Para entrar al hacer clic
+        HorarioN(holder,identi,id,"1","","",""); // solo para ver su horario
 
         //Acciones Butones
         holder.Eliminar.setOnClickListener(new View.OnClickListener() {
@@ -75,7 +75,7 @@ public class AdpNegVinculado extends FirestoreRecyclerAdapter<Negocio, AdpNegVin
         });
     }
 
-    private void HorarioN(ViewHolder vista, String identi, String idNeg, String Salas,String Nombre, String Logo) {
+    private void HorarioN(ViewHolder vista, String identi, String idNeg, String Salas,String Nombre, String Logo, String Codigo) {
         SimpleDateFormat simpleformat = new SimpleDateFormat("EEEE");
         String strDayofWeek = simpleformat.format(new Date());
         System.out.println("Día de la semana = " + strDayofWeek);
@@ -118,7 +118,7 @@ public class AdpNegVinculado extends FirestoreRecyclerAdapter<Negocio, AdpNegVin
                                     i.putExtra("Negocio",Nombre);
                                     i.putExtra("Logo",Logo);
                                     i.putExtra("EntrarSala","Si");
-                                    //i.putExtra("id_User", id);
+                                    i.putExtra("Codigo", Codigo);
                                     activity.startActivity(i);
                                 }
                             }else {
@@ -148,7 +148,7 @@ public class AdpNegVinculado extends FirestoreRecyclerAdapter<Negocio, AdpNegVin
         });
     }
 
-    private void ObtenerDatos(String idNeg, ViewHolder Vista) {
+    private void ObtenerDatos(String idNeg, ViewHolder Vista,String Codigo) {
         db.collection("Negocios").document(idNeg).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -178,7 +178,7 @@ public class AdpNegVinculado extends FirestoreRecyclerAdapter<Negocio, AdpNegVin
                     @Override
                     public void onClick(View v) {
                         String ident= "Entrar";
-                        HorarioN(Vista,ident,idNeg,Salas,Nombre,LogoBD);
+                        HorarioN(Vista,ident,idNeg,Salas,Nombre,LogoBD, Codigo);
                     }
                 });
             }

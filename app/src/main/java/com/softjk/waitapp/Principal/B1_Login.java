@@ -88,9 +88,6 @@ public class B1_Login extends AppCompatActivity {
                 startActivity(new Intent(B1_Login.this, B1_RegistUser.class));
             }
         });
-
-        String RutaImg = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTReGTEo9ZQYfFOZsybJmpQytTJsqF237lmgg&s";
-        MultiMetds.IMG(B1_Login.this,RutaImg,img,"No");
     } //Fin del OnCreate
 
     private void loginUser(String emailUser, String passUser) {
@@ -102,7 +99,7 @@ public class B1_Login extends AppCompatActivity {
                 progressDialog.show();
                 if (task.isSuccessful()){
                     String User = getIntent().getStringExtra("TUser");
-                    if (User.equals("Cliente")) {
+                    if (User == null || User.equals("Cliente")) {
                         startActivity(new Intent(B1_Login.this, C1_Menu_Client.class));
                         progressDialog.dismiss();
                         finish();

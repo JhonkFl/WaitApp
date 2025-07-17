@@ -27,11 +27,11 @@ public class TiempoGlobalPers {
     private static final String CHANNEL_ID = "canal";
     private static PendingIntent pendingIntent;
 
-    public static void getTiempoTraslado(String Collecction, String Document, TextView lblTiempo, Context context, TextView lblEstado, String Sala, String idNegocio, String CollectionDelet, ViewGroup viewGroup){
+    public static void getTiempoTraslado(String Collecction, String Document, TextView lblTiempo, Context context, TextView lblEstado, String Sala, String idNegocio, String Codigo, ViewGroup viewGroup){
         //Tiempo Global Firebase
         System.out.println("ver Ruta Tiempo 10 min: "+ Collecction);
         DocumentReference id = BD.collection(Collecction).document(Document);
-        PreferencesManager preferencesManager = new PreferencesManager(context);
+        PreferencesManager preferencesManager = new PreferencesManager(context,"Cliente");
         handler = new Handler();
         final boolean[] isCountdownRunningTrasl = {true};
         firestoreListener = id.addSnapshotListener((snapshot, e) -> {
@@ -92,10 +92,10 @@ public class TiempoGlobalPers {
                                     });
 
                                     System.out.println("Tiempo Traslado Finalizado");
-                                    TiempoTotal.getTiempoGUser("Negocios/" + idNegocio + "/" + Sala, idUser, lblTiempo,  lblEstado,"Si",context,viewGroup);
+                                    TiempoTotal.getTiempoGUser("Negocios/" + idNegocio + "/" + Sala, idUser, lblTiempo,  lblEstado,"Si",context,viewGroup,Codigo);
                                     preferencesManager.saveString("ActualizarDatos"+N, "No");
                                 } else {
-                                    TiempoTotal.getTiempoGUser("Negocios/" + idNegocio + "/" + Sala, idUser, lblTiempo, lblEstado,"Si",context,viewGroup);
+                                    TiempoTotal.getTiempoGUser("Negocios/" + idNegocio + "/" + Sala, idUser, lblTiempo, lblEstado,"Si",context,viewGroup,Codigo);
                                 }
 
                                 handler.removeCallbacks(this); // Cancela el Runnable
@@ -114,10 +114,10 @@ public class TiempoGlobalPers {
     }
 
 
-    public static void getTiempoServPers(String collectioUser, String idUser, TextView lblTiempo, Context context, TextView lblEstado, ViewGroup viewGroup){
+    public static void getTiempoServPers(String collectioUser, String idUser, TextView lblTiempo, Context context, TextView lblEstado, ViewGroup viewGroup, String Codigo){
         //Tiempo Global Firebase Firestore
         DocumentReference id = BD.collection(collectioUser).document(idUser);
-        PreferencesManager preferencesManager = new PreferencesManager(context);
+        PreferencesManager preferenceSala = new PreferencesManager(context,Codigo);
         System.out.println("ver Ruta Tiempo Servi Personal: "+ collectioUser + "  Ducument: "+idUser);
         lblEstado.setText("En Servicio");
         lblTiempo.setTextColor(Color.parseColor("#f5eeee"));
@@ -130,6 +130,7 @@ public class TiempoGlobalPers {
 
         firestoreListener = id.addSnapshotListener((snapshot, e) -> {
             if (snapshot != null && snapshot.exists()) {
+
                 long startTime = snapshot.getTimestamp("InicioServ").toDate().getTime();
                 long durationSeconds = snapshot.getLong("TiempoServicio") * 1000;
 
@@ -169,27 +170,33 @@ public class TiempoGlobalPers {
 
                             if (isCountdownRunningServ[0]) {
                                 isCountdownRunningServ[0] = false; // Desactivar Contador por completo para evitar ciclos
-                                String N = preferencesManager.getString("NSala","1"); // 1, 2, 3
-                                String UserFila = preferencesManager.getString("UserFila"+N, "No");
+
+                                if (firestoreListener != null) {
+                                    firestoreListener.remove(); // Elimina el listener de Firestore si ya no es necesario
+                                    firestoreListener = null;
+                                }
+
+                                String N = preferenceSala.getString("NSala","1"); // 1, 2, 3
+                                String UserFila = preferenceSala.getString("UserFila"+N, "No");
                                 String idUser = mAuth.getCurrentUser().getUid();
                                 System.out.println("User Fila TimeServices: " + UserFila);
 
                                 if (UserFila.equals("No") && startTime != 0) {
-                                    lblTiempo.setText("Disponible...");
-                                    lblEstado.setText("No hay Nadie en la Fila");
+
                                 } else {
                                     lblTiempo.setText("Finalizado");
                                     lblEstado.setText("Gracias por su Preferencia!!");
 
-                                    String esperando1 = preferencesManager.getString("EsperandoUser"+N, "NoEsperando");
+                                    String esperando1 = preferenceSala.getString("EsperandoUser"+N, "NoEsperando");
                                     System.out.println("Ver user esperando TimeStarGlobal: " + esperando1);
                                     if (esperando1.equals("NoEsperando") && UserFila.equals("Si")) {
-                                        System.out.println("Limpiando preferences si user No esta esperando pero SI esta en la Fila");
-                                        LimpiarDatos.LimpiarSala(context,N);
-                                        preferencesManager.saveString("UserFila"+N, null);
-                                      //  FirestoreMetds.EliminarDocument(context, collectioUser, idUser);
-                                        AlertDialogMetds.alertOptionGracias(context,viewGroup);
+
+                                        //preferenceSala.saveString("UserFila"+N, null);
+                                        AlertDialogMetds.alertOptionGracias(context,viewGroup,N);
                                     }
+
+                                    System.out.println("Limpiando preferences si user No esta esperando pero SI esta en la Fila");
+                                    LimpiarDatos.LimpiarSala(context,N,Codigo);
 
                                 }
                             }
@@ -264,7 +271,7 @@ public class TiempoGlobalPers {
 
                             } else if (isRunning) {
                                 isRunning = false;
-                                System.out.println("Temporizador finalizado. Eliminando documento...");
+                                System.out.println("Temporizador finalizado...");
 
                                AlertDialogMetds.alertOptionMSG(context,viewGroup,collectioUser,idUser,Foto,NombreUser);
 

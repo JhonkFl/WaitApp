@@ -28,8 +28,6 @@ public class ReciclerVacio {
             BD.collection(Coleccion).get().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     if (task.getResult().isEmpty()) {
-
-                        preferencesManager.saveString("ListaSala"+N,"Vacio");
                         Map<String, Object> map = new HashMap<>();
                         map.put("Tiempo", 0);
 
@@ -39,9 +37,10 @@ public class ReciclerVacio {
                             }
                         });
                         System.out.println("RecyclerView está vacio y Actualizamos Tiempo Global a 0 seg -- Sala"+N);
+                        preferencesManager.saveString("SalaVacio"+N,"Si");
                         callback.onResult("Vacio");
                     } else {
-                        preferencesManager.saveString("ListaSala"+N,"NoVacio");
+                        preferencesManager.saveString("SalaVacio"+N,"No");
                         System.out.println("Primer Elemnto en la lista");
                         callback.onResult("1Elemt");
                     }
@@ -50,7 +49,8 @@ public class ReciclerVacio {
                 }
             });
         } else {
-            preferencesManager.saveString("ListaSala"+N,"NoVacio");
+            preferencesManager.saveString("SalaVacio"+N,"No");
+            System.out.println("Hay varios Elemntos en la lista");
             callback.onResult("NoVacio");
         }
     }

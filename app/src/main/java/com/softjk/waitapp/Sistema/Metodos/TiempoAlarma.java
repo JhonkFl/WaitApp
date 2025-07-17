@@ -35,12 +35,11 @@ public class TiempoAlarma {
     static FirebaseFirestore BD = FirebaseFirestore.getInstance();
     private static FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
-
     //Tiempo Total users perosnal
-    public static void getTiempoGlobalPersonal(String Collecction, String Document, TextView lblTiempo, Context context , String N, TextView lblmsgTiemp, PreferencesManager preferencesManager, ViewGroup viewGroup,String PrimerUser){
+    public static void getTiempoGlobalPersonal(String Collecction, String Document, TextView lblTiempo, Context context , String N, TextView lblmsgTiemp, ViewGroup viewGroup,String PrimerUser,String Codigo){
         DocumentReference id = BD.collection(Collecction).document(Document);
+        PreferencesManager preferenceSala = new PreferencesManager(context,Codigo);
         System.out.println("Ruta BD Tiempo: "+ Collecction + " ---> Ducument: "+Document);
-
         handler = new Handler();
 
         final boolean[] alarmaCancelada = {false};
@@ -60,13 +59,14 @@ public class TiempoAlarma {
                     //solo para pruebas
                     Date fechaFinal = new Date(startTime + durationSeconds);
                     SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-                    String fechaLegible = formato.format(fechaFinal);
-                    Date fechaAlarma = new Date(tiempoAlarma);
+                    String alarmaFinalizado = formato.format(fechaFinal);
+
+                    Date fechaAlarma = new Date(tiempoAlarma); //10 minutos antes
                     SimpleDateFormat formato2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
                     String fechaLegible2 = formato2.format(fechaAlarma);
                     System.out.println("La alarma está programada para: " + fechaLegible2);           //*
 
-                    String alarma = preferencesManager.getString("Alarma"+N, "Activar");
+                    String alarma = preferenceSala.getString("Alarma"+N, "Activar");
                     if (alarma.equals("Activar")){
                         programarAlarma(context, tiempoAlarma, Integer.parseInt(N)); //Importante
                     }
@@ -91,13 +91,19 @@ public class TiempoAlarma {
                             seconds %= 60;
                             minutes %= 60;
 
-                            lblTiempo.setText(String.format("%02d", hours) + ":" +
-                                    String.format("%02d", minutes) + ":" +
-                                    String.format("%02d", seconds));
+                            String tiempo;
+                            if (hours > 0) {
+                                tiempo = String.format("%02d:%02d:%02d hrs", hours, minutes, seconds);
+                            } else if (minutes > 0) {
+                                tiempo = String.format("%02d:%02d min", minutes, seconds);
+                            } else {
+                                tiempo = String.format("%02d seg", seconds);
+                            }
+                            lblTiempo.setText(tiempo);
                             handler.postDelayed(this, 1000);
 
                             if (!alarmaCancelada[0] && remainingTimeMillis <= 180000){
-                                preferencesManager.saveString("Alarma"+N,"Cancelado");
+                                preferenceSala.saveString("Alarma"+N,"Cancelado");
                                 cancelarAlarma(context, Integer.parseInt(N));
                                 alarmaCancelada[0] = true;
                             }
@@ -109,12 +115,16 @@ public class TiempoAlarma {
 
                               /*  cancelarAlarma(context, Integer.parseInt(N));
                                 alarmaCancelada[0] = true;*/
+                                if (firestoreListener != null) {
+                                    firestoreListener.remove(); // Elimina el listener de Firestore si ya no es necesario
+                                    firestoreListener = null;
+                                }
 
                                 Activity activity = (Activity) context;
                                 if (PrimerUser.equals("No") || PrimerUser.isEmpty()){
-                                    TimeEnServi(N, preferencesManager,lblTiempo, lblmsgTiemp, viewGroup, activity );
+                                    TimeEnServi(N,lblTiempo, lblmsgTiemp, viewGroup, activity ,Codigo);
                                 }else {
-                                    LimpiarDatos.LimpiarSala(context,N);
+                                    LimpiarDatos.LimpiarSala(context,N,Codigo);
                                 }
 
                             }
@@ -156,7 +166,7 @@ public class TiempoAlarma {
 
         if (pendingIntent != null) {
             alarmManager.cancel(pendingIntent);
-            pendingIntent.cancel(); // 🔥 Esto ayuda a liberar recursos
+            pendingIntent.cancel(); //  liberar recursos
             System.out.println("Alarma cancelada: " + requestCode);
         } else {
             System.out.println("No se encontró PendingIntent para cancelar.");
@@ -165,18 +175,22 @@ public class TiempoAlarma {
 
 
 
-    private static void TimeEnServi(String N, PreferencesManager preferencesManager,TextView lblTiempo, TextView lblmsgTiemp, ViewGroup viewGroup, Activity activity) {
-        String idNegocio = preferencesManager.getString("idNegocioCliente","");
-        String UserFila = preferencesManager.getString("UserFila"+N,"No");
-        String esperando1 = preferencesManager.getString("EsperandoUser"+N,"NoEsperando");
+    private static void TimeEnServi(String N,TextView lblTiempo, TextView lblmsgTiemp, ViewGroup viewGroup, Activity activity,String Codigo) {
+        Context context = activity;
+        PreferencesManager preferenceSala = new PreferencesManager(context,Codigo);
+        PreferencesManager preferencesCliente = new PreferencesManager(context,"Cliente");
+
+        String idNegocio = preferencesCliente.getString("idNegocioCliente","");
+        String UserFila = preferenceSala.getString("UserFila"+N,"No");
+        String esperando1 = preferenceSala.getString("EsperandoUser"+N,"NoEsperando");
         String Colleccion = "Negocios/"+idNegocio+"/Sala"+N;
         String idUser = mAuth.getCurrentUser().getUid();
        // String NS = preferencesManager.getString("NSala","1"); // 1, 2, 3
-        int TiempoServicio = preferencesManager.getInt("ServClient"+N,0);
+        int TiempoServicio = preferenceSala.getInt("ServClient"+N,0);
         int TiempoServSeg = TiempoServicio * 60;
         if (UserFila.equals("Si") && esperando1.equals("NoEsperando")) {
 
-            String actualizarDatos = preferencesManager.getString("ActualizarDatos" + N, "Si");
+            String actualizarDatos = preferenceSala.getString("ActualizarDatos" + N, "Si");
             System.out.println("valor Actualizar " + actualizarDatos);
 
             if (actualizarDatos.equals("Si")) { //Condicion para que solo se actualice una vez
@@ -189,9 +203,9 @@ public class TiempoAlarma {
                 BD.collection(Colleccion).document(idUser).update(map2).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-                        preferencesManager.saveString("ActualizarDatos" + N, "No");
+                        preferenceSala.saveString("ActualizarDatos" + N, "No");
                         System.out.println(" Actualizacion ...exitosa ");
-                        TiempoGlobalPers.getTiempoServPers(Colleccion, idUser, lblTiempo, activity, lblmsgTiemp, viewGroup);
+                        TiempoGlobalPers.getTiempoServPers(Colleccion, idUser, lblTiempo, activity, lblmsgTiemp, viewGroup,Codigo);
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -201,7 +215,7 @@ public class TiempoAlarma {
                 });
             } else {
                 System.out.println("NO Actualizar solo mostrar TiempoServi");
-                TiempoGlobalPers.getTiempoServPers(Colleccion, idUser, lblTiempo, activity, lblmsgTiemp, viewGroup);
+                TiempoGlobalPers.getTiempoServPers(Colleccion, idUser, lblTiempo, activity, lblmsgTiemp, viewGroup, Codigo);
             }
         }
     }

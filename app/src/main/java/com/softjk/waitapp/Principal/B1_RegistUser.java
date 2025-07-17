@@ -56,7 +56,7 @@ public class B1_RegistUser extends AppCompatActivity {
             return insets;
         });
 
-        preferencesManager = new PreferencesManager(B1_RegistUser.this);
+        preferencesManager = new PreferencesManager(B1_RegistUser.this,"User");
         progressDialog = new ProgressDialog(this);
         mFirestore = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
@@ -84,8 +84,12 @@ public class B1_RegistUser extends AppCompatActivity {
                 }else if (passUser.length()<6) {
                     password.setError("Su contraseña debe tener minimo 6 digitos");
                     password.requestFocus();
-                }else{
-                    registerUser(TipoUser, emailUser, passUser,Usua,tok);
+                } else {
+                    if (emailUser.contains("@") && emailUser.contains(".")) {
+                        registerUser(TipoUser, emailUser, passUser,Usua,tok);
+                    } else{
+                        email.setError("Agregue un correo válido");
+                    }
                 }
             }
         });

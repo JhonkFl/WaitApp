@@ -58,7 +58,7 @@ public class AdpSolicitServiSala extends FirestoreRecyclerAdapter<ServicNg, AdpS
         super(options);
         this.activity = activity1;
         this.fm = fm;
-        preferencesManager = new PreferencesManager(activity);
+        preferencesManager = new PreferencesManager(activity,"Negocio");
         mAuth = FirebaseAuth.getInstance();
         progressDialog = new ProgressDialog(activity);
         db = FirebaseFirestore.getInstance();
@@ -66,7 +66,7 @@ public class AdpSolicitServiSala extends FirestoreRecyclerAdapter<ServicNg, AdpS
 
         sala = preferencesManager.getString("FilaSala",""); //Sala1, Sala2, Sala3
         NSala = preferencesManager.getString("NSala",""); // 1, 2, 3
-        listaV = preferencesManager.getString("ListaSala"+NSala,"Vacio");
+        listaV = preferencesManager.getString("SalaVacio"+NSala,"Si");
     }
 
     @Override
@@ -152,7 +152,7 @@ public class AdpSolicitServiSala extends FirestoreRecyclerAdapter<ServicNg, AdpS
         progressDialog.setMessage("Procesando...");
         progressDialog.show();
         //Si Lista esta Vacio Agregar Campo Inicio al Tiempo Global
-        if (listaV.equals("Vacio")){
+        if (listaV.equals("Si")){
             preferencesManager.saveString("NFila"+NSala, "PrimerUser");
             preferencesManager.saveInt("ServPrimerClient"+NSala,Tiempo);
             preferencesManager.saveString("EsperandoUser"+NSala,"PrimeraVez");

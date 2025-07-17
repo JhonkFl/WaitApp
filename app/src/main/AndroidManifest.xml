@@ -67,7 +67,13 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-        <service android:name=".Sistema.Servicios.TimeClient" />
+        <service
+            android:name=".Sistema.Servicios.Notificaciones"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
 
         <receiver android:name=".Sistema.Metodos.BrockasAlarma" android:exported="false"/>
     </application>

@@ -36,18 +36,12 @@
             android:layout_width="wrap_content"
             android:layout_height="90dp"/>
 
-        <androidx.cardview.widget.CardView
-            android:layout_width="240dp"
-            android:layout_height="140dp"
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="230dp"
+            android:layout_height="130dp"
             android:layout_marginVertical="20dp"
-            app:cardCornerRadius="40dp">
-
-            <ImageView
-                android:id="@+id/imageView2"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:srcCompat="@drawable/images" />
-        </androidx.cardview.widget.CardView>
+            app:srcCompat="@drawable/images" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/txtInputUser"
@@ -85,7 +79,7 @@
                 android:id="@+id/txtMail"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:inputType="textEmailAddress|textEmailSubject"
+                android:inputType="textEmailAddress"
                 android:textSize="15sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -134,7 +128,7 @@
         <Button
             android:id="@+id/btnGuardar"
             android:layout_width="match_parent"
-            android:layout_height="63dp"
+            android:layout_height="60dp"
             android:backgroundTint="#08665D"
             android:layout_marginTop="15dp"
             android:text="Guardar"
@@ -151,7 +145,7 @@
     <ImageView
         android:id="@+id/imageView4"
         android:layout_width="140dp"
-        android:layout_height="114dp"
+        android:layout_height="110dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/estrella" />

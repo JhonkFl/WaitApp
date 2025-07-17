@@ -81,7 +81,7 @@ public class RegistrarServicios extends AppCompatActivity {
         idUser = mAuth.getCurrentUser().getUid();
         progressDialog = new ProgressDialog(this);
         storageReference = FirebaseStorage.getInstance().getReference();
-        preferencesManager = new PreferencesManager(this);
+        preferencesManager = new PreferencesManager(this,"User");
 
         String idServicio = getIntent().getStringExtra("id_Servicios");
         String idUser = mAuth.getCurrentUser().getUid();

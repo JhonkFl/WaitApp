@@ -44,7 +44,7 @@ public class AdpBuscarNeg extends FirestoreRecyclerAdapter<Negocio, AdpBuscarNeg
         this.activity = activity1;
         mAuth = FirebaseAuth.getInstance();
         mFirestore = FirebaseFirestore.getInstance();
-        preferencesManager = new PreferencesManager(activity);
+        preferencesManager = new PreferencesManager(activity,"Negocio");
     }
 
     @Override
