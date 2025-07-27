@@ -19,7 +19,7 @@
             android:id="@+id/linerListaHorizont"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#EFE6E6"
+            android:background="#CEC5C5"
             android:gravity="center"
             android:orientation="horizontal"
             android:paddingVertical="5dp"
@@ -41,44 +41,25 @@
                     app:srcCompat="@drawable/ic_person" />
             </androidx.cardview.widget.CardView>
 
-            <Space
-                android:id="@+id/Space1"
-                android:layout_width="15dp"
-                android:layout_height="wrap_content" />
-
             <TextView
                 android:id="@+id/nombreUser"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_marginStart="10dp"
                 android:text="Nombre"
                 android:textColor="#2175B8"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/lblTemporizadorCL"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:padding="5dp"
-                android:text="00:00:00"
-                android:textAlignment="center"
-                android:textColor="#3F51B5"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-            <Space
-                android:id="@+id/Space2"
-                android:layout_width="6dp"
-                android:layout_height="wrap_content" />
-
-            <ImageView
+            <Button
                 android:id="@+id/btn_eliminarList"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="5dp"
-                app:srcCompat="@android:drawable/ic_delete" />
+                android:layout_marginHorizontal="5dp"
+                android:backgroundTint="#B82306"
+                android:textColor="@color/white"
+                android:text="Cancelar " />
 
         </LinearLayout>
 

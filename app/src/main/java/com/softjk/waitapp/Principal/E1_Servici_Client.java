@@ -74,7 +74,7 @@ public class E1_Servici_Client extends AppCompatActivity {
             NombreLocal.setText(NombreNeg);
             MultiMetds.IMG(E1_Servici_Client.this, Logo, Iconolocal, "Si");
             setUpRecyclerViewNGC(idNeg);
-        }else {
+        }else if (ventanaOrigen.equals("Admin")){
             setUpRecyclerViewNGCAdmin(idUser);
             String N = preferenceSala.getString("NSala","");
             MultiMetds.IMG(E1_Servici_Client.this, "https://media.tenor.com/images/2bd1bf1843e1ddf7957a67589ca72612/tenor.gif", Iconolocal, "Si");
@@ -137,7 +137,7 @@ public class E1_Servici_Client extends AppCompatActivity {
         mAdapter = new AdpServiciosC(firestoreRecyclerOptions, E1_Servici_Client.this);
         mAdapter.startListening();
         listaServicioCLi.setAdapter(mAdapter);
-        }else {
+        }else if (ventanaOrigen.equals("Admin")){
             mAdapterAdmin = new AdpSolicitServiSala(firestoreRecyclerOptions, E1_Servici_Client.this);
             mAdapterAdmin.startListening();
             listaServicioCLi.setAdapter(mAdapterAdmin);
@@ -149,7 +149,7 @@ public class E1_Servici_Client extends AppCompatActivity {
         String ventanaOrigen = getIntent().getStringExtra("Origen");
         if (ventanaOrigen == null){
             mAdapter.startListening();
-        }else {
+        }else if (ventanaOrigen.equals("Admin")){
             mAdapterAdmin.startListening();
         }
         super.onStart();

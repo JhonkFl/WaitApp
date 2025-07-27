@@ -187,7 +187,7 @@ public class B2_RegistNeg extends AppCompatActivity {
                         map.put("Municipio", Municipio);
                         map.put("Salas", Cant);
 
-                        DatosFirestoreBD.ActualizarDatos(B2_RegistNeg.this,"Negocios",id, map, "Actualizando", new DatosFirestoreBD.GuardarCallback() {
+                        DatosFirestoreBD.ActualizarDatos(B2_RegistNeg.this,"Negocios",id, map, "Actualizando","", new DatosFirestoreBD.GuardarCallback() {
                             @Override
                             public void onResultado(String resultado) {
                                 if ("Actualizado".equals(resultado)) {

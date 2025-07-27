@@ -1,6 +1,10 @@
 package com.softjk.waitapp.Negocio.FragmentMenu;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.pdf.PdfDocument;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -10,6 +14,8 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -28,20 +34,25 @@ import com.softjk.waitapp.Sistema.Metodos.MultiMetds;
 import com.softjk.waitapp.Sistema.Metodos.PreferencesManager;
 import com.softjk.waitapp.Negocio.B3_Horario;
 import com.softjk.waitapp.R;
+import com.softjk.waitapp.Sistema.Metodos.TarjetaPDF;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 public class Menu_Inicio_Ngc extends Fragment {
 
     FirebaseFirestore mfirestore;
     ImageView Logo;
     TextView Nombre, Correo, Cantidad, Codigo;
-    ImageButton Editar;
+    ImageButton Editar, Compartir;
     FirebaseAuth mAuth;
     String idUser;
+    ViewGroup viewGroup;
     LinearLayout Sala, Horario;
     static String idHorario;
+   // FrameLayout contenedor;
 
-    NotificationCompat.Builder notificacion;
-    private static final int idUnica = 51623;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -56,7 +67,9 @@ public class Menu_Inicio_Ngc extends Fragment {
         Codigo = view.findViewById(R.id.lblCodigoLV);
         Sala = view.findViewById(R.id.btnSalaVirtualA);
         Horario = view.findViewById(R.id.btnAbrirHorario);
-        //Limpiar = view.findViewById(R.id.btnServicios);
+        Compartir = view.findViewById(R.id.btnCompartir);
+        viewGroup = view.findViewById(android.R.id.content);
+       // contenedor = view.findViewById(R.id.contenedor);
 
         mAuth = FirebaseAuth.getInstance();
         mfirestore = FirebaseFirestore.getInstance();
@@ -98,6 +111,8 @@ public class Menu_Inicio_Ngc extends Fragment {
                 startActivity(intent);
             }
         });
+
+
         return view;
     }
 
@@ -107,14 +122,31 @@ public class Menu_Inicio_Ngc extends Fragment {
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
 
                 if (value.exists()) {
-                    Nombre.setText(value.getString("Nombre"));
+                    String NomNeg = value.getString("Nombre");
+                    String CodNeg = value.getString("Codigo");
+                    Nombre.setText(NomNeg);
                     Correo.setText(mAuth.getCurrentUser().getEmail());
                     String NumeroSala = value.getString("Salas");
                     Cantidad.setText(NumeroSala+" Salas");
-                    Codigo.setText(value.getString("Codigo"));
+                    Codigo.setText(CodNeg);
                     String LogoNeg = value.getString("Logo");
 
                     MultiMetds.IMG(getActivity(),LogoNeg,Logo,"Si");
+
+                    Compartir.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            TarjetaPDF pdf = new TarjetaPDF(getActivity());
+                            try {
+                                pdf.generarVista(NomNeg,LogoNeg,CodNeg);
+                                pdf.generarVista(NomNeg,LogoNeg,CodNeg);
+                                AlertDialogMetds.DialogPDF(getActivity(),viewGroup);
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+                    });
 
                 }else {
                     Editar.setVisibility(View.INVISIBLE);
@@ -124,14 +156,4 @@ public class Menu_Inicio_Ngc extends Fragment {
         });
 
     }
-
-    public void AbrirSala(View view){
-        //notif();
-        //finish();
-       // Intent intent = new Intent(this, SalaNegocio.class);
-       // startActivity(intent);
-    }
-
-
-
 }

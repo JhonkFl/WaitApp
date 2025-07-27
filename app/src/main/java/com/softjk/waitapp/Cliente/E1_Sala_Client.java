@@ -3,11 +3,16 @@ package com.softjk.waitapp.Cliente;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.PersistableBundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,6 +21,7 @@ import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -28,12 +34,14 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.softjk.waitapp.Cliente.AdapterC.Opc2AdpTabLayout;
 import com.softjk.waitapp.Cliente.FragmentSalaC.SalaC2;
+import com.softjk.waitapp.Negocio.E1_Sala_Neg;
 import com.softjk.waitapp.Sistema.Metodos.MultiMetds;
 import com.softjk.waitapp.Sistema.Metodos.PreferencesManager;
 import com.softjk.waitapp.R;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 public class E1_Sala_Client extends AppCompatActivity {
-    public static E1_Sala_Client currentInstance; //Instancia para cerrar la actividad desde otra clase (AdapterServicioClint) --> OnCreate y onDestroy
 
     TabLayout Tabla;
     ViewPager2 viewPager2;
@@ -43,6 +51,7 @@ public class E1_Sala_Client extends AppCompatActivity {
     ImageView LogoNg;
 
     public static String Codigo;
+    public static ViewGroup viewGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +63,12 @@ public class E1_Sala_Client extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){ //para el color de la barra de estados
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(ContextCompat.getColor(this,R.color.ic_launcher_background));
+        }
+
         crearCanalNotificacion(this); //para alarma del temporizador
 
         //Obtener los Valores enviados del Adapter
@@ -71,6 +86,8 @@ public class E1_Sala_Client extends AppCompatActivity {
         System.out.println("---> Datos Recibidos del Adaptador-- CantSalas:"+SalasN+ " idNeg: "+idNeg+" Codigo:"+codigoNg);
         NombreNg = findViewById(R.id.lblSalaNomLocal);
         LogoNg = findViewById(R.id.logoSalaLocal);
+        viewGroup = findViewById(android.R.id.content);
+        //Cargando(entrar);
 
         if (entrar.equals("Si")) {
             preferencesManager.saveString("NombreNegocio", Nombre);
@@ -189,25 +206,62 @@ public class E1_Sala_Client extends AppCompatActivity {
         }
     }
 
+    private void Cargando(String Entrar){
+        SweetAlertDialog dialog = new SweetAlertDialog(E1_Sala_Client.this, SweetAlertDialog.PROGRESS_TYPE);
+        dialog.setTitleText("Cargando Datos");
+        dialog.setContentText("Espere un Momento...");
+        dialog.setCancelable(false);
+        dialog.show();
+
+        new Handler() .postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                dialog.dismissWithAnimation();
+            }
+        },900 );
+
+
+    }
+
 
     //*******************Cliclos de Vidad Actividad ****************************
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
-        currentInstance = this; // Guardamos la instancia actual
+    protected void onStart() {
+        super.onStart();
+
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            String sala = bundle.getString("EntrarSala");
+            //String codigo = bundle.getString("Codigo");
+            //String user = bundle.getString("UserFila");
+            System.out.println("Entrar: "+sala);
+            Cargando(sala);
+        }
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        currentInstance = null; // Limpiamos la referencia para evitar fugas de memoria
+    protected void onResume() { //Al vulver abrir la App cargar los datos apara que elñ temporizador no se quede congelado
+        super.onResume();
+
+        PreferencesManager preferenceSala = new PreferencesManager(E1_Sala_Client.this,Codigo);
+        int segundosActualmente = (int) (System.currentTimeMillis() / 100);
+        int salida = preferenceSala.getInt("salidaApp",segundosActualmente);
+
+        int tiempoFueraApp = segundosActualmente - salida;
+        if(tiempoFueraApp > 6){
+            Toast.makeText(this, "Actualizar Actividad despues de 6 min", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     @Override
-    public void onBackPressed() {
-        finish(); //Cerrar Actividad si presiona el boton de retroceder del dispositivo
-        super.onBackPressed();
+    protected void onPause() { //Guardar el Tiempo sin actividad al salir de la App
+        super.onPause();
+        int tiempoSalidaApp = (int) ( System.currentTimeMillis()/1000); //Dividimos entre 1000 para convertirlo en segundos
+
+        PreferencesManager preferenceSala = new PreferencesManager(E1_Sala_Client.this,Codigo);
+        preferenceSala.saveInt("salidaApp",tiempoSalidaApp);
     }
 
     private void crearCanalNotificacion(Context context) {

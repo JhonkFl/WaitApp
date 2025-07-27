@@ -78,40 +78,35 @@ public class AdpNegVinculado extends FirestoreRecyclerAdapter<Negocio, AdpNegVin
     private void HorarioN(ViewHolder vista, String identi, String idNeg, String Salas,String Nombre, String Logo, String Codigo) {
         SimpleDateFormat simpleformat = new SimpleDateFormat("EEEE");
         String strDayofWeek = simpleformat.format(new Date());
-        System.out.println("Día de la semana = " + strDayofWeek);
 
         db.collection("Negocios/" + idNeg + "/Horario").document(strDayofWeek).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                System.out.println("Horario Encontrado con Exito");
 
                 SimpleDateFormat simpleformat = new SimpleDateFormat("HH.mm");
                 String strTime = simpleformat.format(new Date());
-                System.out.println("Revisando Formato de la Hora Actual " + strTime);
-
                 String Dia = documentSnapshot.getString("Dia");
                 String HoraI = documentSnapshot.getString("HoraInicio");
                 String HoraF = documentSnapshot.getString("HoraFinal");
-                System.out.println("Obteniendo Datos BD: "+Dia+" : "+HoraI+" a "+HoraF);
 
                 if (Dia == null || HoraI.equals("0.0") || HoraF.equals("0.0")) {
                     vista.Horario.setText("Cerrado");
                     vista.Horario.setTextColor(Color.RED);
+                    if(identi.equals("Entrar")) {
+                        Toast.makeText(activity, "El Negocio no Abre Hoy", Toast.LENGTH_SHORT).show();
+                    }
                 }else {
                     double Inicio = Double.parseDouble(HoraI);
                     double Final = Double.parseDouble(HoraF);
-                    System.out.println("Formato Double: Hora Inicio " + Inicio+" Hora Final "+Final);
 
                     if (Dia.equals(strDayofWeek)){ //Si Dia es igual al Dia de Hoy
                         double Tiem= Double.parseDouble(strTime);
-                        System.out.println("HoraActual con formato a Double " + Tiem);
 
                         if(Tiem >= Inicio){ //Si HoraActualFormat es mayor que la Hora Inicial
                             if(Tiem < Final){ //Si HoraActualFormat es menor que la Hora Final
                                 vista.Horario.setText("Abierto");
-                                vista.Horario.setTextColor(Color.BLUE);
+                                vista.Horario.setTextColor(Color.parseColor("#687AE2"));
                                 if(identi.equals("Entrar")) { //Si esta Disponible = Entrar
-                                    Toast.makeText(activity, "El Negocio esta ABIERTO!!!!!", Toast.LENGTH_SHORT).show();
                                     Intent i = new Intent(activity, E1_Sala_Client.class);
                                     i.putExtra("idNeg", idNeg);
                                     i.putExtra("NSalas",Salas);
@@ -136,14 +131,14 @@ public class AdpNegVinculado extends FirestoreRecyclerAdapter<Negocio, AdpNegVin
                             vista.Horario.setTextColor(Color.RED);
                         }
                     }else {
-                        Toast.makeText(activity, "El Negocio esta Cerrado", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(activity, "El Negocio no abre hoy", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(activity, "Error al obtener los datos", Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, "Error de Conexión", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -156,12 +151,14 @@ public class AdpNegVinculado extends FirestoreRecyclerAdapter<Negocio, AdpNegVin
 
                 String Nombre = documentSnapshot.getString("Nombre");
                 String Ubicacion = documentSnapshot.getString("Ubicacion");
+                String Municip = documentSnapshot.getString("Municipio");
                 String LogoBD = documentSnapshot.getString("Logo");
                 String Tipo = documentSnapshot.getString("Tipo");
                 String Salas = documentSnapshot.getString("Salas");
 
                 Vista.NombreNg.setText(Nombre);
                 Vista.UbicacionNg.setText(Ubicacion);
+                Vista.Municipio.setText(Municip);
                 Vista.TipoNg.setText(Tipo);
 
                 try {
@@ -216,7 +213,7 @@ public class AdpNegVinculado extends FirestoreRecyclerAdapter<Negocio, AdpNegVin
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         //Inicializacion de los elemtentos de la Vista Item
-        TextView NombreNg, TipoNg, UbicacionNg, Horario;
+        TextView NombreNg, TipoNg, UbicacionNg, Horario,Municipio;
         ImageView Logo, Eliminar;
         LinearLayout LinerNeg;
 
@@ -230,6 +227,7 @@ public class AdpNegVinculado extends FirestoreRecyclerAdapter<Negocio, AdpNegVin
             Logo = itemView.findViewById(R.id.ItemLogoNg);
             Eliminar = itemView.findViewById(R.id.ItemDeletNeg);
             Horario = itemView.findViewById(R.id.ItemHorarioNeg);
+            Municipio = itemView.findViewById(R.id.ItemMunic);
         }
     }
 }

@@ -2,12 +2,11 @@ package com.softjk.waitapp.Sistema.Modelo;
 
 public class Sala {
     String Servicio, User, idUser, Estado, Pago, Accion,Foto;
-    Double Precio;
-    int Tiempo, AdmTiempoTotal, TiempoServicio;
+    int Tiempo, AdmTiempoTotal, TiempoServicio,Precio;
 
     public Sala(){}
 
-    public Sala(int tiempo, String servicio, String user, Double precio, String iduser, String estado,String pago, String accion, String foto, int admTiempoTotal, int tiempoServicio){
+    public Sala(int tiempo, String servicio, String user, int precio, String iduser, String estado,String pago, String accion, String foto, int admTiempoTotal, int tiempoServicio){
         this.Tiempo=tiempo;
         this.Servicio=servicio;
         this.User=user;
@@ -45,11 +44,11 @@ public class Sala {
         User = user;
     }
 
-    public Double getPrecio() {
+    public int getPrecio() {
         return Precio;
     }
 
-    public void setPrecio(Double precio) {
+    public void setPrecio(int precio) {
         Precio = precio;
     }
 

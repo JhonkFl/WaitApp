@@ -302,7 +302,7 @@ public class B3_Horario extends AppCompatActivity implements View.OnClickListene
         map.put("HoraInicio", HoraI);
         //map.put("HoraFinal", HoraF);
 
-        DatosFirestoreBD.ActualizarDatos(B3_Horario.this,"Negocios/" + idUser + "/Horario",id,map,"", new DatosFirestoreBD.GuardarCallback() {
+        DatosFirestoreBD.ActualizarDatos(B3_Horario.this,"Negocios/" + idUser + "/Horario",id,map,"","", new DatosFirestoreBD.GuardarCallback() {
             @Override
             public void onResultado(String resultado) {
                 System.out.println("Horario: " +resultado);
@@ -316,7 +316,7 @@ public class B3_Horario extends AppCompatActivity implements View.OnClickListene
         map.put("HoraFinal", HoraF);
         Toast.makeText(this, "Minutos " + HoraF, Toast.LENGTH_SHORT).show();
 
-        DatosFirestoreBD.ActualizarDatos(B3_Horario.this,"Negocios/" + idUser + "/Horario",id,map,"", new DatosFirestoreBD.GuardarCallback() {
+        DatosFirestoreBD.ActualizarDatos(B3_Horario.this,"Negocios/" + idUser + "/Horario",id,map,"","", new DatosFirestoreBD.GuardarCallback() {
             @Override
             public void onResultado(String resultado) {
                 System.out.println("Horario: " +resultado);

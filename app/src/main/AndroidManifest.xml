@@ -25,12 +25,14 @@
             android:exported="false" />
         <activity
             android:name=".Principal.E1_Servici_Client"
+            android:launchMode="singleTask"
             android:exported="false" />
         <activity
             android:name=".Cliente.D1_BuscarNeg"
             android:exported="false" />
         <activity
             android:name=".Cliente.E1_Sala_Client"
+            android:launchMode="singleTask"
             android:exported="false" />
         <activity
             android:name=".Negocio.C1_Menu_Neg"

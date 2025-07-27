@@ -192,7 +192,7 @@ public class RegistrarServicios extends AppCompatActivity {
         map.put("Tiempo",TServ);
         map.put("SPosition",position);
 
-        DatosFirestoreBD.ActualizarDatos(RegistrarServicios.this, "Negocios/" + idUser + "/Servicios", idServicio, map, "Actualizando Servicio", new DatosFirestoreBD.GuardarCallback() {
+        DatosFirestoreBD.ActualizarDatos(RegistrarServicios.this, "Negocios/" + idUser + "/Servicios", idServicio, map, "Actualizando Servicio","", new DatosFirestoreBD.GuardarCallback() {
             @Override
             public void onResultado(String resultado) {
                 System.out.println(resultado+ "Servicio");

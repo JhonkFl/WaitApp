@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:padding="12dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:background="@drawable/layout_bg_dialog"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/adlam_display"
+            android:gravity="center"
+            android:text="Hola!! Hemos Creado un PDF"
+            android:textColor="#000"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="6dp"
+            android:fontFamily="@font/adlam_display"
+            android:gravity="center"
+            android:text="para que puedas Promocionar tú Negocio"
+            android:textColor="#1C2E90"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_marginTop="26dp"
+            android:gravity="center"
+            android:text="Donde encontrarla?"
+            android:textColor="#757575"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:src="@drawable/ubicastorage1"/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:src="@drawable/publicdoc"/>
+
+        <Button
+            android:id="@+id/btnSaveDPF"
+            android:layout_width="255dp"
+            android:layout_height="48dp"
+            android:layout_margin="10dp"
+            android:backgroundTint="@color/color_element"
+            android:text="OK"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            app:cornerRadius="10dp" />
+
+    </LinearLayout>
+
+</LinearLayout>

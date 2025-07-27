@@ -18,7 +18,11 @@ import java.util.Map;
 
 public class AddMasTime {
 
-    public static void ActualizarTimeUser0(Context context, int valor, String idNeg, String N, String idUser0, int AdminTime, String AccionUser, int TimeServ, String list) {
+    public interface GuardarCallback {
+        void onResultado(String resultado);
+    }
+
+    public static void ActualizarTimeUser0(Context context, int valor, String idNeg, String N, String idUser0, int AdminTime, String AccionUser, int TimeServ, String list, GuardarCallback callback) {
 
         FirebaseFirestore BD = FirebaseFirestore.getInstance();
         BD.collection("Negocios/"+idNeg+"/TiempoGlobal").document("Sala"+N).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -40,7 +44,7 @@ public class AddMasTime {
                         Map<String, Object> map = new HashMap<>();
                         map.put("Tiempo", NuevoTime);
 
-                        DatosFirestoreBD.ActualizarDatos(context, "Negocios/" + idNeg + "/TiempoGlobal", "Sala"+N, map, "", new DatosFirestoreBD.GuardarCallback() {
+                        DatosFirestoreBD.ActualizarDatos(context, "Negocios/" + idNeg + "/TiempoGlobal", "Sala"+N, map, "","", new DatosFirestoreBD.GuardarCallback() {
                             @Override
                             public void onResultado(String resultado) {
                                 if ("Actualizado".equals(resultado)) {
@@ -50,29 +54,31 @@ public class AddMasTime {
                                     Map<String, Object> map2 = new HashMap<>();
                                     map2.put("AdmTiempoTotal", NewTimeUser);
 
-                                    DatosFirestoreBD.ActualizarDatos(context, "Negocios/" + idNeg + "/Sala"+N, idUser0, map2, "Se agrego " + valor + " Minutos más", new DatosFirestoreBD.GuardarCallback() {
+                                    DatosFirestoreBD.ActualizarDatos(context, "Negocios/" + idNeg + "/Sala"+N, idUser0, map2, "Se agrego " + valor + " Minutos más","", new DatosFirestoreBD.GuardarCallback() {
                                         @Override
                                         public void onResultado(String resultado) {
                                             if (resultado.equals("Actualizado")){
-                                                if (AccionUser == null ||AccionUser.equals("En Servicio")){
+                                                callback.onResultado("Exito");
+                                               /* if (AccionUser == null ||AccionUser.equals("En Servicio")){
                                                     System.out.println("________________-----------> User en servicio Actualizar valor");
-                                                    int NewTime = TimeServ + (valor * 60);
-                                                    ActualizarUserEnServi(NewTime,idUser0,idNeg,context,N);
-                                                }
+                                                   // int NewTime = TimeServ + (valor * 60);
+                                                  //  ActualizarUserEnServi(NewTime,idUser0,idNeg,context,N);
+                                                }*/
 
                                                 if (context instanceof Activity) {
-                                                    Activity activity = (Activity) context;
+                                                  /*  Activity activity = (Activity) context;
                                                     Intent intent = activity.getIntent();
-                                                   // activity.overridePendingTransition(0, 0);
+                                                    activity.overridePendingTransition(0, 0);
                                                     activity.finish();
                                                     activity.overridePendingTransition(0, 0);
-                                                    activity.startActivity(intent);
+                                                    activity.startActivity(intent); */
                                                 }
                                             }
                                         }
                                     });
                                 } else {
                                     // Error
+                                    callback.onResultado("Error");
                                 }
                             }
                         });
@@ -98,7 +104,7 @@ public class AddMasTime {
         Map<String, Object> map2 = new HashMap<>();
         map2.put("TiempoServicio", NewTimeUser);
 
-        DatosFirestoreBD.ActualizarDatos(context, "Negocios/" + idNeg + "/Sala"+N, idUser0, map2, "", new DatosFirestoreBD.GuardarCallback() {
+        DatosFirestoreBD.ActualizarDatos(context, "Negocios/" + idNeg + "/Sala"+N, idUser0, map2, "","", new DatosFirestoreBD.GuardarCallback() {
             @Override
             public void onResultado(String resultado) {
                 if (resultado.equals("Actualizado")){
@@ -134,10 +140,9 @@ public class AddMasTime {
            data.put("Tiempo", Time2);
            data.put("AdmTiempoTotal",TimeAdmin2);
 
-           DatosFirestoreBD.ActualizarDatos(context, "Negocios/" + idNeg + "/Sala"+N, idCliets, data, "", new DatosFirestoreBD.GuardarCallback() {
+           DatosFirestoreBD.ActualizarDatos(context, "Negocios/" + idNeg + "/Sala"+N, idCliets, data, "","", new DatosFirestoreBD.GuardarCallback() {
                @Override
                public void onResultado(String resultado) {
-                   Toast.makeText(context, "Actualizado time para "+idCliets, Toast.LENGTH_SHORT).show();
                    System.out.println(resultado+" time para: "+idCliets);
                }
            });
@@ -147,7 +152,7 @@ public class AddMasTime {
            Map<String, Object> data = new HashMap<>();
            data.put("AdmTiempoTotal", TiempoAdmin2);
 
-           DatosFirestoreBD.ActualizarDatos(context, "Negocios/" + idNeg + "/Sala"+N, idCliets, data, "", new DatosFirestoreBD.GuardarCallback() {
+           DatosFirestoreBD.ActualizarDatos(context, "Negocios/" + idNeg + "/Sala"+N, idCliets, data, "","", new DatosFirestoreBD.GuardarCallback() {
                @Override
                public void onResultado(String resultado) {
                    System.out.println(resultado+" time para: "+idCliets);

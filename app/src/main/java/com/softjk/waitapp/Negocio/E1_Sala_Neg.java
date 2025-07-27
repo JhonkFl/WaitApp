@@ -1,6 +1,9 @@
 package com.softjk.waitapp.Negocio;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -20,17 +23,18 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.softjk.waitapp.Cliente.E1_Sala_Client;
 import com.softjk.waitapp.Negocio.AdapterN.Opc2AdpTabLayoutNeg;
+import com.softjk.waitapp.Sistema.Metodos.AlertDialogMetds;
 import com.softjk.waitapp.Sistema.Metodos.MultiMetds;
 import com.softjk.waitapp.R;
+import com.softjk.waitapp.Sistema.Metodos.PreferencesManager;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class E1_Sala_Neg extends AppCompatActivity {
 
     private FirebaseFirestore mfirestore;
-    TextView NombreLocal, lblTiempo;
-    ImageView logoLocal;
-
-    //SalaAdapterNGC mAdapter;
     FirebaseAuth mAuth;
 
     TabLayout Tabla;
@@ -48,10 +52,8 @@ public class E1_Sala_Neg extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
+        PreferencesManager preference = new PreferencesManager(E1_Sala_Neg.this,"Negocio");
         mfirestore = FirebaseFirestore.getInstance();
-        NombreLocal = findViewById(R.id.lblSalaNomLocalNGC);
-        logoLocal = findViewById(R.id.logoSalaLocalNGC);
         mAuth = FirebaseAuth.getInstance();
 
         Tabla = findViewById(R.id.tablaSeccioniconNeg);
@@ -65,8 +67,6 @@ public class E1_Sala_Neg extends AppCompatActivity {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager2.setCurrentItem(tab.getPosition());
-                String Num = String.valueOf(tab.getPosition());
-                System.out.println("ver tab "+Num);
             }
 
             @Override
@@ -81,14 +81,24 @@ public class E1_Sala_Neg extends AppCompatActivity {
         });
         viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
-            public void onPageSelected(int position) {
+            public void onPageSelected(int position) { //mostrar viewPager2 al deslizar sala
                 super.onPageSelected(position);
                 Tabla.getTabAt(position).select();
             }
         });
         //*****************Fin de Tabla Pestaña************************//
 
-
+        //
+        String candado = preference.getString("Candado","");
+        if (candado.equals("2")) {
+            TabLayout.Tab tab2 = Tabla.getTabAt(1);
+            if (tab2 != null) {Tabla.selectTab(tab2);}
+        } else if (candado.equals("3")) {
+            TabLayout.Tab tab3 = Tabla.getTabAt(2);
+            if (tab3 != null) {Tabla.selectTab(tab3);}
+        }else {
+            System.out.println("No realizar accion Tab fila");
+        }
     }
 
     private void ObtenerDatos() {
@@ -96,12 +106,7 @@ public class E1_Sala_Neg extends AppCompatActivity {
         mfirestore.collection("Negocios").document(idUser).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                System.out.println("Datos del Usuario Encontrados");
-                String Nombre = documentSnapshot.getString("Nombre");
-                String Logo = documentSnapshot.getString("Logo");
                 String Salas = documentSnapshot.getString("Salas");
-                NombreLocal.setText(Nombre);
-                MultiMetds.IMG(E1_Sala_Neg.this,Logo,logoLocal,"Si");
                 PonerSalas(Salas);
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -133,14 +138,6 @@ public class E1_Sala_Neg extends AppCompatActivity {
         }
     }
 
-    public void mostrarTab(int position){
-        TabLayout.Tab tab = Tabla.getTabAt(position);
-        if(tab != null){
-            View tabView = tab.view;
-            tabView.setVisibility(View.VISIBLE);
-        }
-    }
-
     private void OcultarDiseTabla(int position) {
         Tabla.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -151,12 +148,6 @@ public class E1_Sala_Neg extends AppCompatActivity {
                 if (tab.getPosition() == 0){
                     viewPager2.setUserInputEnabled(true);
                 }
-             /*   if (tab.getPosition() == position) {
-                    viewPager2.setVisibility(View.GONE); // Ocultar toda la vista
-
-                } else {
-                    viewPager2.setVisibility(View.VISIBLE); // Mostrar
-                } */
             }
 
             @Override

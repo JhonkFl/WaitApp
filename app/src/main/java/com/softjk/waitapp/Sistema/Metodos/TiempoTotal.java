@@ -35,62 +35,64 @@ public class TiempoTotal {
         firestoreListener = id.addSnapshotListener((snapshot, e) -> {
             if (snapshot != null && snapshot.exists()) {
 
-                if (snapshot.contains("Inicio") && snapshot.getTimestamp("Inicio") != null) {
+                if (snapshot.contains("Inicio") && snapshot.getTimestamp("Inicio") != null &&
+                        snapshot.contains("Tiempo") && snapshot.getLong("Tiempo") != null) {
+
                     long startTime = snapshot.getTimestamp("Inicio").toDate().getTime();
                     long durationSeconds = snapshot.getLong("Tiempo") * 1000;
 
-                System.out.println("Ver valor Tiempo Global: "+durationSeconds);
-               // ComenzarContador Tiempo Global
-                if (countdownRunnable != null) {  // Cancelar cualquier temporizador existente
-                    handler.removeCallbacks(countdownRunnable);
-                }
-                countdownRunnable = new Runnable() {
-                    @Override
-                    public void run() {
-                        long currentTime = new Date().getTime();
-                        long remainingTimeMillis = Math.max(startTime + durationSeconds - currentTime, 0);
-
-                        if (remainingTimeMillis > 0) {
-                            long seconds = remainingTimeMillis / 1000;
-                            long minutes = seconds / 60;
-                            long hours = minutes / 60;
-
-                            seconds %= 60;
-                            minutes %= 60;
-
-                            StringBuilder tiempo = new StringBuilder();
-                            String tiempoFormateado;
-                            if (hours > 0) {
-                                tiempo.append(String.format("%02d:%02d:%02d hrs", hours, minutes, seconds));
-                            } else if (minutes > 0) {
-                                tiempo.append(String.format("%02d:%02d min", minutes, seconds));
-                            } else {
-                                tiempo.append(String.format("%02d seg", seconds));
-                            }
-                            lblTiempo.setText(tiempo.toString());
-                            handler.postDelayed(this, 1000);
-
-
-                            //Finaliza el Conteo del temporizador
-                        } else {
-                            if (isCountdownRunning[0]) {
-                                isCountdownRunning[0] = false; // Desactivar Contador por completo para evitar ciclos
-
-                                if (adminServ.equals("Si")){
-                                    lblTiempo.setText("Mis Servicios");
-                                }else {
-                                    lblTiempo.setText("Disponible");
-                                    lblmsgTiemp.setText("No hay Nadie en la Fila");
-                                }
-                            }
-
-                        }
+                    System.out.println("Ver valor Tiempo Global: "+durationSeconds);
+                   // ComenzarContador Tiempo Global
+                    if (countdownRunnable != null) {  // Cancelar cualquier temporizador existente
+                        handler.removeCallbacks(countdownRunnable);
                     }
-                };
-                handler.post(countdownRunnable); // Iniciar el temporizador
-            }
+                    countdownRunnable = new Runnable() {
+                        @Override
+                        public void run() {
+                            long currentTime = new Date().getTime();
+                            long remainingTimeMillis = Math.max(startTime + durationSeconds - currentTime, 0);
+
+                            if (remainingTimeMillis > 0) {
+                                long seconds = remainingTimeMillis / 1000;
+                                long minutes = seconds / 60;
+                                long hours = minutes / 60;
+
+                                seconds %= 60;
+                                minutes %= 60;
+
+                                StringBuilder tiempo = new StringBuilder();
+
+                                if (hours > 0) {
+                                    tiempo.append(String.format("%02d:%02d:%02d hrs", hours, minutes, seconds));
+                                } else if (minutes > 0) {
+                                    tiempo.append(String.format("%02d:%02d min", minutes, seconds));
+                                } else {
+                                    tiempo.append(String.format("%02d seg", seconds));
+                                }
+                                lblTiempo.setText(tiempo.toString());
+                                handler.postDelayed(this, 1000);
+
+
+                                //Finaliza el Conteo del temporizador
+                            } else {
+                                if (isCountdownRunning[0]) {
+                                    isCountdownRunning[0] = false; // Desactivar Contador por completo para evitar ciclos
+
+                                    if (adminServ.equals("Si")){
+                                        lblTiempo.setText("Mis Servicios");
+                                    }else {
+                                        //lblTiempo.setText("Disponible");
+                                        //lblmsgTiemp.setText("No hay Nadie en la Fila");
+                                    }
+                                }
+
+                            }
+                        }
+                    };
+                    handler.post(countdownRunnable); // Iniciar el temporizador
+                }
             } else {
-                Log.d("Firestore", "'Inicio' no disponible aún. Esperando actualización...");
+                Log.d("Firestore", "El Documento No Existe");
             }
         });
     }

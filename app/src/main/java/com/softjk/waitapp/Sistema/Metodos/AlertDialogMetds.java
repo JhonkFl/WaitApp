@@ -9,26 +9,50 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.NumberPicker;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SnapHelper;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.softjk.waitapp.Cliente.C1_Menu_Client;
 import com.softjk.waitapp.Cliente.E1_Sala_Client;
 import com.softjk.waitapp.R;
+import com.softjk.waitapp.Sistema.Metodos.Tiempo.RecyclerAdapterNumeros;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.logging.Handler;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -74,7 +98,7 @@ public class AlertDialogMetds {
 
 
 
-    public static void alertOptionGracias(Context context, ViewGroup viewGroup,String N) {
+    public static void alertOptionGracias(Context context, ViewGroup viewGroup,String Origen) {
         Activity activity = (Activity) context;
         Button btnok;
         ImageView nan;
@@ -96,10 +120,17 @@ public class AlertDialogMetds {
             @Override
             public void onClick(View v) {
                 alertDialog.dismiss();
-                activity.finish();
-                Intent i = new Intent(activity, C1_Menu_Client.class);
-                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                activity.startActivity(i);
+                if (Origen.equals("")){
+                    activity.finish();
+                    Intent i = new Intent(activity, activity.getClass());
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    activity.startActivity(i);
+                }else {
+                    activity.finish();
+                    Intent i = new Intent(activity, C1_Menu_Client.class);
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    activity.startActivity(i);
+                }
             }
         });
 
@@ -133,9 +164,9 @@ public class AlertDialogMetds {
                 preferenceSala.saveString("Pago","Efectivo");
                 Map<String, Object> map = new HashMap<>();
                 map.put("Pago", "Efectivo");
-                System.out.println("Collection para Pago Efectivo: "+Collection+" Doc: "+Document);
+                System.out.println("---AletDialog Pago ---> Collection Efectivo: "+Collection+" Doc: "+Document);
 
-                DatosFirestoreBD.ActualizarDatos(context,Collection,Document,map,"No", new DatosFirestoreBD.GuardarCallback() {
+                DatosFirestoreBD.ActualizarDatos(context,Collection,Document,map,"No","", new DatosFirestoreBD.GuardarCallback() {
                     @Override
                     public void onResultado(String resultado) {
                         if (resultado.equals("Actualizado")){
@@ -148,7 +179,8 @@ public class AlertDialogMetds {
                     Intent i = new Intent(activity, E1_Sala_Client.class);
                     i.putExtra("EntrarSala","EntrarFila");
                     i.putExtra("Codigo",Codigo);
-                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    i.putExtra("UserFila","Si");
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     activity.startActivity(i);
                     activity.finish();
                 });
@@ -165,7 +197,7 @@ public class AlertDialogMetds {
                 map.put("Pago", "Tarjeta");
                 System.out.println("Collection para Pago Tarjeta: "+Collection+" Doc: "+Document);
 
-                DatosFirestoreBD.ActualizarDatos(context,Collection,Document,map,"No", new DatosFirestoreBD.GuardarCallback() {
+                DatosFirestoreBD.ActualizarDatos(context,Collection,Document,map,"No","", new DatosFirestoreBD.GuardarCallback() {
                     @Override
                     public void onResultado(String resultado) {
                         if (resultado.equals("Actualizado")){
@@ -177,7 +209,9 @@ public class AlertDialogMetds {
                 alertDialogs.setOnDismissListener(dialog -> {
                     Intent i = new Intent(activity, E1_Sala_Client.class);
                     i.putExtra("EntrarSala","EntrarFila");
-                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    i.putExtra("Codigo",Codigo);
+                    i.putExtra("UserFila","Si");
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     activity.startActivity(i);
                     activity.finish();
                 });
@@ -223,7 +257,7 @@ public class AlertDialogMetds {
                 map3.put("Tiempo", ServTim);
                 map3.put("Estado", "En Servicio");
 
-                DatosFirestoreBD.ActualizarDatos(activity,"Negocios/"+idNegocio+"/Sala"+NSala,idUser,map3,"", new DatosFirestoreBD.GuardarCallback() {
+                DatosFirestoreBD.ActualizarDatos(activity,"Negocios/"+idNegocio+"/Sala"+NSala,idUser,map3,"","", new DatosFirestoreBD.GuardarCallback() {
                     @Override
                     public void onResultado(String resultado) {
                     }
@@ -251,7 +285,7 @@ public class AlertDialogMetds {
                 Map<String, Object> map = new HashMap<>();
                 map.put("Tiempo", Suma);
 
-                DatosFirestoreBD.ActualizarDatos(activity,"Negocios/"+idNegocio+"/TiempoGlobal","Sala"+NSala,map,"", new DatosFirestoreBD.GuardarCallback() {
+                DatosFirestoreBD.ActualizarDatos(activity,"Negocios/"+idNegocio+"/TiempoGlobal","Sala"+NSala,map,"","", new DatosFirestoreBD.GuardarCallback() {
                     @Override
                     public void onResultado(String resultado) {
                     }
@@ -264,7 +298,7 @@ public class AlertDialogMetds {
                 map2.put("AdmTiempoTotal", Suma);
                 map2.put("Estado", "Trasladandose");
 
-                DatosFirestoreBD.ActualizarDatos(activity,"Negocios/"+idNegocio+"/Sala"+NSala,idUser,map2,"", new DatosFirestoreBD.GuardarCallback() {
+                DatosFirestoreBD.ActualizarDatos(activity,"Negocios/"+idNegocio+"/Sala"+NSala,idUser,map2,"","", new DatosFirestoreBD.GuardarCallback() {
                     @Override
                     public void onResultado(String resultado) {
                     }
@@ -289,8 +323,10 @@ public class AlertDialogMetds {
 
 
 
-    public static void alertOptionMSG(Context context, ViewGroup viewGroup, String collectioUser, String idUser, String Foto, String NombreUser) {
+    public static void alertOptionMSG(Context context, ViewGroup viewGroup, String collectioUser, String idUser, String Foto, String NombreUser, String Servicio, String TipPago, String Precio) {
         Activity activity = (Activity) context;
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        String idNeg = mAuth.getUid();
         Button Si, No;
         TextView Titulo;
         ImageView img;
@@ -320,16 +356,25 @@ public class AlertDialogMetds {
             @Override
             public void onClick(View v) {
                 alertDialog.dismiss();
-                DatosFirestoreBD.EliminarDocument(context, collectioUser, idUser, "", new DatosFirestoreBD.GuardarCallback() {
+
+                DatosFirestoreBD.ActualizarDatosRegistro( idNeg, Servicio, TipPago, Precio, new DatosFirestoreBD.GuardarCallback() {
                     @Override
                     public void onResultado(String resultado) {
-                        System.out.println("Documento eliminado correctamente.");
-                        Intent intent = new Intent(context,activity.getClass());
-                        activity.finish();
-                        activity.overridePendingTransition(0,0);
-                        activity.startActivity(intent);
+                        if (resultado.equals("Actualizado")){
+                            DatosFirestoreBD.EliminarDocument(context, collectioUser, idUser, "", new DatosFirestoreBD.GuardarCallback() {
+                                @Override
+                                public void onResultado(String resultado) {
+                                    System.out.println("Documento eliminado correctamente.");
+                                    Intent intent = new Intent(context,activity.getClass());
+                                    activity.finish();
+                                    activity.overridePendingTransition(0,0);
+                                    activity.startActivity(intent);
+                                }
+                            });
+                        }
                     }
                 });
+
             }
         });
 
@@ -352,7 +397,23 @@ public class AlertDialogMetds {
 
 
 
-    public static void MsgEliminar(Context context, String Titulo, String Mensaje,String id,String Colecction, String TipoUser, String N,String Codigo) {
+    public static void MsgEliminarAdmin(Context context, String Titulo, String Servicio,String idClient,String Colecction, String TipoPago, String Precio,ViewGroup viewGroup,String N) {
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        String idNegocio = mAuth.getUid();
+        new SweetAlertDialog(context, SweetAlertDialog.NORMAL_TYPE).setTitleText(Titulo)
+                .setCancelText("No").setConfirmText("Si")
+                .showCancelButton(true).setCancelClickListener(sDialog -> {
+                    sDialog.dismissWithAnimation();
+
+                }).setConfirmClickListener(sweetAlertDialog -> {
+
+                    alertPorQueEliminar(idNegocio, Servicio,TipoPago,Precio,Colecction,idClient,context,viewGroup,N);
+                    sweetAlertDialog.dismissWithAnimation();
+
+                }).show();
+    }
+
+    public static void MsgEliminar(Context context, String Titulo, String Mensaje,String id,String Colecction, String N,String Codigo) {
         FirebaseFirestore BD = FirebaseFirestore.getInstance();
         new SweetAlertDialog(context, SweetAlertDialog.NORMAL_TYPE).setTitleText(Titulo)
                 .setContentText(Mensaje)
@@ -361,21 +422,239 @@ public class AlertDialogMetds {
                     sDialog.dismissWithAnimation();
 
                 }).setConfirmClickListener(sweetAlertDialog -> {
+
+                    FirebaseFirestore db = FirebaseFirestore.getInstance(); // esto es para uso personal
+                    DocumentReference reference = db.collection(Colecction).document(id);
+                    reference.update("Estado", "Cancelado");
+
                     sweetAlertDialog.dismissWithAnimation();
-                    BD.collection(Colecction).document(id).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+
+                    //Esto es para uso general
+                   /*  BD.collection(Colecction).document(id).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
-                            if (TipoUser.equals("Cliente")){
-                                LimpiarDatos.LimpiarSala(context,N,Codigo);
-                            }
+                            LimpiarDatos.LimpiarSala(context,N,Codigo);
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                         }
-                    });
+                    }); */
 
                 }).show();
+    }
+
+    private static void alertPorQueEliminar(String idNeg, String Servicio, String TipPago, String Precio, String collectioUser, String idUser, Context context, ViewGroup viewGroup, String N) {
+        Activity activity = (Activity) context;
+        Button btnok;
+        TextView texto, Titulo, SubTitulo;
+        RadioGroup Grupo;
+        ImageButton Cerrar;
+        ImageView IMG;
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        View view1 = LayoutInflater.from(context).inflate(R.layout.z_custom_dialog_info2, viewGroup, false);
+        builder.setCancelable(false);
+        builder.setView(view1);
+
+        btnok = view1.findViewById(R.id.btnOKElim);
+        Grupo = view1.findViewById(R.id.RdioGrupElim);
+        Cerrar = view1.findViewById(R.id.MS_CerraElim);
+        texto = view1.findViewById(R.id.Texto);
+        Titulo = view1.findViewById(R.id.tituloAlert);
+        IMG = view1.findViewById(R.id.imgDialog);
+        SubTitulo = view1.findViewById(R.id.msgAlert);
+
+        final AlertDialog alertDialog = builder.create();
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        Grupo.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (checkedId != -1) { // Verifica que haya un RadioButton seleccionado
+                    RadioButton selectedRadioButton = group.findViewById(checkedId);
+                    String Motivo = selectedRadioButton.getText().toString(); // Obtiene el texto del seleccionado
+
+                    btnok.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+
+                            if (Motivo.equals("No se Mostró el Mensaje")){
+                                alertDialog.dismiss();
+                                RealizarAccion(idNeg,Servicio,TipPago,Precio,collectioUser,idUser,context,activity);
+
+                            } else if (Motivo.equals("El Cliente no Asistió")) {
+                                Grupo.setVisibility(View.GONE);
+                                Cerrar.setVisibility(View.GONE);
+                                SubTitulo.setVisibility(View.GONE);
+                                btnok.setText("OK");
+                                Titulo.setText("El Cliente no Asistió");
+                                texto.setText("Ok, El Tiempo Restante lo tomaremos como un Receso");
+                                MultiMetds.IMG(context,"https://pic.pikbest.com/02/22/85/82p888piC2CI.jpg!bw700",IMG,"No");
+
+                                btnok.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        FirebaseFirestore db = FirebaseFirestore.getInstance();
+                                        DocumentReference reference = db.collection("Negocios/"+idNeg+"/Sala"+N).document(idUser);
+                                        reference.update("User", "RECESO");
+
+                                        alertDialog.dismiss();
+                                    }
+                                });
+
+                            } else if (Motivo.equals("Terminé antes de lo esperado")) {
+                                alertDialog.dismiss();
+                                RealizarAccion(idNeg,Servicio,TipPago,Precio,collectioUser,idUser,context,activity);
+
+                            }else {
+                                Toast.makeText(activity, "Seleccione un Motivo", Toast.LENGTH_SHORT).show();
+                            }
+                            //alertDialog.dismiss();
+                        }
+                    });
+                }
+            }
+        });
+
+
+        Cerrar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+            }
+        });
+
+        if (!activity.isFinishing() && !activity.isDestroyed()) {
+            alertDialog.show();
+        }
+    }
+
+
+    private static void RealizarAccion(String idNeg,String  Servicio,String TipPago,String Precio, String collectioUser, String idUser, Context context, Activity activity) {
+        DatosFirestoreBD.ActualizarDatosRegistro( idNeg, Servicio, TipPago, Precio, new DatosFirestoreBD.GuardarCallback() {
+            @Override
+            public void onResultado(String resultado) {
+                if (resultado.equals("Actualizado")){
+                    DatosFirestoreBD.EliminarDocument(context, collectioUser, idUser, "", new DatosFirestoreBD.GuardarCallback() {
+                        @Override
+                        public void onResultado(String resultado) {
+                            System.out.println("Documento eliminado correctamente.");
+                            Intent intent = new Intent(context,activity.getClass());
+                            activity.finish();
+                            activity.overridePendingTransition(0,0);
+                            activity.startActivity(intent);
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+
+    public static void DialogReceso(Activity activity, ViewGroup viewGroup, String idNeg, String N){
+        Button Agregar;
+        ImageButton Cerra;
+        RecyclerView recyclerNumeros;
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        View view1 = LayoutInflater.from(activity).inflate(R.layout.z_custom_dialog_receso, viewGroup, false);
+        builder.setCancelable(false);
+        builder.setView(view1);
+
+        Agregar = view1.findViewById(R.id.btnSaveReces);
+        Cerra = view1.findViewById(R.id.MS_CerraDescan);
+        recyclerNumeros = view1.findViewById(R.id.recyclerNumeros);
+
+        final AlertDialog alertDialog = builder.create();
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false);
+        recyclerNumeros.setLayoutManager(layoutManager);
+
+        SnapHelper snapHelper = new LinearSnapHelper();
+        snapHelper.attachToRecyclerView(recyclerNumeros);
+
+        List<Integer> numeros = new ArrayList<>();
+        for (int i = 5; i <= 60; i++) {
+            numeros.add(i);
+        }
+        recyclerNumeros.setItemAnimator(new DefaultItemAnimator());
+        RecyclerAdapterNumeros adapter = new RecyclerAdapterNumeros(numeros, numero -> {
+
+           Agregar.setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View v) {
+                   DatosFirestoreBD.ObtenerTiempoInicio("Negocios/" + idNeg + "/TiempoGlobal", "Sala" + N, new DatosFirestoreBD.GuardarDateCallback() {
+                       @Override
+                       public void onResultado(Date HoraInical, Long TimeGlobal) {
+                           if (HoraInical != null){
+                               Date horaPositList = new Date();
+                               Long tiempo = TimeGlobal + (numero * 60); // en segundos
+                               Map<String, Object> map = new HashMap<>();
+                               map.put("User","RECESO");
+                               map.put("AdmTiempoTotal",tiempo);
+                               map.put("Inicio",HoraInical);
+                               map.put("Creacion",horaPositList);
+                               map.put("Tiempo",numero);
+                               DatosFirestoreBD.GuardarDatos(activity, "Negocios/" + idNeg + "/Sala" + N, "Receso" + idNeg, map, "Config Receso", new DatosFirestoreBD.GuardarCallback() {
+                                   @Override
+                                   public void onResultado(String resultado) {
+                                       FirebaseFirestore BD = FirebaseFirestore.getInstance();
+                                       if (resultado.equals("Guardado")){
+                                           DocumentReference reference = BD.collection("Negocios/" + idNeg + "/TiempoGlobal").document("Sala" + N);
+                                           reference.update("Tiempo", tiempo);
+                                           alertDialog.dismiss();
+                                       }
+                                   }
+                               });
+                           }
+                       }
+                   });
+
+               }
+           });
+        });
+
+        recyclerNumeros.setAdapter(adapter);
+
+        Cerra.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+            }
+        });
+
+        if (!activity.isFinishing() && !activity.isDestroyed()) {
+            alertDialog.show();
+        }
+
+    }
+
+
+
+    public static void DialogPDF(Activity activity, ViewGroup viewGroup){
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        View view1 = LayoutInflater.from(activity).inflate(R.layout.z_custom_dialog_ubica_pdf, viewGroup, false);
+        builder.setCancelable(false);
+        builder.setView(view1);
+
+        Button Ok = view1.findViewById(R.id.btnSaveDPF);
+
+        final AlertDialog alertDialog = builder.create();
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        Ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+            }
+        });
+
+        if (!activity.isFinishing() && !activity.isDestroyed()) {
+            alertDialog.show();
+        }
     }
 
 

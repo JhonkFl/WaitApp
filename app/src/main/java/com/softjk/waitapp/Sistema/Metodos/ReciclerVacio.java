@@ -24,14 +24,14 @@ public class ReciclerVacio {
 
     public void verificarRecycler(String Coleccion, RecyclerView.Adapter<?> mAdapter, String idNegocio, String N, Activity activity, Callback callback) {
 
-        if (mAdapter.getItemCount() == 0) {
+        if (mAdapter.getItemCount() == 0) { //--------------------------------- Hacer Comparacion si existe la Coleccion para evitar a que actualice
             BD.collection(Coleccion).get().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     if (task.getResult().isEmpty()) {
                         Map<String, Object> map = new HashMap<>();
                         map.put("Tiempo", 0);
 
-                        DatosFirestoreBD.ActualizarDatos(activity,"Negocios/"+idNegocio+"/TiempoGlobal","Sala"+N,map,"No", new DatosFirestoreBD.GuardarCallback() {
+                        DatosFirestoreBD.ActualizarDatos(activity,"Negocios/"+idNegocio+"/TiempoGlobal","Sala"+N,map,"No","Vacio", new DatosFirestoreBD.GuardarCallback() {
                             @Override
                             public void onResultado(String resultado) {
                             }
@@ -45,7 +45,8 @@ public class ReciclerVacio {
                         callback.onResult("1Elemt");
                     }
                 } else {
-                    callback.onResult("Error al obtener los datos: " + task.getException());
+                    System.out.println("Error al obtener los datos Vacio: "+task.getException());
+                    callback.onResult("Error");
                 }
             });
         } else {

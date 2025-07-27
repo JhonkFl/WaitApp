@@ -75,9 +75,25 @@
         </LinearLayout>
 
 
-        <Space
-            android:layout_width="10dp"
-            android:layout_height="wrap_content" />
+        <LinearLayout
+            android:id="@+id/ItemLinerMuni"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:visibility="gone">
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="8dp"
+                android:src="@drawable/localidad"/>
+            <TextView
+                android:id="@+id/ItemMunic"
+                android:layout_width="wrap_content"
+                android:layout_height="22dp"
+                android:text="Municipio"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+        </LinearLayout>
 
     <LinearLayout
         android:id="@+id/ItemLinerUbic"
@@ -103,9 +119,9 @@
             android:layout_width="match_parent"
             android:layout_height="22dp"
             android:paddingStart="10dp"
-            android:text="Disponibilidad..."
+            android:text="Cargando..."
             android:gravity="center_horizontal"
-            android:textSize="14sp"
+            android:textSize="17sp"
             android:textStyle="bold" />
         <Button
             android:id="@+id/ItemAddNeg"
@@ -125,9 +141,9 @@
             android:backgroundTint="#A9EF2500"
             android:layout_marginStart="8dp"
             android:src="@drawable/equis"
-            android:translationY="-195dp"
+            android:translationY="-210dp"
             android:visibility="gone"
-            android:translationX="53dp"/>
+            android:translationX="43dp"/>
 
     </LinearLayout>
 

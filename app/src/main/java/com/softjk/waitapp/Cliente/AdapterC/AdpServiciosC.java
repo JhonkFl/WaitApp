@@ -1,7 +1,7 @@
 package com.softjk.waitapp.Cliente.AdapterC;
 
 import static com.softjk.waitapp.Cliente.E1_Sala_Client.Codigo;
-import static com.softjk.waitapp.Cliente.FragmentSalaC.SalaC1.viewGroup;
+import static com.softjk.waitapp.Cliente.E1_Sala_Client.viewGroup;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -189,6 +189,7 @@ public class AdpServiciosC extends FirestoreRecyclerAdapter<ServicNg, AdpServici
         map.put("Precio", precio);
         map.put("Creacion",fechaHoraCreacionDoc);
         map.put("AdmTiempoTotal",SumaTimTotal);
+        map.put("TiempoServicio",TiempoServicio * 60);
         map.put("Foto",Perfil);
         System.out.println("Revisar datos a guardar:-> TimeEspera:"+TiempoEspera+" TimeTotal:"+SumaTimTotal+" idUser:"+idUser);
 
@@ -230,7 +231,7 @@ public class AdpServiciosC extends FirestoreRecyclerAdapter<ServicNg, AdpServici
                     preferenceSala.saveString("UserFila"+N,"Si");
                     //progressDialog.dismiss();
                 }
-                System.out.println("Ver Cantidad Salas del Neg para enviar a Sala "+SalasN +" ----->AdpServiClient");
+                System.out.println("--- AdapterServici --> Cantidad Salas a enviar a Sala "+SalasN +" *** Registro Finalizado ***");
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

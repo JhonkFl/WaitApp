@@ -10,11 +10,13 @@
 
     <ImageView
         android:id="@+id/imageV"
-        android:layout_width="681dp"
-        android:layout_height="419dp"
-        android:scaleType="centerCrop"
-
-        android:src="@drawable/curva_wave"
+        android:layout_width="148dp"
+        android:layout_height="218dp"
+        android:rotationX="180"
+        android:rotationY="180"
+        android:translationX="-8dp"
+        android:translationY="-8dp"
+        android:src="@drawable/curva_lateral2"
         app:layout_constraintBottom_toBottomOf="@+id/swEncontrarNgc"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -40,7 +42,7 @@
         android:id="@+id/imageView14"
         android:layout_width="349dp"
         android:layout_height="195dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="44dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2"
@@ -48,8 +50,8 @@
 
     <SearchView
         android:id="@+id/swEncontrarNgc"
-        android:layout_width="234dp"
-        android:layout_height="54dp"
+        android:layout_width="166dp"
+        android:layout_height="50dp"
         android:layout_marginTop="12dp"
         android:background="@drawable/border_text"
         app:layout_constraintEnd_toEndOf="parent"
@@ -71,11 +73,10 @@
         android:id="@+id/imgPublic"
         android:layout_width="386dp"
         android:layout_height="66dp"
-        android:layout_marginTop="8dp"
         android:backgroundTint="#FF5722"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/listaEncontrarNgc"
         app:srcCompat="?attr/panelBackground" />
 
     <ImageView

@@ -37,6 +37,7 @@ public class LimpiarDatos {
         preferencesManager.saveString("UserServicio"+N,null);
         preferencesManager.saveString("Alarma"+N,null);
         preferencesManager.saveString("NSala"+N,null);
+        preferencesManager.saveInt("salidaApp",0);
 
         System.out.println("-----Metodo------> Datos Borrado exitosamente "+Codigo+" -- Sala"+N);
     }

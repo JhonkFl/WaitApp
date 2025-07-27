@@ -39,23 +39,26 @@
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="110dp"
+            android:layout_height="100dp"
             android:layout_margin="20dp"
-            app:cardCornerRadius="20dp">
+            app:cardCornerRadius="20dp"
+            app:cardElevation="5dp">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_gravity="center">
+                android:layout_gravity="center"
+                android:orientation="vertical">
+
                 <TextView
                     android:id="@+id/lblMensajeTiempo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Tiempo de Espera"
-                    android:textSize="25sp"
-                    android:textStyle="bold"
-                    android:paddingBottom="10dp"
-                    android:textAlignment="center"/>
+                    android:textAlignment="center"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+
                 <TextView
                     android:id="@+id/lblTiempo"
                     android:layout_width="match_parent"
@@ -63,33 +66,90 @@
                     android:text="00:00:00 hrs"
                     android:textAlignment="center"
                     android:textColor="#009688"
+                    android:textSize="28sp"
                     android:textStyle="bold"
-                    android:textSize="30sp"/>
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/lblTiempoGlobal1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="00:00:00 hrs"
+                    android:textAlignment="center"
+                    android:textColor="#009688"
+                    android:textSize="28sp"
+                    android:textStyle="bold" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/CardLista"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginBottom="20dp"
-        app:cardCornerRadius="20dp"
-        android:visibility="visible">
-        <LinearLayout
+        <androidx.cardview.widget.CardView
+            android:id="@+id/CardLista"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_gravity="center"
-            android:padding="20sp">
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvSala1Client"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_weight="2"
+            android:visibility="visible"
+            app:cardCornerRadius="20dp">
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="center" />
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
+                android:layout_gravity="center"
+                android:orientation="vertical"
+                android:padding="20sp">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvSala1Client"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/CardTraslado"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginBottom="20dp"
+            android:visibility="gone"
+            app:cardCornerRadius="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:orientation="vertical"
+                android:padding="14dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="El Negocio lo esta Esperando !!"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:textSize="19sp"/>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    app:cardCornerRadius="10dp"
+                    android:layout_marginVertical="10dp">
+                    <ImageView
+                        android:id="@+id/ImgAuto"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"/>
+                </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Dirigase al Negocio por Favor."
+                    android:textSize="17sp"/>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
             android:id="@+id/CardDatos"
@@ -98,23 +158,37 @@
             android:layout_marginHorizontal="20dp"
             android:layout_marginBottom="20dp"
             app:cardCornerRadius="20dp"
+            app:cardElevation="5dp"
             android:visibility="gone">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_gravity="center"
-                android:padding="20sp">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Datos Solicitados"
-                    android:textSize="25sp"
-                    android:textStyle="bold"
-                    android:paddingBottom="10dp"/>
+                android:padding="14dp">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:text="Datos Solicitados"
+                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        android:paddingBottom="10dp"/>
+                    <ImageView
+                        android:id="@+id/btnLista1"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/list"/>
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
                     <LinearLayout
@@ -126,27 +200,27 @@
                             android:layout_height="wrap_content"
                             android:text="Servicio:"
                             android:textStyle="bold"
-                            android:textSize="23sp"
+                            android:textSize="20sp"
                             android:paddingBottom="4dp"/>
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Precio : $  "
+                            android:text="Precio :   "
                             android:textStyle="bold"
-                            android:textSize="23sp"
+                            android:textSize="20sp"
                             android:paddingBottom="4dp"/>
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Pagar: "
                             android:textStyle="bold"
-                            android:textSize="23sp"/>
+                            android:textSize="20sp"/>
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Pago:"
                             android:textStyle="bold"
-                            android:textSize="23sp"/>
+                            android:textSize="20sp"/>
                     </LinearLayout>
 
                     <LinearLayout
@@ -154,56 +228,91 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
                         <TextView
+                            android:id="@+id/lblServSelecc"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Corte1"
-                            android:textSize="22sp"
+                            android:text="..."
+                            android:textSize="20sp"
                             android:paddingBottom="5dp"/>
                         <TextView
+                            android:id="@+id/lblPrecioSelecc"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="23.00"
-                            android:textSize="22sp"
+                            android:text="..."
+                            android:textSize="20sp"
                             android:paddingBottom="5dp"/>
                         <TextView
+                            android:id="@+id/lblTPagoSelecc"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Efectivo"
-                            android:textSize="22sp"
+                            android:textSize="20sp"
                             android:paddingBottom="5dp"/>
                         <TextView
+                            android:id="@+id/lblPagado"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Pendiente"
-                            android:textSize="22sp"/>
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text=""
-                            android:textSize="23sp"/>
+                            android:textSize="20sp"/>
                     </LinearLayout>
+                    <ImageView
+                        android:id="@+id/imgEspera"
+                        android:layout_width="0dp"
+                        android:layout_height="80dp"
+                        android:layout_weight="2"
+                        android:layout_gravity="center"/>
                 </LinearLayout>
-
-                <Button
-                    android:id="@+id/btnPago"
-                    android:layout_width="226dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="Pagar"
-                    android:visibility="gone"/>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
+
+        <LinearLayout
+            android:id="@+id/LinerIdentificacion"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:text="Identificación:"
+                android:textSize="20sp" />
+            <TextView
+                android:id="@+id/lblIdentificacion1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:layout_gravity="center"
+                android:textColor="@color/color_text"
+                android:text="Nombre"
+                android:textSize="22sp"
+                android:textStyle="bold"/>
+        </LinearLayout>
+
+
 
         <Button
             android:id="@+id/btnReservarTurno"
             android:layout_width="302dp"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
             android:layout_gravity="center"
             android:backgroundTint="#009688"
             android:text="Hacer Fila"
             android:textColor="@color/white"
             app:cornerRadius="10dp" />
 
+        <Button
+            android:id="@+id/btnPago"
+            android:layout_width="302dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp"
+            android:backgroundTint="#4CAF50"
+            android:text="Pagar"
+            android:textColor="@color/white"
+            app:cornerRadius="10dp"
+            android:visibility="gone"/>
     </LinearLayout>
 
 </FrameLayout>

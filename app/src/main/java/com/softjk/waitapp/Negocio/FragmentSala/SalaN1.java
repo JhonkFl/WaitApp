@@ -2,6 +2,8 @@ package com.softjk.waitapp.Negocio.FragmentSala;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -13,19 +15,28 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.softjk.waitapp.Negocio.AdapterN.AdpSalaNeg;
 import com.softjk.waitapp.Principal.E1_Servici_Client;
+import com.softjk.waitapp.Sistema.Metodos.AlertDialogMetds;
+import com.softjk.waitapp.Sistema.Metodos.DatosFirestoreBD;
+import com.softjk.waitapp.Sistema.Metodos.LimpiarDatos;
 import com.softjk.waitapp.Sistema.Metodos.PreferencesManager;
 import com.softjk.waitapp.Sistema.Metodos.ReciclerVacio;
 import com.softjk.waitapp.Sistema.Metodos.TiempoGlobalPers;
 import com.softjk.waitapp.Sistema.Modelo.Sala;
 import com.softjk.waitapp.R;
+
+import java.util.List;
 
 public class SalaN1 extends Fragment {
     PreferencesManager preferencesManager;
@@ -33,11 +44,12 @@ public class SalaN1 extends Fragment {
     FirebaseAuth mAuth;
     Query query;
 
-    TextView btnReparar,MensajeTime;
-    Button HacerFila, Mas5, Mas10;
+    TextView btnReparar;
+    Button HacerFila, Receso;
     RecyclerView listaSala;
-    public static TextView lblTiempo, lblmsgTiemp;
-    public static ViewGroup viewGroup;
+    ImageButton candado;
+    public static TextView  lblmsgTiemp;
+    public static ViewGroup viewGroupN;
 
     AdpSalaNeg mAdapter;
     static String idUser;
@@ -51,12 +63,13 @@ public class SalaN1 extends Fragment {
         preferencesManager = new PreferencesManager(getActivity(),"Negocio");
         BD = FirebaseFirestore.getInstance();
         btnReparar = view.findViewById(R.id.btnPagoNeg);
-        lblTiempo = view.findViewById(R.id.lblTiempoNeg);
-        lblmsgTiemp = view.findViewById(R.id.lblMensajeTiempoNeg);
+        lblmsgTiemp = view.findViewById(R.id.lblTiempoNeg);
         HacerFila = view.findViewById(R.id.btnReservarTurnoNeg);
         mAuth = FirebaseAuth.getInstance();
         idUser = mAuth.getCurrentUser().getUid();
-        viewGroup = view.findViewById(android.R.id.content);
+        viewGroupN = view.findViewById(android.R.id.content);
+        Receso = view.findViewById(R.id.Break);
+        candado = view.findViewById(R.id.CandadoSala1);
         setUpRecyclerView1(view);
 
         HacerFila.setOnClickListener(new View.OnClickListener() {
@@ -74,15 +87,33 @@ public class SalaN1 extends Fragment {
         btnReparar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // LimpiarDatos.LimpiarSala(getActivity(), "1");
-
                 Intent intent = getActivity().getIntent();
-                getActivity().overridePendingTransition(0, 0);
+                //getActivity().overridePendingTransition(0, 0);
                 getActivity().finish();
                 getActivity().overridePendingTransition(0, 0);
                 startActivity(intent);
             }
         });
+
+        Receso.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialogMetds.DialogReceso(getActivity(),viewGroupN,idUser,"1");
+            }
+        });
+
+        candado.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                preferencesManager.saveString("Candado","1");
+                candado.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#06A60D")));
+            }
+        });
+
+        String ColorearCandado = preferencesManager.getString("Candado","0");
+        if (ColorearCandado.equals("1")){
+            candado.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#06A60D")));
+        }
 
         return view;
     }
@@ -97,15 +128,9 @@ public class SalaN1 extends Fragment {
 
         FirestoreRecyclerOptions<Sala> firestoreRecyclerOptions =
                 new FirestoreRecyclerOptions.Builder<Sala>().setQuery(query, Sala.class).build();
-
-        mAdapter = new AdpSalaNeg(firestoreRecyclerOptions, getActivity(), new AdpSalaNeg.TiempoListener() {
-            @Override
-            public void onSolicitarTemporizador(String path, String idDoc, TextView contadorTextView, String Foto,String Nombre) {
-                TiempoGlobalPers.getTiempoItemPers(path, idDoc, contadorTextView,Foto,Nombre,viewGroup,getActivity());
-
-            }
-        });
-
+        mAdapter = new AdpSalaNeg(firestoreRecyclerOptions, getActivity());
+        FinalizacionClient();
+        IniciarTemporizador();
         mAdapter.notifyDataSetChanged();
         listaSala.setAdapter(mAdapter);
         mAdapter.startListening();
@@ -117,39 +142,58 @@ public class SalaN1 extends Fragment {
             if (resultado.equals("Vacio")){
                 SharedPreferences prefs = getActivity().getSharedPreferences("alertas_mostradas", getActivity().MODE_PRIVATE);
                 prefs.edit().clear().apply(); // Elimina todas las claves
+                LimpiarDatos.LimpiarEntrar(getActivity(),"1","Negocio");
             }
         });
 
     }
 
-
-
-
-
-
-
-
-
-
-    private void EscucharCambio(AdpSalaNeg mAdapter) {
-        mAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
-            @Override
-            public void onItemRangeInserted(int positionStart, int itemCount) {
-                super.onItemRangeInserted(positionStart, itemCount);
-                Log.d("RecyclerView", "Se agregaron " + itemCount + " elementos en la posición " + positionStart);
-            }
-
-            @Override
-            public void onItemRangeRemoved(int positionStart, int itemCount) {
-                super.onItemRangeRemoved(positionStart, itemCount);
-                Log.d("RecyclerView", "Se eliminaron " + itemCount + " elementos desde la posición " + positionStart);
-            }
-
-            @Override
-            public void onChanged() {
-                super.onChanged();
-                Log.d("RecyclerView", "Datos cambiaron en el adaptador.");
-            }
+    private void IniciarTemporizador() {
+        mAdapter.setOnIDContador(id -> {
+            TiempoGlobalPers.reiniciarTemporizador("Negocios/" + idUser + "/Sala1", id, lblmsgTiemp, getActivity(), "1");
         });
     }
+
+    private void FinalizacionClient() {
+
+        mAdapter.setOnItemID(idCliente -> {
+            DocumentReference docRef = FirebaseFirestore.getInstance()
+                    .collection("Negocios")
+                    .document(idUser)
+                    .collection("Sala1")
+                    .document(idCliente);
+
+            docRef.get().addOnSuccessListener(documentSnapshot -> {
+                if (documentSnapshot.exists()){
+                    Sala model = documentSnapshot.toObject(Sala.class);
+                    String foto = model.getFoto();
+                    String nombreUser = model.getUser();
+                    String servicio = model.getServicio();
+                    String tipoPago = model.getPago();
+                    int precio = model.getPrecio();
+
+                    if (nombreUser.equals("RECESO")){
+                        Toast.makeText(getActivity(), "Eliminar Documento", Toast.LENGTH_SHORT).show();
+                        DatosFirestoreBD.EliminarDocument(getActivity(), "Negocios/"+idUser+"/Sala1", idCliente, "Receso Finalizado", new DatosFirestoreBD.GuardarCallback() {
+                            @Override
+                            public void onResultado(String resultado) {
+                                System.out.println("Documento eliminado correctamente.");
+                                LimpiarDatos.LimpiarEntrar(getActivity(),"1","Negocio");
+                                Intent intent = getActivity().getIntent();
+                                //getActivity().overridePendingTransition(0, 0);
+                                getActivity().finish();
+                                getActivity().overridePendingTransition(0, 0);
+                                startActivity(intent);
+                            }
+                        });
+                    }else {
+                        AlertDialogMetds.alertOptionMSG(getActivity(), viewGroupN, "Negocios/" + idUser + "/Sala1",
+                                idCliente, foto, nombreUser, servicio, tipoPago, String.valueOf(precio));
+                    }
+                }
+            });
+        });
+    }
+
+
 }

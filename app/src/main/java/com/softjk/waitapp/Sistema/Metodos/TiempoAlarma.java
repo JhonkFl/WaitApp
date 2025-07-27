@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.provider.Settings;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -40,99 +41,108 @@ public class TiempoAlarma {
         DocumentReference id = BD.collection(Collecction).document(Document);
         PreferencesManager preferenceSala = new PreferencesManager(context,Codigo);
         System.out.println("Ruta BD Tiempo: "+ Collecction + " ---> Ducument: "+Document);
-        handler = new Handler();
 
+        handler = new Handler();
         final boolean[] alarmaCancelada = {false};
         final boolean[] isCountdownRunning = {true};
-        if (firestoreListener != null) {
-            firestoreListener.remove(); // Detén el listener anterior
-        }
+        final long[] lastStartTime = {0};
+        final long[] lastDurationMillis = {0};
+        final Runnable[] countdownRunnable = {null}; // asegúrate de que esté accesible globalmente
+
         firestoreListener = id.addSnapshotListener((snapshot, e) -> {
             if (snapshot != null && snapshot.exists()) {
                 long startTime = snapshot.getTimestamp("Inicio").toDate().getTime();
                 long durationSeconds = snapshot.getLong("Tiempo") * 1000;
 
-                //para la Alarma
-                long tiempoFinal = startTime + durationSeconds;
-                long tiempoAlarma = tiempoFinal - (10 * 60 * 1000); // Restar 10 minutos en milisegundos
-                if (PrimerUser.equals("No") || PrimerUser.isEmpty()){
-                    //solo para pruebas
-                    Date fechaFinal = new Date(startTime + durationSeconds);
-                    SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-                    String alarmaFinalizado = formato.format(fechaFinal);
+                if (startTime != lastStartTime[0] || durationSeconds != lastDurationMillis[0]) {
+                    lastStartTime[0] = startTime;
+                    lastDurationMillis[0] = durationSeconds;
 
-                    Date fechaAlarma = new Date(tiempoAlarma); //10 minutos antes
-                    SimpleDateFormat formato2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-                    String fechaLegible2 = formato2.format(fechaAlarma);
-                    System.out.println("La alarma está programada para: " + fechaLegible2);           //*
-
-                    String alarma = preferenceSala.getString("Alarma"+N, "Activar");
-                    if (alarma.equals("Activar")){
-                        programarAlarma(context, tiempoAlarma, Integer.parseInt(N)); //Importante
+                    if (countdownRunnable[0] != null) {
+                        handler.removeCallbacks(countdownRunnable[0]);
+                        handler.removeCallbacksAndMessages(null);
                     }
-                }
+                    //para la Alarma
+                    long tiempoFinal = startTime + durationSeconds;
+                    long tiempoAlarma = tiempoFinal - (10 * 60 * 1000); // Restar 10 minutos en milisegundos
 
-                // ComenzarContador Tiempo Global
-                if (countdownRunnable != null) {  // Cancelar cualquier temporizador existente
-                    handler.removeCallbacks(countdownRunnable);
-                    handler.removeCallbacksAndMessages(null);
-                }
-                countdownRunnable = new Runnable() {
-                    @Override
-                    public void run() {
-                        long currentTime = new Date().getTime();
-                        long remainingTimeMillis = Math.max(startTime + durationSeconds - currentTime, 0);
+                    if (PrimerUser.equals("No") || PrimerUser.isEmpty()) {
+                        //solo para pruebas
+                        Date fechaFinal = new Date(startTime + durationSeconds);
+                        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+                        String alarmaFinalizado = formato.format(fechaFinal);
 
-                        if (remainingTimeMillis > 0) {
-                            long seconds = remainingTimeMillis / 1000;
-                            long minutes = seconds / 60;
-                            long hours = minutes / 60;
+                        Date fechaAlarma = new Date(tiempoAlarma); //10 minutos antes
+                        SimpleDateFormat formato2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+                        String fechaLegible2 = formato2.format(fechaAlarma);
+                        System.out.println("La alarma está programada para: " + fechaLegible2);           //*
 
-                            seconds %= 60;
-                            minutes %= 60;
+                        String alarma = preferenceSala.getString("Alarma" + N, "Activar");
+                        if (alarma.equals("Activar")) {
+                            programarAlarma(context, tiempoAlarma, Integer.parseInt(N)); //Importante
+                        }
+                    }
 
-                            String tiempo;
-                            if (hours > 0) {
-                                tiempo = String.format("%02d:%02d:%02d hrs", hours, minutes, seconds);
-                            } else if (minutes > 0) {
-                                tiempo = String.format("%02d:%02d min", minutes, seconds);
-                            } else {
-                                tiempo = String.format("%02d seg", seconds);
-                            }
-                            lblTiempo.setText(tiempo);
-                            handler.postDelayed(this, 1000);
 
-                            if (!alarmaCancelada[0] && remainingTimeMillis <= 180000){
-                                preferenceSala.saveString("Alarma"+N,"Cancelado");
-                                cancelarAlarma(context, Integer.parseInt(N));
-                                alarmaCancelada[0] = true;
-                            }
+                    countdownRunnable[0] = new Runnable() {
+                        @Override
+                        public void run() {
+                            long currentTime = new Date().getTime();
+                            long remainingTimeMillis = Math.max(startTime + durationSeconds - currentTime, 0);
 
-                            //Finaliza el Conteo del temporizador
-                        } else if (remainingTimeMillis == 0){
-                            if (isCountdownRunning[0]) {
-                                isCountdownRunning[0] = false; // Desactivar Contador por completo para evitar ciclos
+                            if (remainingTimeMillis > 0) {
+                                long seconds = remainingTimeMillis / 1000;
+                                long minutes = seconds / 60;
+                                long hours = minutes / 60;
+
+                                seconds %= 60;
+                                minutes %= 60;
+
+                                String tiempo;
+                                if (hours > 0) {
+                                    tiempo = String.format("%02d:%02d:%02d hrs", hours, minutes, seconds);
+                                } else if (minutes > 0) {
+                                    tiempo = String.format("%02d:%02d min", minutes, seconds);
+                                } else {
+                                    tiempo = String.format("%02d seg", seconds);
+                                }
+                                lblTiempo.setText(tiempo);
+                                handler.postDelayed(this, 1000);
+
+                                if (!alarmaCancelada[0] && remainingTimeMillis <= 180000) {
+                                    preferenceSala.saveString("Alarma" + N, "Cancelado");
+                                    cancelarAlarma(context, Integer.parseInt(N));
+                                    alarmaCancelada[0] = true;
+                                }
+
+                                //Finaliza el Conteo del temporizador
+                            } else if (remainingTimeMillis == 0) {
+                                if (isCountdownRunning[0]) {
+                                    isCountdownRunning[0] = false; // Desactivar Contador por completo para evitar ciclos
 
                               /*  cancelarAlarma(context, Integer.parseInt(N));
                                 alarmaCancelada[0] = true;*/
-                                if (firestoreListener != null) {
-                                    firestoreListener.remove(); // Elimina el listener de Firestore si ya no es necesario
-                                    firestoreListener = null;
-                                }
+                                    if (firestoreListener != null) {
+                                        firestoreListener.remove(); // Elimina el listener de Firestore si ya no es necesario
+                                        firestoreListener = null;
+                                    }
 
-                                Activity activity = (Activity) context;
-                                if (PrimerUser.equals("No") || PrimerUser.isEmpty()){
-                                    TimeEnServi(N,lblTiempo, lblmsgTiemp, viewGroup, activity ,Codigo);
-                                }else {
-                                    LimpiarDatos.LimpiarSala(context,N,Codigo);
+                                    Activity activity = (Activity) context;
+                                    if (PrimerUser.equals("No") || PrimerUser.isEmpty()) {
+                                        Toast.makeText(activity, "Tiempo Alarma Finalizado", Toast.LENGTH_SHORT).show();
+                                        ActuaDatosEnServ(N, lblTiempo, lblmsgTiemp, viewGroup, activity, Codigo);
+                                    } else {
+                                        AlertDialogMetds.alertOptionGracias(context, viewGroup, N);
+                                        LimpiarDatos.LimpiarSala(context, N, Codigo);
+                                    }
+
                                 }
 
                             }
-
                         }
-                    }
-                };
-                handler.post(countdownRunnable); // Iniciar el temporizador
+                    };
+                    handler.post(countdownRunnable[0]); // Iniciar el temporizador
+                }
             }
         });
     }
@@ -175,7 +185,7 @@ public class TiempoAlarma {
 
 
 
-    private static void TimeEnServi(String N,TextView lblTiempo, TextView lblmsgTiemp, ViewGroup viewGroup, Activity activity,String Codigo) {
+    private static void ActuaDatosEnServ(String N,TextView lblTiempo, TextView lblmsgTiemp, ViewGroup viewGroup, Activity activity,String Codigo) {
         Context context = activity;
         PreferencesManager preferenceSala = new PreferencesManager(context,Codigo);
         PreferencesManager preferencesCliente = new PreferencesManager(context,"Cliente");
@@ -186,8 +196,8 @@ public class TiempoAlarma {
         String Colleccion = "Negocios/"+idNegocio+"/Sala"+N;
         String idUser = mAuth.getCurrentUser().getUid();
        // String NS = preferencesManager.getString("NSala","1"); // 1, 2, 3
-        int TiempoServicio = preferenceSala.getInt("ServClient"+N,0);
-        int TiempoServSeg = TiempoServicio * 60;
+      //  int TiempoServicio = preferenceSala.getInt("ServClient"+N,0);
+       // int TiempoServSeg = TiempoServicio * 60;
         if (UserFila.equals("Si") && esperando1.equals("NoEsperando")) {
 
             String actualizarDatos = preferenceSala.getString("ActualizarDatos" + N, "Si");
@@ -197,7 +207,7 @@ public class TiempoAlarma {
                 Timestamp fechaHoraActual = Timestamp.now();
                 Map<String, Object> map2 = new HashMap<>();
                 map2.put("InicioServ", fechaHoraActual);
-                map2.put("TiempoServicio", TiempoServSeg);
+              //  map2.put("TiempoServicio", TiempoServSeg);
                 map2.put("Estado", "En Servicio");
 
                 BD.collection(Colleccion).document(idUser).update(map2).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -205,7 +215,7 @@ public class TiempoAlarma {
                     public void onSuccess(Void unused) {
                         preferenceSala.saveString("ActualizarDatos" + N, "No");
                         System.out.println(" Actualizacion ...exitosa ");
-                        TiempoGlobalPers.getTiempoServPers(Colleccion, idUser, lblTiempo, activity, lblmsgTiemp, viewGroup,Codigo);
+                       // TiempoGlobalPers.getTiempoServPers(Colleccion, idUser, lblTiempo, activity, lblmsgTiemp, viewGroup,Codigo);
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -215,7 +225,7 @@ public class TiempoAlarma {
                 });
             } else {
                 System.out.println("NO Actualizar solo mostrar TiempoServi");
-                TiempoGlobalPers.getTiempoServPers(Colleccion, idUser, lblTiempo, activity, lblmsgTiemp, viewGroup, Codigo);
+                //TiempoGlobalPers.getTiempoServPers(Colleccion, idUser, lblTiempo, activity, lblmsgTiemp, viewGroup, Codigo);
             }
         }
     }

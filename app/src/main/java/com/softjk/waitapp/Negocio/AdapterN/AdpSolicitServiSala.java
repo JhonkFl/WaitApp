@@ -153,9 +153,9 @@ public class AdpSolicitServiSala extends FirestoreRecyclerAdapter<ServicNg, AdpS
         progressDialog.show();
         //Si Lista esta Vacio Agregar Campo Inicio al Tiempo Global
         if (listaV.equals("Si")){
-            preferencesManager.saveString("NFila"+NSala, "PrimerUser");
-            preferencesManager.saveInt("ServPrimerClient"+NSala,Tiempo);
-            preferencesManager.saveString("EsperandoUser"+NSala,"PrimeraVez");
+          //  preferencesManager.saveString("NFila"+NSala, "PrimerUser");
+          //  preferencesManager.saveInt("ServPrimerClient"+NSala,Tiempo);
+          //  preferencesManager.saveString("EsperandoUser"+NSala,"PrimeraVez");
 
             System.out.println("Lista vacio asi que ....");
             System.out.println("Guardando PrimerUser: Si  "+" TiempoSer: "+Tiempo+" y actualizando Inicio Global Sala"+NSala);
@@ -174,8 +174,8 @@ public class AdpSolicitServiSala extends FirestoreRecyclerAdapter<ServicNg, AdpS
             });
         }else {
             ObtenerTiempo(Tiempo, Servi, Prec, Usuario,"No", alertDialogs);
-            preferencesManager.getString("EsperandoUser"+NSala,"NoEsperando");
-            preferencesManager.saveInt("ServClient"+NSala,Tiempo);
+           // preferencesManager.getString("EsperandoUser"+NSala,"NoEsperando");
+            //preferencesManager.saveInt("ServClient"+NSala,Tiempo);
             System.out.println("Ver datos del servicio seleccionado " + Servi + " " + Tiempo + " $" + Prec);
         }
 

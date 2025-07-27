@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:padding="10dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="10dp"
+        android:layout_gravity="center"
+        android:background="@drawable/layout_bg_dialog"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/tituloAlert"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+
+                android:fontFamily="@font/adlam_display"
+                android:gravity="center"
+                android:text="Porque Motivo desdea Eliminar?"
+                android:textColor="#0165FE"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <ImageButton
+                android:id="@+id/MS_CerraElim"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:backgroundTint="@color/red_btn_bg_color"
+                android:src="@drawable/equis"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/msgAlert"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/adlam_display"
+            android:text="---------- Seleccione una opción ----------"
+            android:textColor="#757575"
+            android:textSize="14sp"
+            android:textStyle="bold"/>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <RadioGroup
+                android:id="@+id/RdioGrupElim"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <RadioButton
+                    android:id="@+id/rbNoMensage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="No se Mostró el Mensaje"
+                    android:textColor="#2196F3" />
+
+                <RadioButton
+                    android:id="@+id/rbNoAsisten"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="El Cliente no Asistió"
+                    android:textColor="#2196F3" />
+
+                <RadioButton
+                    android:id="@+id/rbFinAntes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Terminé antes de lo esperado"
+                    android:textColor="#2196F3" />
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/Texto"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:layout_gravity="center"
+                android:paddingHorizontal="20dp"
+                android:fontFamily="@font/adlam_display"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:textColor="@color/color_element"
+                android:text=""/>
+
+            <ImageView
+                android:id="@+id/imgDialog"
+                android:layout_width="130dp"
+                android:layout_height="130dp"
+                android:src="@drawable/elimiuser"/>
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnOKElim"
+            android:layout_width="180dp"
+            android:layout_height="40dp"
+            android:background="@drawable/border_button"
+            android:layout_marginTop="35dp"
+            android:layout_marginBottom="15dp"
+            android:text="Aceptar"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:elevation="8dp"/>
+
+
+    </LinearLayout>
+
+</LinearLayout>
